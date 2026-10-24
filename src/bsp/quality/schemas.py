@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import date
 
 import pandas as pd
-import pandera as pa
 from pandera import Check, Column, DataFrameSchema
 
 

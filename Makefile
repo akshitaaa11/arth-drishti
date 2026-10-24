@@ -52,7 +52,7 @@ load:
 data: parse-pdfs collect load
 
 features:
-	@echo "Placeholder for Phase 3 feature store."
+	@$(PIP) -m bsp.features.build
 
 train:
 	@echo "Placeholder for Phase 4/7 training."

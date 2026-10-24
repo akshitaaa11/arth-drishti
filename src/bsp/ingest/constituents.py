@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 import pandas as pd
 
 from bsp.ingest._common import CSV_DIR, RAW_DIR, append_fetch_log, ensure_dirs

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -29,7 +29,7 @@ def append_fetch_log(job: str, status: str, rows: int = 0, detail: str = "") -> 
     path = CSV_DIR / "fetch_log.csv"
     row = {
         "job": job,
-        "finished_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "finished_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "status": status,
         "rows": rows,
         "detail": detail[:250],
