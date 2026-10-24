@@ -1,0 +1,57 @@
+# Expenditure Profile 2022-23 (Feb 2022), Statement 3 (part B). url: https://www.indiabudget.gov.in/budget2022-23/doc/eb/vol1.pdf
+Actual|2020-21|1|Department of Agriculture and Farmers Welfare|108251.03|21.80|108272.83|6
+BE|2021-22|1|Department of Agriculture and Farmers Welfare|122961.57|56.00|123017.57|6
+RE|2021-22|1|Department of Agriculture and Farmers Welfare|118257.69|36.55|118294.24|6
+BE|2022-23|1|Department of Agriculture and Farmers Welfare|123960.75|39.25|124000.00|6
+Actual|2020-21|2|Department of Agricultural Research and Education|7553.77|...|7553.77|6
+BE|2021-22|2|Department of Agricultural Research and Education|8513.62|...|8513.62|6
+RE|2021-22|2|Department of Agricultural Research and Education|8513.62|...|8513.62|6
+BE|2022-23|2|Department of Agricultural Research and Education|8513.62|...|8513.62|6
+Actual|2020-21|5|Department of Chemicals and Petrochemicals|219.13|73.70|292.83|6
+BE|2021-22|5|Department of Chemicals and Petrochemicals|229.64|3.50|233.14|6
+RE|2021-22|5|Department of Chemicals and Petrochemicals|206.83|2.17|209.00|6
+BE|2022-23|5|Department of Chemicals and Petrochemicals|207.67|1.33|209.00|6
+Actual|2020-21|6|Department of Fertilisers|127947.91|813.24|128761.15|6
+BE|2021-22|6|Department of Fertilisers|79566.77|444.62|80011.39|6
+RE|2021-22|6|Department of Fertilisers|140258.70|444.58|140703.28|6
+BE|2022-23|6|Department of Fertilisers|105262.18|0.05|105262.23|6
+Actual|2020-21|7|Department of Pharmaceuticals|448.86|7.15|456.01|6
+BE|2021-22|7|Department of Pharmaceuticals|461.29|9.12|470.41|6
+RE|2021-22|7|Department of Pharmaceuticals|674.99|148.12|823.11|6
+BE|2022-23|7|Department of Pharmaceuticals|2238.85|5.30|2244.15|6
+Actual|2020-21|12|Department of Posts|17695.30|897.42|18592.72|7
+BE|2021-22|12|Department of Posts|15618.13|910.09|16528.22|7
+RE|2021-22|12|Department of Posts|18034.54|932.33|18966.87|7
+BE|2022-23|12|Department of Posts|19931.40|888.62|20820.02|7
+Actual|2020-21|14|Department of Consumer Affairs|11332.10|33.37|11365.47|7
+BE|2021-22|14|Department of Consumer Affairs|2928.05|46.05|2974.10|7
+RE|2021-22|14|Department of Consumer Affairs|2434.23|19.41|2453.64|7
+BE|2022-23|14|Department of Consumer Affairs|1705.03|19.85|1724.88|7
+Actual|2020-21|15|Department of Food and Public Distribution|554243.35|1188.35|555431.70|7
+BE|2021-22|15|Department of Food and Public Distribution|251248.34|2725.96|253974.30|7
+RE|2021-22|15|Department of Food and Public Distribution|299363.35|2636.65|302000.00|7
+BE|2022-23|15|Department of Food and Public Distribution|213929.91|2029.67|215959.58|7
+Actual|2020-21|46|Department of Health and Family Welfare|73982.34|3586.99|77569.33|11
+BE|2021-22|46|Department of Health and Family Welfare|68760.03|2508.74|71268.77|11
+RE|2021-22|46|Department of Health and Family Welfare|79107.61|3813.04|82920.65|11
+BE|2022-23|46|Department of Health and Family Welfare|77367.43|5632.57|83000.00|11
+Actual|2020-21|47|Department of Health Research|3124.59|...|3124.59|11
+BE|2021-22|47|Department of Health Research|2663.00|...|2663.00|11
+RE|2021-22|47|Department of Health Research|3080.00|...|3080.00|11
+BE|2022-23|47|Department of Health Research|3200.65|...|3200.65|11
+Actual|2020-21|25|Department of School Education and Literacy|51841.64|...|51841.64|9
+BE|2021-22|25|Department of School Education and Literacy|54873.66|...|54873.66|9
+RE|2021-22|25|Department of School Education and Literacy|51969.95|...|51969.95|9
+BE|2022-23|25|Department of School Education and Literacy|63449.37|...|63449.37|9
+Actual|2020-21|26|Department of Higher Education|32172.02|205.74|32377.76|9
+BE|2021-22|26|Department of Higher Education|38325.15|25.50|38350.65|9
+RE|2021-22|26|Department of Higher Education|36016.86|14.71|36031.57|9
+BE|2022-23|26|Department of Higher Education|40810.34|18.01|40828.35|9
+Actual|2020-21|87|Department of Rural Development|196416.71|...|196416.71|16
+BE|2021-22|87|Department of Rural Development|131519.08|...|131519.08|16
+RE|2021-22|87|Department of Rural Development|153558.07|...|153558.07|16
+BE|2022-23|87|Department of Rural Development|135944.29|...|135944.29|16
+Actual|2020-21|88|Department of Land Resources|1175.98|...|1175.98|16
+BE|2021-22|88|Department of Land Resources|2170.42|...|2170.42|16
+RE|2021-22|88|Department of Land Resources|1484.52|...|1484.52|16
+BE|2022-23|88|Department of Land Resources|2259.34|...|2259.34|16

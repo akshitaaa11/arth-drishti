@@ -1,0 +1,521 @@
+fiscal_year,stage,department,measure,editions,values,max_diff
+2017-18,BE,Capital Outlay on Defence Services,total_cr,2017-18;2018-19,86488.01;86488.01,0.0
+2017-18,BE,Capital Outlay on Defence Services,capital_cr,2017-18;2018-19,86488.01;86488.01,0.0
+2017-18,BE,Defence Pensions,total_cr,2017-18;2018-19,85740.00;85740.00,0.0
+2017-18,BE,Defence Pensions,capital_cr,2017-18;2018-19,0.00;0.00,0.0
+2017-18,BE,Defence Services (Revenue),total_cr,2017-18;2018-19,172773.89;172773.89,0.0
+2017-18,BE,Defence Services (Revenue),capital_cr,2017-18;2018-19,0.00;0.00,0.0
+2017-18,BE,Department of Agricultural Research and Education,total_cr,2017-18;2018-19,6800.00;6800.00,0.0
+2017-18,BE,Department of Agricultural Research and Education,capital_cr,2017-18;2018-19,0.00;0.00,0.0
+2017-18,BE,Department of Agriculture and Farmers Welfare,total_cr,2017-18;2018-19,41855.00;41855.00,0.0
+2017-18,BE,Department of Agriculture and Farmers Welfare,capital_cr,2017-18;2018-19,79.43;79.43,0.0
+2017-18,BE,Department of Chemicals and Petrochemicals,total_cr,2017-18;2018-19,298.00;298.00,0.0
+2017-18,BE,Department of Chemicals and Petrochemicals,capital_cr,2017-18;2018-19,24.61;24.61,0.0
+2017-18,BE,Department of Consumer Affairs,total_cr,2017-18;2018-19,3727.00;3727.00,0.0
+2017-18,BE,Department of Consumer Affairs,capital_cr,2017-18;2018-19,21.35;21.35,0.0
+2017-18,BE,Department of Drinking Water and Sanitation,total_cr,2017-18;2018-19,20010.79;20010.79,0.0
+2017-18,BE,Department of Drinking Water and Sanitation,capital_cr,2017-18;2018-19,0.00;0.00,0.0
+2017-18,BE,Department of Fertilisers,total_cr,2017-18;2018-19,70032.71;70032.71,0.0
+2017-18,BE,Department of Fertilisers,capital_cr,2017-18;2018-19,0.04;0.04,0.0
+2017-18,BE,Department of Financial Services,total_cr,2017-18;2018-19,17450.00;17450.00,0.0
+2017-18,BE,Department of Financial Services,capital_cr,2017-18;2018-19,14718.02;14718.02,0.0
+2017-18,BE,Department of Food and Public Distribution,total_cr,2017-18;2018-19,150504.69;150504.69,0.0
+2017-18,BE,Department of Food and Public Distribution,capital_cr,2017-18;2018-19,48.05;48.05,0.0
+2017-18,BE,Department of Health Research,total_cr,2017-18;2018-19,1500.00;1500.00,0.0
+2017-18,BE,Department of Health Research,capital_cr,2017-18;2018-19,0.00;0.00,0.0
+2017-18,BE,Department of Health and Family Welfare,total_cr,2017-18;2018-19,47352.51;47352.51,0.0
+2017-18,BE,Department of Health and Family Welfare,capital_cr,2017-18;2018-19,3508.81;3508.81,0.0
+2017-18,BE,Department of Higher Education,total_cr,2017-18;2018-19,33329.70;33329.70,0.0
+2017-18,BE,Department of Higher Education,capital_cr,2017-18;2018-19,250.00;250.00,0.0
+2017-18,BE,Department of Land Resources,total_cr,2017-18;2018-19,2310.36;2310.36,0.0
+2017-18,BE,Department of Land Resources,capital_cr,2017-18;2018-19,0.00;0.00,0.0
+2017-18,BE,Department of Pharmaceuticals,total_cr,2017-18;2018-19,247.74;247.74,0.0
+2017-18,BE,Department of Pharmaceuticals,capital_cr,2017-18;2018-19,0.06;0.06,0.0
+2017-18,BE,Department of Posts,total_cr,2017-18;2018-19,9550.00;9550.00,0.0
+2017-18,BE,Department of Posts,capital_cr,2017-18;2018-19,495.00;495.00,0.0
+2017-18,BE,Department of Rural Development,total_cr,2017-18;2018-19,105447.88;105447.88,0.0
+2017-18,BE,Department of Rural Development,capital_cr,2017-18;2018-19,5.25;5.25,0.0
+2017-18,BE,Department of School Education and Literacy,total_cr,2017-18;2018-19,46356.25;46356.25,0.0
+2017-18,BE,Department of School Education and Literacy,capital_cr,2017-18;2018-19,0.00;0.00,0.0
+2017-18,BE,Department of Telecommunications,total_cr,2017-18;2018-19,26687.47;26687.47,0.0
+2017-18,BE,Department of Telecommunications,capital_cr,2017-18;2018-19,3386.00;3386.00,0.0
+2017-18,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",total_cr,2017-18;2018-19,6887.00;6887.00,0.0
+2017-18,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",capital_cr,2017-18;2018-19,784.49;784.49,0.0
+2017-18,BE,Grand Total,total_cr,2017-18;2018-19,2146734.78;2146734.78,0.0
+2017-18,BE,Grand Total,capital_cr,2017-18;2018-19,309800.80;309800.80,0.0
+2017-18,BE,Ministry of Defence (Civil),total_cr,2017-18;2018-19,14852.22;14852.22,0.0
+2017-18,BE,Ministry of Defence (Civil),capital_cr,2017-18;2018-19,5091.69;5091.69,0.0
+2017-18,BE,Ministry of Electronics and Information Technology,total_cr,2017-18;2018-19,4039.00;4039.00,0.0
+2017-18,BE,Ministry of Electronics and Information Technology,capital_cr,2017-18;2018-19,349.00;349.00,0.0
+2017-18,BE,Ministry of New and Renewable Energy,total_cr,2017-18;2018-19,5472.84;5472.84,0.0
+2017-18,BE,Ministry of New and Renewable Energy,capital_cr,2017-18;2018-19,40.00;40.00,0.0
+2017-18,BE,Ministry of Power,total_cr,2017-18;2018-19,13881.14;13881.14,0.0
+2017-18,BE,Ministry of Power,capital_cr,2017-18;2018-19,3585.68;3585.68,0.0
+2017-18,BE,Ministry of Railways,total_cr,2017-18;2018-19,55000.00;55000.00,0.0
+2017-18,BE,Ministry of Railways,capital_cr,2017-18;2018-19,55000.00;55000.00,0.0
+2017-18,BE,Ministry of Road Transport and Highways,total_cr,2017-18;2018-19,64900.00;64900.00,0.0
+2017-18,BE,Ministry of Road Transport and Highways,capital_cr,2017-18;2018-19,54176.83;54176.83,0.0
+2018-19,BE,Capital Outlay on Defence Services,total_cr,2018-19;2019-20,93982.13;93982.13,0.0
+2018-19,BE,Capital Outlay on Defence Services,capital_cr,2018-19;2019-20,93982.13;93982.13,0.0
+2018-19,BE,Defence Pensions,total_cr,2018-19;2019-20,108853.30;108853.30,0.0
+2018-19,BE,Defence Pensions,capital_cr,2018-19;2019-20,0.00;0.00,0.0
+2018-19,BE,Defence Services (Revenue),total_cr,2018-19;2019-20,185323.19;185323.19,0.0
+2018-19,BE,Defence Services (Revenue),capital_cr,2018-19;2019-20,0.00;0.00,0.0
+2018-19,BE,Department of Agricultural Research and Education,total_cr,2018-19;2019-20,7800.00;7800.00,0.0
+2018-19,BE,Department of Agricultural Research and Education,capital_cr,2018-19;2019-20,0.00;0.00,0.0
+2018-19,BE,Department of Agriculture and Farmers Welfare,total_cr,2018-19;2019-20,46700.00;46700.00,0.0
+2018-19,BE,Department of Agriculture and Farmers Welfare,capital_cr,2018-19;2019-20,113.70;113.70,0.0
+2018-19,BE,Department of Chemicals and Petrochemicals,total_cr,2018-19;2019-20,199.65;199.65,0.0
+2018-19,BE,Department of Chemicals and Petrochemicals,capital_cr,2018-19;2019-20,0.00;0.00,0.0
+2018-19,BE,Department of Consumer Affairs,total_cr,2018-19;2019-20,1785.17;1785.17,0.0
+2018-19,BE,Department of Consumer Affairs,capital_cr,2018-19;2019-20,48.59;48.59,0.0
+2018-19,BE,Department of Drinking Water and Sanitation,total_cr,2018-19;2019-20,22356.60;22356.60,0.0
+2018-19,BE,Department of Drinking Water and Sanitation,capital_cr,2018-19;2019-20,0.00;0.00,0.0
+2018-19,BE,Department of Fertilisers,total_cr,2018-19;2019-20,70125.39;70125.39,0.0
+2018-19,BE,Department of Fertilisers,capital_cr,2018-19;2019-20,0.04;0.04,0.0
+2018-19,BE,Department of Financial Services,total_cr,2018-19;2019-20,6577.06;6577.06,0.0
+2018-19,BE,Department of Financial Services,capital_cr,2018-19;2019-20,4838.01;4838.01,0.0
+2018-19,BE,Department of Food and Public Distribution,total_cr,2018-19;2019-20,174159.10;174159.10,0.0
+2018-19,BE,Department of Food and Public Distribution,capital_cr,2018-19;2019-20,424.10;424.10,0.0
+2018-19,BE,Department of Health Research,total_cr,2018-19;2019-20,1800.00;1800.00,0.0
+2018-19,BE,Department of Health Research,capital_cr,2018-19;2019-20,0.00;0.00,0.0
+2018-19,BE,Department of Health and Family Welfare,total_cr,2018-19;2019-20,52800.00;52800.00,0.0
+2018-19,BE,Department of Health and Family Welfare,capital_cr,2018-19;2019-20,2720.40;2720.40,0.0
+2018-19,BE,Department of Higher Education,total_cr,2018-19;2019-20,35010.29;35010.29,0.0
+2018-19,BE,Department of Higher Education,capital_cr,2018-19;2019-20,2752.00;2752.00,0.0
+2018-19,BE,Department of Land Resources,total_cr,2018-19;2019-20,2511.40;2511.40,0.0
+2018-19,BE,Department of Land Resources,capital_cr,2018-19;2019-20,0.00;0.00,0.0
+2018-19,BE,Department of Pharmaceuticals,total_cr,2018-19;2019-20,261.53;261.53,0.0
+2018-19,BE,Department of Pharmaceuticals,capital_cr,2018-19;2019-20,0.06;0.06,0.0
+2018-19,BE,Department of Posts,total_cr,2018-19;2019-20,11496.18;11496.18,0.0
+2018-19,BE,Department of Posts,capital_cr,2018-19;2019-20,757.52;757.52,0.0
+2018-19,BE,Department of Rural Development,total_cr,2018-19;2019-20,112403.92;112403.92,0.0
+2018-19,BE,Department of Rural Development,capital_cr,2018-19;2019-20,5.25;5.25,0.0
+2018-19,BE,Department of School Education and Literacy,total_cr,2018-19;2019-20,50000.00;50000.00,0.0
+2018-19,BE,Department of School Education and Literacy,capital_cr,2018-19;2019-20,0.00;0.00,0.0
+2018-19,BE,Department of Telecommunications,total_cr,2018-19;2019-20,28055.28;28055.28,0.0
+2018-19,BE,Department of Telecommunications,capital_cr,2018-19;2019-20,5002.75;5002.75,0.0
+2018-19,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",total_cr,2018-19;2019-20,8860.00;8860.00,0.0
+2018-19,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",capital_cr,2018-19;2019-20,707.86;707.86,0.0
+2018-19,BE,Grand Total,total_cr,2018-19;2019-20,2442213.30;2442213.30,0.0
+2018-19,BE,Grand Total,capital_cr,2018-19;2019-20,300441.30;300441.30,0.0
+2018-19,BE,Ministry of Defence (Civil),total_cr,2018-19;2019-20,16206.09;16206.09,0.0
+2018-19,BE,Ministry of Defence (Civil),capital_cr,2018-19;2019-20,5581.73;5581.73,0.0
+2018-19,BE,Ministry of Electronics and Information Technology,total_cr,2018-19;2019-20,6000.00;6000.00,0.0
+2018-19,BE,Ministry of Electronics and Information Technology,capital_cr,2018-19;2019-20,325.00;325.00,0.0
+2018-19,BE,Ministry of Housing and Urban Affairs,total_cr,2018-19;2019-20,41765.13;41765.13,0.0
+2018-19,BE,Ministry of Housing and Urban Affairs,capital_cr,2018-19;2019-20,16415.40;16415.40,0.0
+2018-19,BE,Ministry of New and Renewable Energy,total_cr,2018-19;2019-20,5146.63;5146.63,0.0
+2018-19,BE,Ministry of New and Renewable Energy,capital_cr,2018-19;2019-20,40.40;40.40,0.0
+2018-19,BE,Ministry of Power,total_cr,2018-19;2019-20,15046.92;15046.92,0.0
+2018-19,BE,Ministry of Power,capital_cr,2018-19;2019-20,2211.45;2211.45,0.0
+2018-19,BE,Ministry of Railways,total_cr,2018-19;2019-20,55088.00;55088.00,0.0
+2018-19,BE,Ministry of Railways,capital_cr,2018-19;2019-20,53060.00;53060.00,0.0
+2018-19,BE,Ministry of Road Transport and Highways,total_cr,2018-19;2019-20,71000.00;71000.00,0.0
+2018-19,BE,Ministry of Road Transport and Highways,capital_cr,2018-19;2019-20,59440.25;59440.25,0.0
+2019-20,BE,Capital Outlay on Defence Services,total_cr,2019-20;2020-21,103394.31;103394.31,0.0
+2019-20,BE,Capital Outlay on Defence Services,capital_cr,2019-20;2020-21,103394.31;103394.31,0.0
+2019-20,BE,Defence Pensions,total_cr,2019-20;2020-21,112079.57;112079.57,0.0
+2019-20,BE,Defence Pensions,capital_cr,2019-20;2020-21,0.00;0.00,0.0
+2019-20,BE,Defence Services (Revenue),total_cr,2019-20;2020-21,201901.76;201901.76,0.0
+2019-20,BE,Defence Services (Revenue),capital_cr,2019-20;2020-21,0.00;0.00,0.0
+2019-20,BE,Department of Agricultural Research and Education,total_cr,2019-20;2020-21,8078.76;8078.76,0.0
+2019-20,BE,Department of Agricultural Research and Education,capital_cr,2019-20;2020-21,0.00;0.00,0.0
+2019-20,BE,Department of Agriculture and Farmers Welfare,total_cr,2019-20;2020-21,130485.21;130485.21,0.0
+2019-20,BE,Department of Agriculture and Farmers Welfare,capital_cr,2019-20;2020-21,34.70;34.70,0.0
+2019-20,BE,Department of Chemicals and Petrochemicals,total_cr,2019-20;2020-21,263.65;263.65,0.0
+2019-20,BE,Department of Chemicals and Petrochemicals,capital_cr,2019-20;2020-21,0.00;0.00,0.0
+2019-20,BE,Department of Consumer Affairs,total_cr,2019-20;2020-21,2272.32;2272.32,0.0
+2019-20,BE,Department of Consumer Affairs,capital_cr,2019-20;2020-21,51.50;51.50,0.0
+2019-20,BE,Department of Drinking Water and Sanitation,total_cr,2019-20;2020-21,20016.34;20016.34,0.0
+2019-20,BE,Department of Drinking Water and Sanitation,capital_cr,2019-20;2020-21,0.00;0.00,0.0
+2019-20,BE,Department of Fertilisers,total_cr,2019-20;2020-21,80035.00;80035.00,0.0
+2019-20,BE,Department of Fertilisers,capital_cr,2019-20;2020-21,0.05;0.05,0.0
+2019-20,BE,Department of Financial Services,total_cr,2019-20;2020-21,4690.19;4690.19,0.0
+2019-20,BE,Department of Financial Services,capital_cr,2019-20;2020-21,3385.04;3385.04,0.0
+2019-20,BE,Department of Food and Public Distribution,total_cr,2019-20;2020-21,192240.39;192240.39,0.0
+2019-20,BE,Department of Food and Public Distribution,capital_cr,2019-20;2020-21,1326.12;1326.12,0.0
+2019-20,BE,Department of Health Research,total_cr,2019-20;2020-21,1900.00;1900.00,0.0
+2019-20,BE,Department of Health Research,capital_cr,2019-20;2020-21,0.00;0.00,0.0
+2019-20,BE,Department of Health and Family Welfare,total_cr,2019-20;2020-21,62659.12;62659.12,0.0
+2019-20,BE,Department of Health and Family Welfare,capital_cr,2019-20;2020-21,1750.90;1750.90,0.0
+2019-20,BE,Department of Higher Education,total_cr,2019-20;2020-21,38317.01;38317.01,0.0
+2019-20,BE,Department of Higher Education,capital_cr,2019-20;2020-21,2120.00;2120.00,0.0
+2019-20,BE,Department of Land Resources,total_cr,2019-20;2020-21,2227.24;2227.24,0.0
+2019-20,BE,Department of Land Resources,capital_cr,2019-20;2020-21,0.00;0.00,0.0
+2019-20,BE,Department of Pharmaceuticals,total_cr,2019-20;2020-21,235.51;235.51,0.0
+2019-20,BE,Department of Pharmaceuticals,capital_cr,2019-20;2020-21,5.06;5.06,0.0
+2019-20,BE,Department of Posts,total_cr,2019-20;2020-21,11299.10;11299.10,0.0
+2019-20,BE,Department of Posts,capital_cr,2019-20;2020-21,947.74;947.74,0.0
+2019-20,BE,Department of Rural Development,total_cr,2019-20;2020-21,117647.19;117647.19,0.0
+2019-20,BE,Department of Rural Development,capital_cr,2019-20;2020-21,100.00;100.00,0.0
+2019-20,BE,Department of School Education and Literacy,total_cr,2019-20;2020-21,56536.63;56536.63,0.0
+2019-20,BE,Department of School Education and Literacy,capital_cr,2019-20;2020-21,0.00;0.00,0.0
+2019-20,BE,Department of Telecommunications,total_cr,2019-20;2020-21,27338.36;27338.36,0.0
+2019-20,BE,Department of Telecommunications,capital_cr,2019-20;2020-21,4994.72;4994.72,0.0
+2019-20,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",total_cr,2019-20;2020-21,8245.25;8245.25,0.0
+2019-20,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",capital_cr,2019-20;2020-21,391.47;391.47,0.0
+2019-20,BE,Grand Total,total_cr,2019-20;2020-21,2786349.45;2786349.45,0.0
+2019-20,BE,Grand Total,capital_cr,2019-20;2020-21,338569.11;338569.11,0.0
+2019-20,BE,Ministry of Defence (Civil),total_cr,2019-20;2020-21,13635.15;13635.15,0.0
+2019-20,BE,Ministry of Defence (Civil),capital_cr,2019-20;2020-21,4854.49;4854.49,0.0
+2019-20,BE,Ministry of Electronics and Information Technology,total_cr,2019-20;2020-21,6654.00;6654.00,0.0
+2019-20,BE,Ministry of Electronics and Information Technology,capital_cr,2019-20;2020-21,348.00;348.00,0.0
+2019-20,BE,Ministry of Housing and Urban Affairs,total_cr,2019-20;2020-21,48032.17;48032.17,0.0
+2019-20,BE,Ministry of Housing and Urban Affairs,capital_cr,2019-20;2020-21,19544.33;19544.33,0.0
+2019-20,BE,Ministry of New and Renewable Energy,total_cr,2019-20;2020-21,5254.83;5254.83,0.0
+2019-20,BE,Ministry of New and Renewable Energy,capital_cr,2019-20;2020-21,45.00;45.00,0.0
+2019-20,BE,Ministry of Power,total_cr,2019-20;2020-21,15874.82;15874.82,0.0
+2019-20,BE,Ministry of Power,capital_cr,2019-20;2020-21,2400.12;2400.12,0.0
+2019-20,BE,Ministry of Railways,total_cr,2019-20;2020-21,68018.67;68018.67,0.0
+2019-20,BE,Ministry of Railways,capital_cr,2019-20;2020-21,65837.00;65837.00,0.0
+2019-20,BE,Ministry of Road Transport and Highways,total_cr,2019-20;2020-21,83015.97;83015.97,0.0
+2019-20,BE,Ministry of Road Transport and Highways,capital_cr,2019-20;2020-21,72058.58;72058.58,0.0
+2020-21,BE,Capital Outlay on Defence Services,total_cr,2020-21;2021-22,113734.00;113734.00,0.0
+2020-21,BE,Capital Outlay on Defence Services,capital_cr,2020-21;2021-22,113734.00;113734.00,0.0
+2020-21,BE,Defence Pensions,total_cr,2020-21;2021-22,133825.00;133825.00,0.0
+2020-21,BE,Defence Pensions,capital_cr,2020-21;2021-22,0.00;0.00,0.0
+2020-21,BE,Defence Services (Revenue),total_cr,2020-21;2021-22,209319.00;209319.00,0.0
+2020-21,BE,Defence Services (Revenue),capital_cr,2020-21;2021-22,0.00;0.00,0.0
+2020-21,BE,Department of Agricultural Research and Education,total_cr,2020-21;2021-22,8362.58;8362.58,0.0
+2020-21,BE,Department of Agricultural Research and Education,capital_cr,2020-21;2021-22,0.00;0.00,0.0
+2020-21,BE,Department of Agriculture and Farmers Welfare,total_cr,2020-21;2021-22,134399.77;134399.77,0.0
+2020-21,BE,Department of Agriculture and Farmers Welfare,capital_cr,2020-21;2021-22,50.32;50.32,0.0
+2020-21,BE,Department of Chemicals and Petrochemicals,total_cr,2020-21;2021-22,218.34;218.34,0.0
+2020-21,BE,Department of Chemicals and Petrochemicals,capital_cr,2020-21;2021-22,0.00;0.00,0.0
+2020-21,BE,Department of Consumer Affairs,total_cr,2020-21;2021-22,2300.00;2300.00,0.0
+2020-21,BE,Department of Consumer Affairs,capital_cr,2020-21;2021-22,55.40;55.40,0.0
+2020-21,BE,Department of Drinking Water and Sanitation,total_cr,2020-21;2021-22,21518.10;21518.10,0.0
+2020-21,BE,Department of Drinking Water and Sanitation,capital_cr,2020-21;2021-22,0.00;0.00,0.0
+2020-21,BE,Department of Fertilisers,total_cr,2020-21;2021-22,71345.00;71345.00,0.0
+2020-21,BE,Department of Fertilisers,capital_cr,2020-21;2021-22,0.05;0.05,0.0
+2020-21,BE,Department of Financial Services,total_cr,2020-21;2021-22,11125.00;11125.00,0.0
+2020-21,BE,Department of Financial Services,capital_cr,2020-21;2021-22,9650.04;9650.04,0.0
+2020-21,BE,Department of Food and Public Distribution,total_cr,2020-21;2021-22,122235.43;122235.43,0.0
+2020-21,BE,Department of Food and Public Distribution,capital_cr,2020-21;2021-22,1197.02;1197.02,0.0
+2020-21,BE,Department of Health Research,total_cr,2020-21;2021-22,2100.00;2100.00,0.0
+2020-21,BE,Department of Health Research,capital_cr,2020-21;2021-22,0.00;0.00,0.0
+2020-21,BE,Department of Health and Family Welfare,total_cr,2020-21;2021-22,65011.80;65011.80,0.0
+2020-21,BE,Department of Health and Family Welfare,capital_cr,2020-21;2021-22,1065.70;1065.70,0.0
+2020-21,BE,Department of Higher Education,total_cr,2020-21;2021-22,39466.52;39466.52,0.0
+2020-21,BE,Department of Higher Education,capital_cr,2020-21;2021-22,2227.00;2227.00,0.0
+2020-21,BE,Department of Land Resources,total_cr,2020-21;2021-22,2251.24;2251.24,0.0
+2020-21,BE,Department of Land Resources,capital_cr,2020-21;2021-22,0.00;0.00,0.0
+2020-21,BE,Department of Pharmaceuticals,total_cr,2020-21;2021-22,333.58;333.58,0.0
+2020-21,BE,Department of Pharmaceuticals,capital_cr,2020-21;2021-22,7.18;7.18,0.0
+2020-21,BE,Department of Posts,total_cr,2020-21;2021-22,15525.38;15525.38,0.0
+2020-21,BE,Department of Posts,capital_cr,2020-21;2021-22,1131.21;1131.21,0.0
+2020-21,BE,Department of Rural Development,total_cr,2020-21;2021-22,120147.19;120147.19,0.0
+2020-21,BE,Department of Rural Development,capital_cr,2020-21;2021-22,100.00;100.00,0.0
+2020-21,BE,Department of School Education and Literacy,total_cr,2020-21;2021-22,59845.00;59845.00,0.0
+2020-21,BE,Department of School Education and Literacy,capital_cr,2020-21;2021-22,0.00;0.00,0.0
+2020-21,BE,Department of Telecommunications,total_cr,2020-21;2021-22,66431.69;66431.69,0.0
+2020-21,BE,Department of Telecommunications,capital_cr,2020-21;2021-22,25675.06;25675.06,0.0
+2020-21,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",total_cr,2020-21;2021-22,8960.39;8960.39,0.0
+2020-21,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",capital_cr,2020-21;2021-22,386.02;386.02,0.0
+2020-21,BE,Grand Total,total_cr,2020-21;2021-22,3042230.09;3042230.09,0.0
+2020-21,BE,Grand Total,capital_cr,2020-21;2021-22,412084.93;412084.93,0.0
+2020-21,BE,Ministry of Defence (Civil),total_cr,2020-21;2021-22,14500.00;14500.00,0.0
+2020-21,BE,Ministry of Defence (Civil),capital_cr,2020-21;2021-22,4821.00;4821.00,0.0
+2020-21,BE,Ministry of Electronics and Information Technology,total_cr,2020-21;2021-22,6899.03;6899.03,0.0
+2020-21,BE,Ministry of Electronics and Information Technology,capital_cr,2020-21;2021-22,375.00;375.00,0.0
+2020-21,BE,Ministry of Housing and Urban Affairs,total_cr,2020-21;2021-22,50039.90;50039.90,0.0
+2020-21,BE,Ministry of Housing and Urban Affairs,capital_cr,2020-21;2021-22,21149.01;21149.01,0.0
+2020-21,BE,Ministry of New and Renewable Energy,total_cr,2020-21;2021-22,5753.00;5753.00,0.0
+2020-21,BE,Ministry of New and Renewable Energy,capital_cr,2020-21;2021-22,52.00;52.00,0.0
+2020-21,BE,Ministry of Power,total_cr,2020-21;2021-22,15874.82;15874.82,0.0
+2020-21,BE,Ministry of Power,capital_cr,2020-21;2021-22,1082.28;1082.28,0.0
+2020-21,BE,Ministry of Railways,total_cr,2020-21;2021-22,72215.63;72215.63,0.0
+2020-21,BE,Ministry of Railways,capital_cr,2020-21;2021-22,70000.00;70000.00,0.0
+2020-21,BE,Ministry of Road Transport and Highways,total_cr,2020-21;2021-22,91823.22;91823.22,0.0
+2020-21,BE,Ministry of Road Transport and Highways,capital_cr,2020-21;2021-22,81974.71;81974.71,0.0
+2021-22,BE,Capital Outlay on Defence Services,total_cr,2021-22;2022-23,135060.72;135060.72,0.0
+2021-22,BE,Capital Outlay on Defence Services,capital_cr,2021-22;2022-23,135060.72;135060.72,0.0
+2021-22,BE,Defence Pensions,total_cr,2021-22;2022-23,115850.00;115850.00,0.0
+2021-22,BE,Defence Pensions,capital_cr,2021-22;2022-23,0.00;0.00,0.0
+2021-22,BE,Defence Services (Revenue),total_cr,2021-22;2022-23,212027.56;212027.56,0.0
+2021-22,BE,Defence Services (Revenue),capital_cr,2021-22;2022-23,0.00;0.00,0.0
+2021-22,BE,Department of Agricultural Research and Education,total_cr,2021-22;2022-23,8513.62;8513.62,0.0
+2021-22,BE,Department of Agricultural Research and Education,capital_cr,2021-22;2022-23,0.00;0.00,0.0
+2021-22,BE,Department of Agriculture and Farmers Welfare,total_cr,2021-22;2022-23,123017.57;123017.57,0.0
+2021-22,BE,Department of Agriculture and Farmers Welfare,capital_cr,2021-22;2022-23,56.00;56.00,0.0
+2021-22,BE,Department of Chemicals and Petrochemicals,total_cr,2021-22;2022-23,233.14;233.14,0.0
+2021-22,BE,Department of Chemicals and Petrochemicals,capital_cr,2021-22;2022-23,3.50;3.50,0.0
+2021-22,BE,Department of Consumer Affairs,total_cr,2021-22;2022-23,2974.10;2974.10,0.0
+2021-22,BE,Department of Consumer Affairs,capital_cr,2021-22;2022-23,46.05;46.05,0.0
+2021-22,BE,Department of Drinking Water and Sanitation,total_cr,2021-22;2022-23,60030.45;60030.45,0.0
+2021-22,BE,Department of Drinking Water and Sanitation,capital_cr,2021-22;2022-23,0.00;0.00,0.0
+2021-22,BE,Department of Fertilisers,total_cr,2021-22;2022-23,80011.39;80011.39,0.0
+2021-22,BE,Department of Fertilisers,capital_cr,2021-22;2022-23,444.62;444.62,0.0
+2021-22,BE,Department of Financial Services,total_cr,2021-22;2022-23,29510.79;29510.79,0.0
+2021-22,BE,Department of Financial Services,capital_cr,2021-22;2022-23,25800.02;25800.02,0.0
+2021-22,BE,Department of Food and Public Distribution,total_cr,2021-22;2022-23,253974.30;253974.30,0.0
+2021-22,BE,Department of Food and Public Distribution,capital_cr,2021-22;2022-23,2725.96;2725.96,0.0
+2021-22,BE,Department of Health Research,total_cr,2021-22;2022-23,2663.00;2663.00,0.0
+2021-22,BE,Department of Health Research,capital_cr,2021-22;2022-23,0.00;0.00,0.0
+2021-22,BE,Department of Health and Family Welfare,total_cr,2021-22;2022-23,71268.77;71268.77,0.0
+2021-22,BE,Department of Health and Family Welfare,capital_cr,2021-22;2022-23,2508.74;2508.74,0.0
+2021-22,BE,Department of Higher Education,total_cr,2021-22;2022-23,38350.65;38350.65,0.0
+2021-22,BE,Department of Higher Education,capital_cr,2021-22;2022-23,25.50;25.50,0.0
+2021-22,BE,Department of Land Resources,total_cr,2021-22;2022-23,2170.42;2170.42,0.0
+2021-22,BE,Department of Land Resources,capital_cr,2021-22;2022-23,0.00;0.00,0.0
+2021-22,BE,Department of Pharmaceuticals,total_cr,2021-22;2022-23,470.41;470.41,0.0
+2021-22,BE,Department of Pharmaceuticals,capital_cr,2021-22;2022-23,9.12;9.12,0.0
+2021-22,BE,Department of Posts,total_cr,2021-22;2022-23,16528.22;16528.22,0.0
+2021-22,BE,Department of Posts,capital_cr,2021-22;2022-23,910.09;910.09,0.0
+2021-22,BE,Department of Rural Development,total_cr,2021-22;2022-23,131519.08;131519.08,0.0
+2021-22,BE,Department of Rural Development,capital_cr,2021-22;2022-23,0.00;0.00,0.0
+2021-22,BE,Department of School Education and Literacy,total_cr,2021-22;2022-23,54873.66;54873.66,0.0
+2021-22,BE,Department of School Education and Literacy,capital_cr,2021-22;2022-23,0.00;0.00,0.0
+2021-22,BE,Department of Telecommunications,total_cr,2021-22;2022-23,58737.00;58737.00,0.0
+2021-22,BE,Department of Telecommunications,capital_cr,2021-22;2022-23,25933.56;25933.56,0.0
+2021-22,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",total_cr,2021-22;2022-23,9022.57;9022.57,0.0
+2021-22,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",capital_cr,2021-22;2022-23,321.77;321.77,0.0
+2021-22,BE,Grand Total,total_cr,2021-22;2022-23,3483235.63;3483235.63,0.0
+2021-22,BE,Grand Total,capital_cr,2021-22;2022-23,554235.74;554235.74,0.0
+2021-22,BE,Ministry of Defence (Civil),total_cr,2021-22;2022-23,15257.34;15257.34,0.0
+2021-22,BE,Ministry of Defence (Civil),capital_cr,2021-22;2022-23,5173.41;5173.41,0.0
+2021-22,BE,Ministry of Electronics and Information Technology,total_cr,2021-22;2022-23,9720.66;9720.66,0.0
+2021-22,BE,Ministry of Electronics and Information Technology,capital_cr,2021-22;2022-23,446.00;446.00,0.0
+2021-22,BE,Ministry of Housing and Urban Affairs,total_cr,2021-22;2022-23,54581.00;54581.00,0.0
+2021-22,BE,Ministry of Housing and Urban Affairs,capital_cr,2021-22;2022-23,25759.01;25759.01,0.0
+2021-22,BE,Ministry of New and Renewable Energy,total_cr,2021-22;2022-23,5753.00;5753.00,0.0
+2021-22,BE,Ministry of New and Renewable Energy,capital_cr,2021-22;2022-23,10.00;10.00,0.0
+2021-22,BE,Ministry of Power,total_cr,2021-22;2022-23,15322.00;15322.00,0.0
+2021-22,BE,Ministry of Power,capital_cr,2021-22;2022-23,1564.97;1564.97,0.0
+2021-22,BE,Ministry of Railways,total_cr,2021-22;2022-23,110054.64;110054.64,0.0
+2021-22,BE,Ministry of Railways,capital_cr,2021-22;2022-23,107100.00;107100.00,0.0
+2021-22,BE,Ministry of Road Transport and Highways,total_cr,2021-22;2022-23,118101.00;118101.00,0.0
+2021-22,BE,Ministry of Road Transport and Highways,capital_cr,2021-22;2022-23,108230.11;108230.11,0.0
+2022-23,BE,Capital Outlay on Defence Services,total_cr,2022-23;2023-24,152369.61;152369.61,0.0
+2022-23,BE,Capital Outlay on Defence Services,capital_cr,2022-23;2023-24,152369.61;152369.61,0.0
+2022-23,BE,Defence Pensions,total_cr,2022-23;2023-24,119696.00;119696.00,0.0
+2022-23,BE,Defence Pensions,capital_cr,2022-23;2023-24,0.00;0.00,0.0
+2022-23,BE,Defence Services (Revenue),total_cr,2022-23;2023-24,233000.54;233000.54,0.0
+2022-23,BE,Defence Services (Revenue),capital_cr,2022-23;2023-24,0.00;0.00,0.0
+2022-23,BE,Department of Agricultural Research and Education,total_cr,2022-23;2023-24,8513.62;8513.62,0.0
+2022-23,BE,Department of Agricultural Research and Education,capital_cr,2022-23;2023-24,0.00;0.00,0.0
+2022-23,BE,Department of Agriculture and Farmers Welfare,total_cr,2022-23;2023-24,124000.00;124000.00,0.0
+2022-23,BE,Department of Agriculture and Farmers Welfare,capital_cr,2022-23;2023-24,39.25;39.25,0.0
+2022-23,BE,Department of Chemicals and Petrochemicals,total_cr,2022-23;2023-24,209.00;209.00,0.0
+2022-23,BE,Department of Chemicals and Petrochemicals,capital_cr,2022-23;2023-24,1.33;1.33,0.0
+2022-23,BE,Department of Consumer Affairs,total_cr,2022-23;2023-24,1724.88;1724.88,0.0
+2022-23,BE,Department of Consumer Affairs,capital_cr,2022-23;2023-24,19.85;19.85,0.0
+2022-23,BE,Department of Drinking Water and Sanitation,total_cr,2022-23;2023-24,67221.12;67221.12,0.0
+2022-23,BE,Department of Drinking Water and Sanitation,capital_cr,2022-23;2023-24,0.00;0.00,0.0
+2022-23,BE,Department of Fertilisers,total_cr,2022-23;2023-24,105262.23;105262.23,0.0
+2022-23,BE,Department of Fertilisers,capital_cr,2022-23;2023-24,0.05;0.05,0.0
+2022-23,BE,Department of Financial Services,total_cr,2022-23;2023-24,5313.73;5313.73,0.0
+2022-23,BE,Department of Financial Services,capital_cr,2022-23;2023-24,4211.03;4211.03,0.0
+2022-23,BE,Department of Food and Public Distribution,total_cr,2022-23;2023-24,215959.58;215959.58,0.0
+2022-23,BE,Department of Food and Public Distribution,capital_cr,2022-23;2023-24,2029.67;2029.67,0.0
+2022-23,BE,Department of Health Research,total_cr,2022-23;2023-24,3200.65;3200.65,0.0
+2022-23,BE,Department of Health Research,capital_cr,2022-23;2023-24,0.00;0.00,0.0
+2022-23,BE,Department of Health and Family Welfare,total_cr,2022-23;2023-24,83000.00;83000.00,0.0
+2022-23,BE,Department of Health and Family Welfare,capital_cr,2022-23;2023-24,5632.57;5632.57,0.0
+2022-23,BE,Department of Higher Education,total_cr,2022-23;2023-24,40828.35;40828.35,0.0
+2022-23,BE,Department of Higher Education,capital_cr,2022-23;2023-24,18.01;18.01,0.0
+2022-23,BE,Department of Land Resources,total_cr,2022-23;2023-24,2259.34;2259.34,0.0
+2022-23,BE,Department of Land Resources,capital_cr,2022-23;2023-24,0.00;0.00,0.0
+2022-23,BE,Department of Pharmaceuticals,total_cr,2022-23;2023-24,2244.15;2244.15,0.0
+2022-23,BE,Department of Pharmaceuticals,capital_cr,2022-23;2023-24,5.30;5.30,0.0
+2022-23,BE,Department of Posts,total_cr,2022-23;2023-24,20820.02;20820.02,0.0
+2022-23,BE,Department of Posts,capital_cr,2022-23;2023-24,888.62;888.62,0.0
+2022-23,BE,Department of Rural Development,total_cr,2022-23;2023-24,135944.29;135944.29,0.0
+2022-23,BE,Department of Rural Development,capital_cr,2022-23;2023-24,0.00;0.00,0.0
+2022-23,BE,Department of School Education and Literacy,total_cr,2022-23;2023-24,63449.37;63449.37,0.0
+2022-23,BE,Department of School Education and Literacy,capital_cr,2022-23;2023-24,0.00;0.00,0.0
+2022-23,BE,Department of Telecommunications,total_cr,2022-23;2023-24,84586.80;84586.80,0.0
+2022-23,BE,Department of Telecommunications,capital_cr,2022-23;2023-24,54150.42;54150.42,0.0
+2022-23,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",total_cr,2022-23;2023-24,18967.88;18967.88,0.0
+2022-23,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",capital_cr,2022-23;2023-24,419.83;419.83,0.0
+2022-23,BE,Grand Total,total_cr,2022-23;2023-24,3944908.67;3944908.67,0.0
+2022-23,BE,Grand Total,capital_cr,2022-23;2023-24,750245.77;750245.77,0.0
+2022-23,BE,Ministry of Defence (Civil),total_cr,2022-23;2023-24,20100.00;20100.00,0.0
+2022-23,BE,Ministry of Defence (Civil),capital_cr,2022-23;2023-24,8049.99;8049.99,0.0
+2022-23,BE,Ministry of Electronics and Information Technology,total_cr,2022-23;2023-24,14300.00;14300.00,0.0
+2022-23,BE,Ministry of Electronics and Information Technology,capital_cr,2022-23;2023-24,388.01;388.01,0.0
+2022-23,BE,Ministry of Housing and Urban Affairs,total_cr,2022-23;2023-24,76549.46;76549.46,0.0
+2022-23,BE,Ministry of Housing and Urban Affairs,capital_cr,2022-23;2023-24,27341.01;27341.01,0.0
+2022-23,BE,Ministry of New and Renewable Energy,total_cr,2022-23;2023-24,6900.68;6900.68,0.0
+2022-23,BE,Ministry of New and Renewable Energy,capital_cr,2022-23;2023-24,11.74;11.74,0.0
+2022-23,BE,Ministry of Power,total_cr,2022-23;2023-24,16074.74;16074.74,0.0
+2022-23,BE,Ministry of Power,capital_cr,2022-23;2023-24,13.11;13.11,0.0
+2022-23,BE,Ministry of Railways,total_cr,2022-23;2023-24,140367.13;140367.13,0.0
+2022-23,BE,Ministry of Railways,capital_cr,2022-23;2023-24,137100.00;137100.00,0.0
+2022-23,BE,Ministry of Road Transport and Highways,total_cr,2022-23;2023-24,199107.71;199107.71,0.0
+2022-23,BE,Ministry of Road Transport and Highways,capital_cr,2022-23;2023-24,187744.00;187744.00,0.0
+2023-24,BE,Capital Outlay on Defence Services,total_cr,2023-24;2024-25,162600.00;162600.00,0.0
+2023-24,BE,Capital Outlay on Defence Services,capital_cr,2023-24;2024-25,162600.00;162600.00,0.0
+2023-24,BE,Defence Pensions,total_cr,2023-24;2024-25,138205.00;138205.00,0.0
+2023-24,BE,Defence Pensions,capital_cr,2023-24;2024-25,0.00;0.00,0.0
+2023-24,BE,Defence Services (Revenue),total_cr,2023-24;2024-25,270120.14;270120.14,0.0
+2023-24,BE,Defence Services (Revenue),capital_cr,2023-24;2024-25,0.00;0.00,0.0
+2023-24,BE,Department of Agricultural Research and Education,total_cr,2023-24;2024-25,9504.00;9504.00,0.0
+2023-24,BE,Department of Agricultural Research and Education,capital_cr,2023-24;2024-25,10.41;10.41,0.0
+2023-24,BE,Department of Agriculture and Farmers Welfare,total_cr,2023-24;2024-25,115531.79;115531.79,0.0
+2023-24,BE,Department of Agriculture and Farmers Welfare,capital_cr,2023-24;2024-25,42.42;42.42,0.0
+2023-24,BE,Department of Chemicals and Petrochemicals,total_cr,2023-24;2024-25,173.45;173.45,0.0
+2023-24,BE,Department of Chemicals and Petrochemicals,capital_cr,2023-24;2024-25,0.90;0.90,0.0
+2023-24,BE,Department of Consumer Affairs,total_cr,2023-24;2024-25,250.66;250.66,0.0
+2023-24,BE,Department of Consumer Affairs,capital_cr,2023-24;2024-25,28.07;28.07,0.0
+2023-24,BE,Department of Drinking Water and Sanitation,total_cr,2023-24;2024-25,77223.00;77223.00,0.0
+2023-24,BE,Department of Drinking Water and Sanitation,capital_cr,2023-24;2024-25,1.20;1.20,0.0
+2023-24,BE,Department of Fertilisers,total_cr,2023-24;2024-25,175148.48;175148.48,0.0
+2023-24,BE,Department of Fertilisers,capital_cr,2023-24;2024-25,2.69;2.69,0.0
+2023-24,BE,Department of Financial Services,total_cr,2023-24;2024-25,1324.64;1324.64,0.0
+2023-24,BE,Department of Financial Services,capital_cr,2023-24;2024-25,212.29;212.29,0.0
+2023-24,BE,Department of Food and Public Distribution,total_cr,2023-24;2024-25,205513.94;205513.94,0.0
+2023-24,BE,Department of Food and Public Distribution,capital_cr,2023-24;2024-25,150.37;150.37,0.0
+2023-24,BE,Department of Health Research,total_cr,2023-24;2024-25,2980.00;2980.00,0.0
+2023-24,BE,Department of Health Research,capital_cr,2023-24;2024-25,0.80;0.80,0.0
+2023-24,BE,Department of Health and Family Welfare,total_cr,2023-24;2024-25,86175.00;86175.00,0.0
+2023-24,BE,Department of Health and Family Welfare,capital_cr,2023-24;2024-25,5300.34;5300.34,0.0
+2023-24,BE,Department of Higher Education,total_cr,2023-24;2024-25,44094.62;44094.62,0.0
+2023-24,BE,Department of Higher Education,capital_cr,2023-24;2024-25,12.52;12.52,0.0
+2023-24,BE,Department of Land Resources,total_cr,2023-24;2024-25,2419.23;2419.23,0.0
+2023-24,BE,Department of Land Resources,capital_cr,2023-24;2024-25,1.26;1.26,0.0
+2023-24,BE,Department of Pharmaceuticals,total_cr,2023-24;2024-25,3160.06;3160.06,0.0
+2023-24,BE,Department of Pharmaceuticals,capital_cr,2023-24;2024-25,1.19;1.19,0.0
+2023-24,BE,Department of Posts,total_cr,2023-24;2024-25,25814.00;25814.00,0.0
+2023-24,BE,Department of Posts,capital_cr,2023-24;2024-25,1396.95;1396.95,0.0
+2023-24,BE,Department of Rural Development,total_cr,2023-24;2024-25,157545.00;157545.00,0.0
+2023-24,BE,Department of Rural Development,capital_cr,2023-24;2024-25,3.52;3.52,0.0
+2023-24,BE,Department of School Education and Literacy,total_cr,2023-24;2024-25,68804.85;68804.85,0.0
+2023-24,BE,Department of School Education and Literacy,capital_cr,2023-24;2024-25,0.55;0.55,0.0
+2023-24,BE,Department of Telecommunications,total_cr,2023-24;2024-25,97579.05;97579.05,0.0
+2023-24,BE,Department of Telecommunications,capital_cr,2023-24;2024-25,61691.82;61691.82,0.0
+2023-24,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",total_cr,2023-24;2024-25,20054.67;20054.67,0.0
+2023-24,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",capital_cr,2023-24;2024-25,360.48;360.48,0.0
+2023-24,BE,Grand Total,total_cr,2023-24;2024-25,4503097.45;4503097.45,0.0
+2023-24,BE,Grand Total,capital_cr,2023-24;2024-25,1000961.01;1000961.01,0.0
+2023-24,BE,Ministry of Defence (Civil),total_cr,2023-24;2024-25,22612.50;22612.50,0.0
+2023-24,BE,Ministry of Defence (Civil),capital_cr,2023-24;2024-25,8774.79;8774.79,0.0
+2023-24,BE,Ministry of Electronics and Information Technology,total_cr,2023-24;2024-25,16549.04;16549.04,0.0
+2023-24,BE,Ministry of Electronics and Information Technology,capital_cr,2023-24;2024-25,368.68;368.68,0.0
+2023-24,BE,Ministry of Housing and Urban Affairs,total_cr,2023-24;2024-25,76431.60;76431.60,0.0
+2023-24,BE,Ministry of Housing and Urban Affairs,capital_cr,2023-24;2024-25,25997.27;25997.27,0.0
+2023-24,BE,Ministry of New and Renewable Energy,total_cr,2023-24;2024-25,10222.00;10222.00,0.0
+2023-24,BE,Ministry of New and Renewable Energy,capital_cr,2023-24;2024-25,11.65;11.65,0.0
+2023-24,BE,Ministry of Power,total_cr,2023-24;2024-25,20671.32;20671.32,0.0
+2023-24,BE,Ministry of Power,capital_cr,2023-24;2024-25,16.80;16.80,0.0
+2023-24,BE,Ministry of Railways,total_cr,2023-24;2024-25,241267.51;241267.51,0.0
+2023-24,BE,Ministry of Railways,capital_cr,2023-24;2024-25,240000.00;240000.00,0.0
+2023-24,BE,Ministry of Road Transport and Highways,total_cr,2023-24;2024-25,270434.71;270434.71,0.0
+2023-24,BE,Ministry of Road Transport and Highways,capital_cr,2023-24;2024-25,258605.53;258605.53,0.0
+2024-25,BE,Capital Outlay on Defence Services,total_cr,2024-25;2025-26,172000.00;172000.00,0.0
+2024-25,BE,Capital Outlay on Defence Services,capital_cr,2024-25;2025-26,172000.00;172000.00,0.0
+2024-25,BE,Defence Pensions,total_cr,2024-25;2025-26,141205.00;141205.00,0.0
+2024-25,BE,Defence Pensions,capital_cr,2024-25;2025-26,0.00;0.00,0.0
+2024-25,BE,Defence Services (Revenue),total_cr,2024-25;2025-26,282772.67;282772.67,0.0
+2024-25,BE,Defence Services (Revenue),capital_cr,2024-25;2025-26,0.00;0.00,0.0
+2024-25,BE,Department of Agricultural Research and Education,total_cr,2024-25;2025-26,9941.09;9941.09,0.0
+2024-25,BE,Department of Agricultural Research and Education,capital_cr,2024-25;2025-26,6.50;6.50,0.0
+2024-25,BE,Department of Agriculture and Farmers Welfare,total_cr,2024-25;2025-26,122528.77;122528.77,0.0
+2024-25,BE,Department of Agriculture and Farmers Welfare,capital_cr,2024-25;2025-26,95.64;95.64,0.0
+2024-25,BE,Department of Chemicals and Petrochemicals,total_cr,2024-25;2025-26,259.11;259.11,0.0
+2024-25,BE,Department of Chemicals and Petrochemicals,capital_cr,2024-25;2025-26,122.29;122.29,0.0
+2024-25,BE,Department of Consumer Affairs,total_cr,2024-25;2025-26,10303.61;10303.61,0.0
+2024-25,BE,Department of Consumer Affairs,capital_cr,2024-25;2025-26,66.32;66.32,0.0
+2024-25,BE,Department of Drinking Water and Sanitation,total_cr,2024-25;2025-26,77390.68;77390.68,0.0
+2024-25,BE,Department of Drinking Water and Sanitation,capital_cr,2024-25;2025-26,1.50;1.50,0.0
+2024-25,BE,Department of Fertilisers,total_cr,2024-25;2025-26,164150.81;164150.81,0.0
+2024-25,BE,Department of Fertilisers,capital_cr,2024-25;2025-26,3.61;3.61,0.0
+2024-25,BE,Department of Financial Services,total_cr,2024-25;2025-26,2845.15;2845.15,0.0
+2024-25,BE,Department of Financial Services,capital_cr,2024-25;2025-26,61.94;61.94,0.0
+2024-25,BE,Department of Food and Public Distribution,total_cr,2024-25;2025-26,213019.75;213019.75,0.0
+2024-25,BE,Department of Food and Public Distribution,capital_cr,2024-25;2025-26,43.54;43.54,0.0
+2024-25,BE,Department of Health Research,total_cr,2024-25;2025-26,3301.73;3301.73,0.0
+2024-25,BE,Department of Health Research,capital_cr,2024-25;2025-26,0.86;0.86,0.0
+2024-25,BE,Department of Health and Family Welfare,total_cr,2024-25;2025-26,87656.90;87656.90,0.0
+2024-25,BE,Department of Health and Family Welfare,capital_cr,2024-25;2025-26,3612.29;3612.29,0.0
+2024-25,BE,Department of Higher Education,total_cr,2024-25;2025-26,47619.77;47619.77,0.0
+2024-25,BE,Department of Higher Education,capital_cr,2024-25;2025-26,11.06;11.06,0.0
+2024-25,BE,Department of Land Resources,total_cr,2024-25;2025-26,2667.24;2667.24,0.0
+2024-25,BE,Department of Land Resources,capital_cr,2024-25;2025-26,1.01;1.01,0.0
+2024-25,BE,Department of Pharmaceuticals,total_cr,2024-25;2025-26,4089.95;4089.95,0.0
+2024-25,BE,Department of Pharmaceuticals,capital_cr,2024-25;2025-26,1.26;1.26,0.0
+2024-25,BE,Department of Posts,total_cr,2024-25;2025-26,25378.47;25378.47,0.0
+2024-25,BE,Department of Posts,capital_cr,2024-25;2025-26,1262.60;1262.60,0.0
+2024-25,BE,Department of Rural Development,total_cr,2024-25;2025-26,177566.19;177566.19,0.0
+2024-25,BE,Department of Rural Development,capital_cr,2024-25;2025-26,4.14;4.14,0.0
+2024-25,BE,Department of School Education and Literacy,total_cr,2024-25;2025-26,73008.10;73008.10,0.0
+2024-25,BE,Department of School Education and Literacy,capital_cr,2024-25;2025-26,0.76;0.76,0.0
+2024-25,BE,Department of Telecommunications,total_cr,2024-25;2025-26,111915.43;111915.43,0.0
+2024-25,BE,Department of Telecommunications,capital_cr,2024-25;2025-26,84496.26;84496.26,0.0
+2024-25,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",total_cr,2024-25;2025-26,21323.10;21323.10,0.0
+2024-25,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",capital_cr,2024-25;2025-26,401.95;401.95,0.0
+2024-25,BE,Grand Total,total_cr,2024-25;2025-26,4820512.08;4820512.08,0.0
+2024-25,BE,Grand Total,capital_cr,2024-25;2025-26,1111111.00;1111111.00,0.0
+2024-25,BE,Ministry of Defence (Civil),total_cr,2024-25;2025-26,25963.18;25963.18,0.0
+2024-25,BE,Ministry of Defence (Civil),capital_cr,2024-25;2025-26,10240.85;10240.85,0.0
+2024-25,BE,Ministry of Electronics and Information Technology,total_cr,2024-25;2025-26,21936.90;21936.90,0.0
+2024-25,BE,Ministry of Electronics and Information Technology,capital_cr,2024-25;2025-26,581.01;581.01,0.0
+2024-25,BE,Ministry of Housing and Urban Affairs,total_cr,2024-25;2025-26,82576.57;82576.57,0.0
+2024-25,BE,Ministry of Housing and Urban Affairs,capital_cr,2024-25;2025-26,28628.26;28628.26,0.0
+2024-25,BE,Ministry of New and Renewable Energy,total_cr,2024-25;2025-26,19100.00;19100.00,0.0
+2024-25,BE,Ministry of New and Renewable Energy,capital_cr,2024-25;2025-26,17.45;17.45,0.0
+2024-25,BE,Ministry of Power,total_cr,2024-25;2025-26,20502.00;20502.00,0.0
+2024-25,BE,Ministry of Power,capital_cr,2024-25;2025-26,1086.50;1086.50,0.0
+2024-25,BE,Ministry of Railways,total_cr,2024-25;2025-26,255393.00;255393.00,0.0
+2024-25,BE,Ministry of Railways,capital_cr,2024-25;2025-26,252000.00;252000.00,0.0
+2024-25,BE,Ministry of Road Transport and Highways,total_cr,2024-25;2025-26,278000.00;278000.00,0.0
+2024-25,BE,Ministry of Road Transport and Highways,capital_cr,2024-25;2025-26,272241.15;272241.15,0.0
+2025-26,BE,Capital Outlay on Defence Services,total_cr,2025-26;2026-27,180000.00;180000.00,0.0
+2025-26,BE,Capital Outlay on Defence Services,capital_cr,2025-26;2026-27,180000.00;180000.00,0.0
+2025-26,BE,Defence Pensions,total_cr,2025-26;2026-27,160795.00;160795.00,0.0
+2025-26,BE,Defence Pensions,capital_cr,2025-26;2026-27,0.00;0.00,0.0
+2025-26,BE,Defence Services (Revenue),total_cr,2025-26;2026-27,311732.30;311732.30,0.0
+2025-26,BE,Defence Services (Revenue),capital_cr,2025-26;2026-27,0.00;0.00,0.0
+2025-26,BE,Department of Agricultural Research and Education,total_cr,2025-26;2026-27,10466.39;10466.39,0.0
+2025-26,BE,Department of Agricultural Research and Education,capital_cr,2025-26;2026-27,4.33;4.33,0.0
+2025-26,BE,Department of Agriculture and Farmers Welfare,total_cr,2025-26;2026-27,127290.16;127290.16,0.0
+2025-26,BE,Department of Agriculture and Farmers Welfare,capital_cr,2025-26;2026-27,87.87;87.87,0.0
+2025-26,BE,Department of Chemicals and Petrochemicals,total_cr,2025-26;2026-27,194.05;194.05,0.0
+2025-26,BE,Department of Chemicals and Petrochemicals,capital_cr,2025-26;2026-27,1.98;1.98,0.0
+2025-26,BE,Department of Consumer Affairs,total_cr,2025-26;2026-27,4360.72;4360.72,0.0
+2025-26,BE,Department of Consumer Affairs,capital_cr,2025-26;2026-27,84.42;84.42,0.0
+2025-26,BE,Department of Drinking Water and Sanitation,total_cr,2025-26;2026-27,74226.02;74226.02,0.0
+2025-26,BE,Department of Drinking Water and Sanitation,capital_cr,2025-26;2026-27,1.20;1.20,0.0
+2025-26,BE,Department of Fertilisers,total_cr,2025-26;2026-27,156502.44;156502.44,0.0
+2025-26,BE,Department of Fertilisers,capital_cr,2025-26;2026-27,15.18;15.18,0.0
+2025-26,BE,Department of Financial Services,total_cr,2025-26;2026-27,1688.14;1688.14,0.0
+2025-26,BE,Department of Financial Services,capital_cr,2025-26;2026-27,68.13;68.13,0.0
+2025-26,BE,Department of Food and Public Distribution,total_cr,2025-26;2026-27,211406.37;211406.37,0.0
+2025-26,BE,Department of Food and Public Distribution,capital_cr,2025-26;2026-27,20.23;20.23,0.0
+2025-26,BE,Department of Health Research,total_cr,2025-26;2026-27,3900.69;3900.69,0.0
+2025-26,BE,Department of Health Research,capital_cr,2025-26;2026-27,1.26;1.26,0.0
+2025-26,BE,Department of Health and Family Welfare,total_cr,2025-26;2026-27,95957.87;95957.87,0.0
+2025-26,BE,Department of Health and Family Welfare,capital_cr,2025-26;2026-27,3624.44;3624.44,0.0
+2025-26,BE,Department of Higher Education,total_cr,2025-26;2026-27,50077.95;50077.95,0.0
+2025-26,BE,Department of Higher Education,capital_cr,2025-26;2026-27,10.27;10.27,0.0
+2025-26,BE,Department of Land Resources,total_cr,2025-26;2026-27,2651.00;2651.00,0.0
+2025-26,BE,Department of Land Resources,capital_cr,2025-26;2026-27,1.01;1.01,0.0
+2025-26,BE,Department of Pharmaceuticals,total_cr,2025-26;2026-27,5268.72;5268.72,0.0
+2025-26,BE,Department of Pharmaceuticals,capital_cr,2025-26;2026-27,1.56;1.56,0.0
+2025-26,BE,Department of Posts,total_cr,2025-26;2026-27,27099.86;27099.86,0.0
+2025-26,BE,Department of Posts,capital_cr,2025-26;2026-27,958.35;958.35,0.0
+2025-26,BE,Department of Rural Development,total_cr,2025-26;2026-27,187754.53;187754.53,0.0
+2025-26,BE,Department of Rural Development,capital_cr,2025-26;2026-27,4.24;4.24,0.0
+2025-26,BE,Department of School Education and Literacy,total_cr,2025-26;2026-27,78572.10;78572.10,0.0
+2025-26,BE,Department of School Education and Literacy,capital_cr,2025-26;2026-27,0.80;0.80,0.0
+2025-26,BE,Department of Telecommunications,total_cr,2025-26;2026-27,81005.24;81005.24,0.0
+2025-26,BE,Department of Telecommunications,capital_cr,2025-26;2026-27,51784.75;51784.75,0.0
+2025-26,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",total_cr,2025-26;2026-27,25276.83;25276.83,0.0
+2025-26,BE,"Department of Water Resources, River Development and Ganga Rejuvenation",capital_cr,2025-26;2026-27,556.34;556.34,0.0
+2025-26,BE,Grand Total,total_cr,2025-26;2026-27,5065345.04;5065345.04,0.0
+2025-26,BE,Grand Total,capital_cr,2025-26;2026-27,1121089.77;1121089.77,0.0
+2025-26,BE,Ministry of Defence (Civil),total_cr,2025-26;2026-27,28682.97;28682.97,0.0
+2025-26,BE,Ministry of Defence (Civil),capital_cr,2025-26;2026-27,12387.62;12387.62,0.0
+2025-26,BE,Ministry of Electronics and Information Technology,total_cr,2025-26;2026-27,26026.25;26026.25,0.0
+2025-26,BE,Ministry of Electronics and Information Technology,capital_cr,2025-26;2026-27,443.14;443.14,0.0
+2025-26,BE,Ministry of Housing and Urban Affairs,total_cr,2025-26;2026-27,96777.00;96777.00,0.0
+2025-26,BE,Ministry of Housing and Urban Affairs,capital_cr,2025-26;2026-27,37623.38;37623.38,0.0
+2025-26,BE,Ministry of New and Renewable Energy,total_cr,2025-26;2026-27,26549.38;26549.38,0.0
+2025-26,BE,Ministry of New and Renewable Energy,capital_cr,2025-26;2026-27,7.20;7.20,0.0
+2025-26,BE,Ministry of Power,total_cr,2025-26;2026-27,21847.00;21847.00,0.0
+2025-26,BE,Ministry of Power,capital_cr,2025-26;2026-27,658.41;658.41,0.0
+2025-26,BE,Ministry of Railways,total_cr,2025-26;2026-27,255445.18;255445.18,0.0
+2025-26,BE,Ministry of Railways,capital_cr,2025-26;2026-27,252000.00;252000.00,0.0
+2025-26,BE,Ministry of Road Transport and Highways,total_cr,2025-26;2026-27,287333.16;287333.16,0.0
+2025-26,BE,Ministry of Road Transport and Highways,capital_cr,2025-26;2026-27,272241.15;272241.15,0.0

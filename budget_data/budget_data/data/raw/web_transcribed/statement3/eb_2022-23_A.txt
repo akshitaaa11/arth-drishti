@@ -1,0 +1,61 @@
+# Expenditure Profile 2022-23 (Feb 2022), Statement 3 (part A). url: https://www.indiabudget.gov.in/budget2022-23/doc/eb/vol1.pdf
+Actual|2020-21|19|Ministry of Defence (Civil)|11901.27|5619.99|17521.26|8
+BE|2021-22|19|Ministry of Defence (Civil)|10083.93|5173.41|15257.34|8
+RE|2021-22|19|Ministry of Defence (Civil)|10659.37|6928.04|17587.41|8
+BE|2022-23|19|Ministry of Defence (Civil)|12050.01|8049.99|20100.00|8
+Actual|2020-21|20|Defence Services (Revenue)|205788.59|...|205788.59|8
+BE|2021-22|20|Defence Services (Revenue)|212027.56|...|212027.56|8
+RE|2021-22|20|Defence Services (Revenue)|229567.23|...|229567.23|8
+BE|2022-23|20|Defence Services (Revenue)|233000.54|...|233000.54|8
+Actual|2020-21|21|Capital Outlay on Defence Services|...|134304.92|134304.92|8
+BE|2021-22|21|Capital Outlay on Defence Services|...|135060.72|135060.72|8
+RE|2021-22|21|Capital Outlay on Defence Services|...|138850.90|138850.90|8
+BE|2022-23|21|Capital Outlay on Defence Services|...|152369.61|152369.61|8
+Actual|2020-21|22|Defence Pensions|128065.77|...|128065.77|8
+BE|2021-22|22|Defence Pensions|115850.00|...|115850.00|8
+RE|2021-22|22|Defence Pensions|116878.00|...|116878.00|8
+BE|2022-23|22|Defence Pensions|119696.00|...|119696.00|8
+Actual|2020-21|85|Ministry of Railways|2835.63|109323.69|112159.32|15
+BE|2021-22|85|Ministry of Railways|2954.64|107100.00|110054.64|15
+RE|2021-22|85|Ministry of Railways|2956.12|117100.00|120056.12|15
+BE|2022-23|85|Ministry of Railways|3267.13|137100.00|140367.13|15
+Actual|2020-21|27|Ministry of Electronics and Information Technology|5045.67|350.63|5396.30|9
+BE|2021-22|27|Ministry of Electronics and Information Technology|9274.66|446.00|9720.66|9
+RE|2021-22|27|Ministry of Electronics and Information Technology|9174.25|407.00|9581.25|9
+BE|2022-23|27|Ministry of Electronics and Information Technology|13911.99|388.01|14300.00|9
+Actual|2020-21|71|Ministry of New and Renewable Energy|2493.34|149.96|2643.30|14
+BE|2021-22|71|Ministry of New and Renewable Energy|5743.00|10.00|5753.00|14
+RE|2021-22|71|Ministry of New and Renewable Energy|5071.80|2610.00|7681.80|14
+BE|2022-23|71|Ministry of New and Renewable Energy|6888.94|11.74|6900.68|14
+Actual|2020-21|79|Ministry of Power|10211.94|369.98|10581.92|15
+BE|2021-22|79|Ministry of Power|13757.03|1564.97|15322.00|15
+RE|2021-22|79|Ministry of Power|14236.38|1085.62|15322.00|15
+BE|2022-23|79|Ministry of Power|16061.63|13.11|16074.74|15
+Actual|2020-21|32|Department of Financial Services|10116.50|12650.00|22766.50|10
+BE|2021-22|32|Department of Financial Services|3710.77|25800.02|29510.79|10
+RE|2021-22|32|Department of Financial Services|3037.87|32034.00|35071.87|10
+BE|2022-23|32|Department of Financial Services|1102.70|4211.03|5313.73|10
+Actual|2020-21|13|Department of Telecommunications|37954.09|4356.11|42310.20|7
+BE|2021-22|13|Department of Telecommunications|32803.44|25933.56|58737.00|7
+RE|2021-22|13|Department of Telecommunications|30080.04|5470.17|35550.21|7
+BE|2022-23|13|Department of Telecommunications|30436.38|54150.42|84586.80|7
+Actual|2020-21|63|Department of Drinking Water and Sanitation|15967.30|...|15967.30|13
+BE|2021-22|63|Department of Drinking Water and Sanitation|60030.45|...|60030.45|13
+RE|2021-22|63|Department of Drinking Water and Sanitation|51036.90|...|51036.90|13
+BE|2022-23|63|Department of Drinking Water and Sanitation|67221.12|...|67221.12|13
+Actual|2020-21|62|Department of Water Resources, River Development and Ganga Rejuvenation|7079.46|152.63|7232.09|13
+BE|2021-22|62|Department of Water Resources, River Development and Ganga Rejuvenation|8700.80|321.77|9022.57|13
+RE|2021-22|62|Department of Water Resources, River Development and Ganga Rejuvenation|17806.07|202.63|18008.70|13
+BE|2022-23|62|Department of Water Resources, River Development and Ganga Rejuvenation|18548.05|419.83|18967.88|13
+Actual|2020-21|86|Ministry of Road Transport and Highways|9964.27|89194.82|99159.09|15
+BE|2021-22|86|Ministry of Road Transport and Highways|9870.89|108230.11|118101.00|15
+RE|2021-22|86|Ministry of Road Transport and Highways|9898.44|121250.63|131149.07|15
+BE|2022-23|86|Ministry of Road Transport and Highways|11363.71|187744.00|199107.71|15
+Actual|2020-21|60|Ministry of Housing and Urban Affairs|36397.28|10303.68|46700.96|13
+BE|2021-22|60|Ministry of Housing and Urban Affairs|28821.99|25759.01|54581.00|13
+RE|2021-22|60|Ministry of Housing and Urban Affairs|47893.76|25956.50|73850.26|13
+BE|2022-23|60|Ministry of Housing and Urban Affairs|49208.45|27341.01|76549.46|13
+Actual|2020-21||Grand Total|3083518.99|426317.39|3509836.38|18
+BE|2021-22||Grand Total|2928999.89|554235.74|3483235.63|18
+RE|2021-22||Grand Total|3167288.43|602711.30|3769999.73|18
+BE|2022-23||Grand Total|3194662.90|750245.77|3944908.67|18

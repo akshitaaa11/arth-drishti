@@ -1,0 +1,41 @@
+sector_id,sector_name,line_type,canonical_name,role,note
+defence,Defence & Aerospace,ministry,Defence,primary,
+roads,Roads & Construction,ministry,Road Transport and Highways,primary,
+roads,Roads & Construction,scheme,Pradhan Mantri Gram Sadak Yojana,supporting,
+railways,Railways,ministry,Railways,primary,
+housing,Housing & Real Estate,ministry,Housing and Urban Affairs,primary,
+housing,Housing & Real Estate,scheme,PMAY-Urban,supporting,
+housing,Housing & Real Estate,scheme,PMAY (Rural + Urban),supporting,
+housing,Housing & Real Estate,scheme,AMRUT and Smart Cities Mission,supporting,
+healthcare,Healthcare & Pharma,ministry,Health and Family Welfare,primary,
+healthcare,Healthcare & Pharma,scheme,National Health Mission,supporting,
+agriculture,Agriculture & Agri-inputs,ministry,Agriculture and Farmers' Welfare,primary,
+agriculture,Agriculture & Agri-inputs,scheme,PM-KISAN,supporting,
+agriculture,Agriculture & Agri-inputs,scheme,Pradhan Mantri Fasal Bima Yojana,supporting,
+agriculture,Agriculture & Agri-inputs,scheme,Pradhan Mantri Krishi Sinchai Yojana,supporting,
+fertilisers,Fertilisers,ministry,Chemicals and Fertilisers,primary,
+fertilisers,Fertilisers,subsidy,Fertiliser subsidy,supporting,
+fmcg,FMCG & Food,ministry,"Consumer Affairs, Food and Public Distribution",primary,
+fmcg,FMCG & Food,subsidy,Food subsidy,supporting,
+telecom,Telecom & Digital Infra,ministry,Communications,primary,
+telecom,Telecom & Digital Infra,scheme,Bharatnet,supporting,
+rural,Rural Consumption & Credit,ministry,Rural Development,primary,
+rural,Rural Consumption & Credit,scheme,MGNREGS,supporting,
+rural,Rural Consumption & Credit,scheme,VB-G RAM G,supporting,
+rural,Rural Consumption & Credit,scheme,PMAY-Rural,supporting,
+rural,Rural Consumption & Credit,scheme,National Livelihood Mission-Ajeevika,supporting,
+water,Water & Pipes,ministry,Jal Shakti,primary,PRS top-13 table has it from 2021-22; earlier years = Dept of Drinking Water + Dept of Water Resources from Expenditure Profile Statement 3
+water,Water & Pipes,scheme,Jal Jeevan Mission (incl. NRDWM),fallback_primary,used as the sector's primary line when Jal Shakti is not in the PRS table
+education,Education,ministry,Education,primary,
+education,Education,scheme,Samagra Shiksha,supporting,
+education,Education,scheme,National Education Mission,supporting,predecessor umbrella of Samagra Shiksha
+education,Education,scheme,PM POSHAN (formerly Mid-Day Meal),supporting,
+power,Power & Renewables,ministry,Power + MNRE,primary,Ministry of Power + Ministry of New and Renewable Energy from Expenditure Profile Statement 3
+power,Power & Renewables,scheme,Reform Linked Distribution Scheme,supporting,
+power,Power & Renewables,scheme,PM Surya Ghar Muft Bijli Yojana,supporting,
+it_control,IT Services (control),ministry,Electronics and Information Technology,primary,Ministry of Electronics and IT from Expenditure Profile Statement 3
+it_control,IT Services (control),scheme,"Research, Development and Innovation (RDI) Scheme",supporting,
+psu_banks,PSU Banks & Infra Finance,ministry,Finance - Financial Services,primary,Department of Financial Services from Expenditure Profile Statement 3 (includes bank recapitalisation)
+psu_banks,PSU Banks & Infra Finance,subsidy,Interest subsidy,supporting,
+psu_banks,PSU Banks & Infra Finance,scheme,Modified Interest Subvention Scheme,supporting,
+psu_banks,PSU Banks & Infra Finance,scheme,Guarantee Emergency Credit Line to MSME borrowers,supporting,

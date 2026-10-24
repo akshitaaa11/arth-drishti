@@ -1,0 +1,58 @@
+# Source: https://prsindia.org/files/budget/budget_parliament/2025/Union_Budget_Analysis_2025-26.pdf
+# Transcribed 2026-10-23 via web fetch (direct PDF download blocked from the build workspace).
+# Cross-checked against the Hindi edition (same values) and against overlapping columns of the 2024-25 and 2026-27 PDFs.
+# columns: Actual 2023-24 | BE 2024-25 | RE 2024-25 | BE 2025-26
+@table|2|Budget at a Glance 2025-26 (Rs crore)|glance|4
+Revenue Expenditure|34,94,252|37,09,401|36,98,058|39,44,255
+Capital Expenditure|9,49,195|11,11,111|10,18,429|11,21,090
+Capital Outlay|7,88,100|9,18,695|8,47,736|8,95,246
+Loans and Advances|1,61,095|1,92,416|1,70,693|2,25,844
+Total Expenditure|44,43,447|48,20,512|47,16,487|50,65,345
+Revenue Receipts|27,29,036|31,29,200|30,87,960|34,20,409
+Capital Receipts|59,768|78,000|59,000|76,000
+Recoveries of Loans|26,646|28,000|26,000|29,000
+Other receipts (including disinvestments)|33,122|50,000|33,000|47,000
+Total Receipts (excluding borrowings)|27,88,804|32,07,200|31,46,960|34,96,409
+Revenue Deficit|7,65,216|5,80,201|6,10,098|5,23,846
+Revenue Deficit (% of GDP)|2.6|1.8|1.9|1.5
+Fiscal Deficit|16,54,643|16,13,312|15,69,527|15,68,936
+Fiscal Deficit (% of GDP)|5.6|4.9|4.8|4.4
+Primary Deficit|5,90,771|4,50,372|4,31,587|2,92,598
+Primary Deficit (% of GDP)|2.0|1.4|1.3|0.8
+@table|5|Ministry-wise expenditure in 2025-26 (Rs crore)|ministry|6
+Defence|6,09,504|6,21,941|6,41,060|6,81,210
+Road Transport and Highways|2,75,986|2,78,000|2,80,519|2,87,333
+Railways|2,45,791|2,55,393|2,55,348|2,55,445
+Home Affairs|1,96,872|2,19,643|2,20,371|2,33,211
+Consumer Affairs, Food and Public Distribution|2,32,496|2,23,323|2,12,820|2,15,767
+Rural Development|1,63,642|1,80,233|1,75,878|1,90,406
+Chemicals and Fertilisers|1,91,165|1,68,500|1,86,653|1,61,965
+Agriculture and Farmers' Welfare|1,18,147|1,32,470|1,41,352|1,37,757
+Education|1,23,365|1,20,628|1,14,054|1,28,650
+Communications|1,11,339|1,37,294|1,50,201|1,08,105
+Health and Family Welfare|83,149|90,959|89,974|99,859
+Jal Shakti|95,109|98,714|51,558|99,503
+Housing and Urban Affairs|68,565|82,577|63,670|96,777
+Other Ministries|19,28,316|22,10,838|21,33,030|23,69,358
+Total Expenditure|44,43,447|48,20,512|47,16,487|50,65,345
+@table|6|Subsidies in 2025-26 (Rs crore)|subsidy|7
+Food subsidy|2,11,814|2,05,250|1,97,420|2,03,420
+Fertiliser subsidy|1,88,292|1,64,000|1,71,299|1,67,887
+Interest subsidy|19,516|29,550|28,156|27,840
+LPG subsidy|12,240|11,925|14,700|12,100
+Other subsidies|3,037|17,698|16,294|14,969
+Total|4,34,899|4,28,423|4,27,868|4,26,216
+@table|7|Scheme wise allocation in 2025-26 (Rs crore)|scheme|7
+MGNREGS|89,154|86,000|86,000|86,000
+Jal Jeevan Mission/National Rural Drinking Water Mission|69,992|70,163|22,694|67,000
+PM-KISAN|61,441|60,000|63,500|63,500
+Pradhan Mantri Awas Yojana – Rural|21,770|54,500|32,426|54,832
+Samagra Shiksha|32,830|37,500|37,010|41,250
+National Health Mission|33,043|36,000|36,000|37,227
+Pradhan Mantri Awas Yojana – Urban|21,684|30,171|15,170|23,294
+Modified Interest Subvention Scheme|14,252|22,600|22,600|22,600
+Saksham Anganwadi and POSHAN 2.0|21,810|21,200|20,071|21,960
+New Employment Generation Scheme|-|10,000|6,799|20,000
+PM Surya Ghar Muft Bijli Yojana|-|6,250|11,100|20,000
+National Livelihood Mission-Ajeevika|13,934|15,047|15,047|19,005
+Pradhan Mantri Gram Sadak Yojana|15,380|19,000|14,500|19,000

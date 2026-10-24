@@ -1,0 +1,57 @@
+# Expenditure Profile 2021-22 (Feb 2021), Statement 3 (part B). url: https://www.indiabudget.gov.in/budget2021-22/doc/eb/vol1.pdf
+Actual|2019-20|1|Department of Agriculture, Cooperation and Farmers' Welfare|94237.97|13.65|94251.62|6
+BE|2020-21|1|Department of Agriculture, Cooperation and Farmers' Welfare|134349.45|50.32|134399.77|6
+RE|2020-21|1|Department of Agriculture, Cooperation and Farmers' Welfare|116698.58|59.34|116757.92|6
+BE|2021-22|1|Department of Agriculture, Cooperation and Farmers' Welfare|122961.57|56.00|123017.57|6
+Actual|2019-20|2|Department of Agricultural Research and Education|7523.37|...|7523.37|6
+BE|2020-21|2|Department of Agricultural Research and Education|8362.58|...|8362.58|6
+RE|2020-21|2|Department of Agricultural Research and Education|7762.38|...|7762.38|6
+BE|2021-22|2|Department of Agricultural Research and Education|8513.62|...|8513.62|6
+Actual|2019-20|5|Department of Chemicals and Petrochemicals|365.12|...|365.12|6
+BE|2020-21|5|Department of Chemicals and Petrochemicals|218.34|...|218.34|6
+RE|2020-21|5|Department of Chemicals and Petrochemicals|222.00|73.70|295.70|6
+BE|2021-22|5|Department of Chemicals and Petrochemicals|229.64|3.50|233.14|6
+Actual|2019-20|6|Department of Fertilisers|81144.25|...|81144.25|6
+BE|2020-21|6|Department of Fertilisers|71344.95|0.05|71345.00|6
+RE|2020-21|6|Department of Fertilisers|133979.46|813.24|134792.70|6
+BE|2021-22|6|Department of Fertilisers|79566.77|444.62|80011.39|6
+Actual|2019-20|7|Department of Pharmaceuticals|220.36|333.15|553.51|6
+BE|2020-21|7|Department of Pharmaceuticals|326.40|7.18|333.58|6
+RE|2020-21|7|Department of Pharmaceuticals|463.23|7.18|470.41|6
+BE|2021-22|7|Department of Pharmaceuticals|461.29|9.12|470.41|6
+Actual|2019-20|15|Department of Food and Public Distribution|113929.41|1243.11|115172.52|8
+BE|2020-21|15|Department of Food and Public Distribution|121038.41|1197.02|122235.43|8
+RE|2020-21|15|Department of Food and Public Distribution|437458.00|1190.72|438648.72|8
+BE|2021-22|15|Department of Food and Public Distribution|251248.34|2725.96|253974.30|8
+Actual|2019-20|14|Department of Consumer Affairs|1909.83|13.43|1923.26|7
+BE|2020-21|14|Department of Consumer Affairs|2244.60|55.40|2300.00|7
+RE|2020-21|14|Department of Consumer Affairs|12003.72|34.19|12037.91|7
+BE|2021-22|14|Department of Consumer Affairs|2928.05|46.05|2974.10|7
+Actual|2019-20|44|Department of Health and Family Welfare|60730.18|1666.90|62397.08|11
+BE|2020-21|44|Department of Health and Family Welfare|63946.10|1065.70|65011.80|11
+RE|2020-21|44|Department of Health and Family Welfare|74632.50|4233.50|78866.00|11
+BE|2021-22|44|Department of Health and Family Welfare|68760.03|2508.74|71268.77|11
+Actual|2019-20|45|Department of Health Research|1860.71|...|1860.71|11
+BE|2020-21|45|Department of Health Research|2100.00|...|2100.00|11
+RE|2020-21|45|Department of Health Research|4062.30|...|4062.30|11
+BE|2021-22|45|Department of Health Research|2663.00|...|2663.00|11
+Actual|2019-20|24|Department of School Education and Literacy|52520.19|...|52520.19|9
+BE|2020-21|24|Department of School Education and Literacy|59845.00|...|59845.00|9
+RE|2020-21|24|Department of School Education and Literacy|52189.07|...|52189.07|9
+BE|2021-22|24|Department of School Education and Literacy|54873.66|...|54873.66|9
+Actual|2019-20|25|Department of Higher Education|34811.38|2104.99|36916.37|9
+BE|2020-21|25|Department of Higher Education|37239.52|2227.00|39466.52|9
+RE|2020-21|25|Department of Higher Education|32671.00|229.00|32900.00|9
+BE|2021-22|25|Department of Higher Education|38325.15|25.50|38350.65|9
+Actual|2019-20|86|Department of Rural Development|122085.67|12.52|122098.19|16
+BE|2020-21|86|Department of Rural Development|120047.19|100.00|120147.19|16
+RE|2020-21|86|Department of Rural Development|197376.53|...|197376.53|16
+BE|2021-22|86|Department of Rural Development|131519.08|...|131519.08|16
+Actual|2019-20|87|Department of Land Resources|1523.52|...|1523.52|16
+BE|2020-21|87|Department of Land Resources|2251.24|...|2251.24|16
+RE|2020-21|87|Department of Land Resources|1252.15|...|1252.15|16
+BE|2021-22|87|Department of Land Resources|2170.42|...|2170.42|16
+Actual|2019-20|12|Department of Posts|14813.13|730.56|15543.69|7
+BE|2020-21|12|Department of Posts|14394.17|1131.21|15525.38|7
+RE|2020-21|12|Department of Posts|19089.12|861.71|19950.83|7
+BE|2021-22|12|Department of Posts|15618.13|910.09|16528.22|7

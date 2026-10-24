@@ -1,0 +1,57 @@
+# Expenditure Profile 2019-20 (July 2019), Statement 3 (part B). url: https://www.indiabudget.gov.in/budget2019-20/doc/eb/stat3a.pdf
+Actual|2017-18|1|Department of Agriculture, Cooperation and Farmers' Welfare|37379.36|17.36|37396.72|6
+BE|2018-19|1|Department of Agriculture, Cooperation and Farmers' Welfare|46586.30|113.70|46700.00|6
+RE|2018-19|1|Department of Agriculture, Cooperation and Farmers' Welfare|67764.98|35.02|67800.00|6
+BE|2019-20|1|Department of Agriculture, Cooperation and Farmers' Welfare|130450.51|34.70|130485.21|6
+Actual|2017-18|2|Department of Agricultural Research and Education|6942.92|...|6942.92|6
+BE|2018-19|2|Department of Agricultural Research and Education|7800.00|...|7800.00|6
+RE|2018-19|2|Department of Agricultural Research and Education|7952.73|...|7952.73|6
+BE|2019-20|2|Department of Agricultural Research and Education|8078.76|...|8078.76|6
+Actual|2017-18|5|Department of Chemicals and Petrochemicals|227.35|384.75|612.10|6
+BE|2018-19|5|Department of Chemicals and Petrochemicals|199.65|...|199.65|6
+RE|2018-19|5|Department of Chemicals and Petrochemicals|340.99|...|340.99|6
+BE|2019-20|5|Department of Chemicals and Petrochemicals|263.65|...|263.65|6
+Actual|2017-18|6|Department of Fertilisers|66293.70|...|66293.70|6
+BE|2018-19|6|Department of Fertilisers|70125.35|0.04|70125.39|6
+RE|2018-19|6|Department of Fertilisers|70122.74|0.04|70122.78|6
+BE|2019-20|6|Department of Fertilisers|80034.95|0.05|80035.00|6
+Actual|2017-18|7|Department of Pharmaceuticals|252.42|...|252.42|6
+BE|2018-19|7|Department of Pharmaceuticals|261.47|0.06|261.53|6
+RE|2018-19|7|Department of Pharmaceuticals|213.41|7.00|220.41|6
+BE|2019-20|7|Department of Pharmaceuticals|230.45|5.06|235.51|6
+Actual|2017-18|15|Department of Food and Public Distribution|105839.70|24.56|105864.26|7
+BE|2018-19|15|Department of Food and Public Distribution|173735.00|424.10|174159.10|7
+RE|2018-19|15|Department of Food and Public Distribution|176519.81|1354.00|177873.81|7
+BE|2019-20|15|Department of Food and Public Distribution|190914.27|1326.12|192240.39|7
+Actual|2017-18|14|Department of Consumer Affairs|3696.96|16.52|3713.48|7
+BE|2018-19|14|Department of Consumer Affairs|1736.58|48.59|1785.17|7
+RE|2018-19|14|Department of Consumer Affairs|1726.71|54.81|1781.52|7
+BE|2019-20|14|Department of Consumer Affairs|2220.82|51.50|2272.32|7
+Actual|2017-18|42|Department of Health and Family Welfare|48315.09|3066.80|51381.89|11
+BE|2018-19|42|Department of Health and Family Welfare|50079.60|2720.40|52800.00|11
+RE|2018-19|42|Department of Health and Family Welfare|51837.42|2465.08|54302.50|11
+BE|2019-20|42|Department of Health and Family Welfare|60908.22|1750.90|62659.12|11
+Actual|2017-18|43|Department of Health Research|1731.68|...|1731.68|11
+BE|2018-19|43|Department of Health Research|1800.00|...|1800.00|11
+RE|2018-19|43|Department of Health Research|1742.73|...|1742.73|11
+BE|2019-20|43|Department of Health Research|1900.00|...|1900.00|11
+Actual|2017-18|57|Department of School Education and Literacy|46600.44|...|46600.44|12
+BE|2018-19|57|Department of School Education and Literacy|50000.00|...|50000.00|12
+RE|2018-19|57|Department of School Education and Literacy|50113.75|...|50113.75|12
+BE|2019-20|57|Department of School Education and Literacy|56536.63|...|56536.63|12
+Actual|2017-18|58|Department of Higher Education|33364.23|250.00|33614.23|12
+BE|2018-19|58|Department of Higher Education|32258.29|2752.00|35010.29|12
+RE|2018-19|58|Department of Higher Education|30761.11|2751.00|33512.11|12
+BE|2019-20|58|Department of Higher Education|36197.01|2120.00|38317.01|12
+Actual|2017-18|84|Department of Rural Development|108559.63|...|108559.63|15
+BE|2018-19|84|Department of Rural Development|112398.67|5.25|112403.92|15
+RE|2018-19|84|Department of Rural Development|112398.67|5.25|112403.92|15
+BE|2019-20|84|Department of Rural Development|117547.19|100.00|117647.19|15
+Actual|2017-18|85|Department of Land Resources|1773.86|...|1773.86|16
+BE|2018-19|85|Department of Land Resources|2511.40|...|2511.40|16
+RE|2018-19|85|Department of Land Resources|1996.10|...|1996.10|16
+BE|2019-20|85|Department of Land Resources|2227.24|...|2227.24|16
+Actual|2017-18|12|Department of Posts|12415.83|763.26|13179.09|7
+BE|2018-19|12|Department of Posts|10738.66|757.52|11496.18|7
+RE|2018-19|12|Department of Posts|10253.26|824.38|11077.64|7
+BE|2019-20|12|Department of Posts|10351.36|947.74|11299.10|7

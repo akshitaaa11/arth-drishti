@@ -1,0 +1,57 @@
+# Expenditure Profile 2024-25 (July 2024), Statement 3 (part B). url: https://www.indiabudget.gov.in/budget2024-25/doc/eb/vol1.pdf
+Actual|2022-23|1|Department of Agriculture and Farmers Welfare|99868.91|8.10|99877.01|4
+BE|2023-24|1|Department of Agriculture and Farmers Welfare|115489.37|42.42|115531.79|4
+RE|2023-24|1|Department of Agriculture and Farmers Welfare|116701.24|87.72|116788.96|4
+BE|2024-25|1|Department of Agriculture and Farmers Welfare|122433.13|95.64|122528.77|4
+Actual|2022-23|2|Department of Agricultural Research and Education|8399.72|...|8399.72|4
+BE|2023-24|2|Department of Agricultural Research and Education|9493.59|10.41|9504.00|4
+RE|2023-24|2|Department of Agricultural Research and Education|9866.64|9.96|9876.60|4
+BE|2024-25|2|Department of Agricultural Research and Education|9934.59|6.50|9941.09|4
+Actual|2022-23|5|Department of Chemicals and Petrochemicals|143.94|...|143.94|4
+BE|2023-24|5|Department of Chemicals and Petrochemicals|172.55|0.90|173.45|4
+RE|2023-24|5|Department of Chemicals and Petrochemicals|84.26|488.37|572.63|4
+BE|2024-25|5|Department of Chemicals and Petrochemicals|136.82|122.29|259.11|4
+Actual|2022-23|6|Department of Fertilisers|251369.18|...|251369.18|5
+BE|2023-24|6|Department of Fertilisers|175145.79|2.69|175148.48|5
+RE|2023-24|6|Department of Fertilisers|188944.60|2.69|188947.29|5
+BE|2024-25|6|Department of Fertilisers|164147.20|3.61|164150.81|5
+Actual|2022-23|7|Department of Pharmaceuticals|2044.81|5.26|2050.07|5
+BE|2023-24|7|Department of Pharmaceuticals|3158.87|1.19|3160.06|5
+RE|2023-24|7|Department of Pharmaceuticals|2696.97|0.98|2697.95|5
+BE|2024-25|7|Department of Pharmaceuticals|4088.69|1.26|4089.95|5
+Actual|2022-23|15|Department of Food and Public Distribution|281733.05|2011.48|283744.53|6
+BE|2023-24|15|Department of Food and Public Distribution|205363.57|150.37|205513.94|6
+RE|2023-24|15|Department of Food and Public Distribution|221722.71|201.93|221924.64|6
+BE|2024-25|15|Department of Food and Public Distribution|212976.21|43.54|213019.75|6
+Actual|2022-23|14|Department of Consumer Affairs|183.84|25.64|209.48|6
+BE|2023-24|14|Department of Consumer Affairs|222.59|28.07|250.66|6
+RE|2023-24|14|Department of Consumer Affairs|258.82|50.44|309.26|6
+BE|2024-25|14|Department of Consumer Affairs|10237.29|66.32|10303.61|6
+Actual|2022-23|46|Department of Health and Family Welfare|70257.76|3050.54|73308.30|11
+BE|2023-24|46|Department of Health and Family Welfare|80874.66|5300.34|86175.00|11
+RE|2023-24|46|Department of Health and Family Welfare|74915.43|2709.36|77624.79|11
+BE|2024-25|46|Department of Health and Family Welfare|84044.61|3612.29|87656.90|11
+Actual|2022-23|47|Department of Health Research|2422.76|...|2422.76|11
+BE|2023-24|47|Department of Health Research|2979.20|0.80|2980.00|11
+RE|2023-24|47|Department of Health Research|2892.03|0.80|2892.83|11
+BE|2024-25|47|Department of Health Research|3300.87|0.86|3301.73|11
+Actual|2022-23|25|Department of School Education and Literacy|58639.56|...|58639.56|8
+BE|2023-24|25|Department of School Education and Literacy|68804.30|0.55|68804.85|8
+RE|2023-24|25|Department of School Education and Literacy|72473.15|0.65|72473.80|8
+BE|2024-25|25|Department of School Education and Literacy|73007.34|0.76|73008.10|8
+Actual|2022-23|26|Department of Higher Education|38553.86|2.94|38556.80|8
+BE|2023-24|26|Department of Higher Education|44082.10|12.52|44094.62|8
+RE|2023-24|26|Department of Higher Education|57231.96|12.52|57244.48|8
+BE|2024-25|26|Department of Higher Education|47608.71|11.06|47619.77|8
+Actual|2022-23|87|Department of Rural Development|176837.39|...|176837.39|17
+BE|2023-24|87|Department of Rural Development|157541.48|3.52|157545.00|17
+RE|2023-24|87|Department of Rural Development|171065.82|3.64|171069.46|17
+BE|2024-25|87|Department of Rural Development|177562.05|4.14|177566.19|17
+Actual|2022-23|88|Department of Land Resources|1002.32|...|1002.32|17
+BE|2023-24|88|Department of Land Resources|2417.97|1.26|2419.23|17
+RE|2023-24|88|Department of Land Resources|1896.78|1.26|1898.04|17
+BE|2024-25|88|Department of Land Resources|2666.23|1.01|2667.24|17
+Actual|2022-23|12|Department of Posts|20538.44|1476.67|22015.11|6
+BE|2023-24|12|Department of Posts|24417.05|1396.95|25814.00|6
+RE|2023-24|12|Department of Posts|22808.50|1580.70|24389.20|6
+BE|2024-25|12|Department of Posts|24115.87|1262.60|25378.47|6

@@ -1,0 +1,61 @@
+# Expenditure Profile 2025-26, Statement 3 (part A). url: https://www.indiabudget.gov.in/budget2025-26/doc/eb/vol1.pdf
+Actual|2023-24|19|Ministry of Defence (Civil)|12409.19|10302.90|22712.09|7
+BE|2024-25|19|Ministry of Defence (Civil)|15722.33|10240.85|25963.18|7
+RE|2024-25|19|Ministry of Defence (Civil)|15672.00|10984.65|26656.65|7
+BE|2025-26|19|Ministry of Defence (Civil)|16295.35|12387.62|28682.97|7
+Actual|2023-24|20|Defence Services (Revenue)|290442.92|...|290442.92|7
+BE|2024-25|20|Defence Services (Revenue)|282772.67|...|282772.67|7
+RE|2024-25|20|Defence Services (Revenue)|297222.35|...|297222.35|7
+BE|2025-26|20|Defence Services (Revenue)|311732.30|...|311732.30|7
+Actual|2023-24|21|Capital Outlay on Defence Services|...|154256.28|154256.28|7
+BE|2024-25|21|Capital Outlay on Defence Services|...|172000.00|172000.00|7
+RE|2024-25|21|Capital Outlay on Defence Services|...|159500.00|159500.00|7
+BE|2025-26|21|Capital Outlay on Defence Services|...|180000.00|180000.00|7
+Actual|2023-24|22|Defence Pensions|142092.99|...|142092.99|7
+BE|2024-25|22|Defence Pensions|141205.00|...|141205.00|7
+RE|2024-25|22|Defence Pensions|157681.00|...|157681.00|7
+BE|2025-26|22|Defence Pensions|160795.00|...|160795.00|7
+Actual|2023-24|85|Ministry of Railways|3212.67|242578.63|245791.30|17
+BE|2024-25|85|Ministry of Railways|3393.00|252000.00|255393.00|17
+RE|2024-25|85|Ministry of Railways|3347.81|252000.00|255347.81|17
+BE|2025-26|85|Ministry of Railways|3445.18|252000.00|255445.18|17
+Actual|2023-24|27|Ministry of Electronics and Information Technology|12376.71|389.63|12766.34|8
+BE|2024-25|27|Ministry of Electronics and Information Technology|21355.89|581.01|21936.90|8
+RE|2024-25|27|Ministry of Electronics and Information Technology|17209.75|356.56|17566.31|8
+BE|2025-26|27|Ministry of Electronics and Information Technology|25583.11|443.14|26026.25|8
+Actual|2023-24|71|Ministry of New and Renewable Energy|7918.02|10.87|7928.89|15
+BE|2024-25|71|Ministry of New and Renewable Energy|19082.55|17.45|19100.00|15
+RE|2024-25|71|Ministry of New and Renewable Energy|17291.44|7.00|17298.44|15
+BE|2025-26|71|Ministry of New and Renewable Energy|26542.18|7.20|26549.38|15
+Actual|2023-24|79|Ministry of Power|16201.69|124.92|16326.61|16
+BE|2024-25|79|Ministry of Power|19415.50|1086.50|20502.00|16
+RE|2024-25|79|Ministry of Power|18718.45|1126.55|19845.00|16
+BE|2025-26|79|Ministry of Power|21188.59|658.41|21847.00|16
+Actual|2023-24|32|Department of Financial Services|3949.46|515.17|4464.63|9
+BE|2024-25|32|Department of Financial Services|2783.21|61.94|2845.15|9
+RE|2024-25|32|Department of Financial Services|3376.66|548.18|3924.84|9
+BE|2025-26|32|Department of Financial Services|1620.01|68.13|1688.14|9
+Actual|2023-24|13|Department of Telecommunications|27503.76|59380.18|86883.94|6
+BE|2024-25|13|Department of Telecommunications|27419.17|84496.26|111915.43|6
+RE|2024-25|13|Department of Telecommunications|49413.42|74995.29|124408.71|6
+BE|2025-26|13|Department of Telecommunications|29220.49|51784.75|81005.24|6
+Actual|2023-24|63|Department of Drinking Water and Sanitation|76567.56|2.57|76570.13|13
+BE|2024-25|63|Department of Drinking Water and Sanitation|77389.18|1.50|77390.68|13
+RE|2024-25|63|Department of Drinking Water and Sanitation|29915.18|1.50|29916.68|13
+BE|2025-26|63|Department of Drinking Water and Sanitation|74224.82|1.20|74226.02|13
+Actual|2023-24|62|Department of Water Resources, River Development and Ganga Rejuvenation|18310.26|228.58|18538.84|13
+BE|2024-25|62|Department of Water Resources, River Development and Ganga Rejuvenation|20921.15|401.95|21323.10|13
+RE|2024-25|62|Department of Water Resources, River Development and Ganga Rejuvenation|21317.79|323.09|21640.88|13
+BE|2025-26|62|Department of Water Resources, River Development and Ganga Rejuvenation|24720.49|556.34|25276.83|13
+Actual|2023-24|86|Ministry of Road Transport and Highways|12073.72|263912.00|275985.72|17
+BE|2024-25|86|Ministry of Road Transport and Highways|5758.85|272241.15|278000.00|17
+RE|2024-25|86|Ministry of Road Transport and Highways|8037.84|272480.96|280518.80|17
+BE|2025-26|86|Ministry of Road Transport and Highways|15092.01|272241.15|287333.16|17
+Actual|2023-24|60|Ministry of Housing and Urban Affairs|42123.77|26441.11|68564.88|13
+BE|2024-25|60|Ministry of Housing and Urban Affairs|53948.31|28628.26|82576.57|13
+RE|2024-25|60|Ministry of Housing and Urban Affairs|32008.18|31661.75|63669.93|13
+BE|2025-26|60|Ministry of Housing and Urban Affairs|59153.62|37623.38|96777.00|13
+Actual|2023-24||Grand Total|3494252.01|949195.22|4443447.23|20
+BE|2024-25||Grand Total|3709401.08|1111111.00|4820512.08|20
+RE|2024-25||Grand Total|3698057.46|1018429.11|4716486.57|20
+BE|2025-26||Grand Total|3944255.27|1121089.77|5065345.04|20

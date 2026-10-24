@@ -1,0 +1,13 @@
+job,finished_at,status,rows,detail
+symbols,2026-10-24T14:35:23+00:00,ok,116,0 failed: 
+symbols,2026-10-24T14:38:15+00:00,ok,116,0 failed: 
+prices,2026-10-24T14:40:07+00:00,ok,513198,0 failed: 
+indices,2026-10-24T14:40:40+00:00,partial,62375,missing on Yahoo: Nifty Healthcare(empty response)
+macro,2026-10-24T14:40:50+00:00,partial,22147,g_sec_10y_yield(404 Client Error: Not Found fo); repo_rate(manual file data/raw/rbi/repo_rate.csv missing)
+fpi,2026-10-24T14:53:03+00:00,partial,114560,"163 fortnights not found/parsed: ['2017-01-15(parse: `Import html5lib` failed.  Use)', '2017-01-31(parse: `Import html5lib` failed.  Use)', '2017-02-15(parse: `Import html5lib` failed.  Use)', '2017-02-28(parse: `Import html5lib` failed.  Use)', '2017-03-15(parse: `Import html5lib` failed.  Use)', '"
+fpi,2026-10-24T14:53:55+00:00,ok,120185,"2017-01-15(parse: `Import html5lib` failed.  Use pip, conda, or your preferred package management tool to install the html5lib package.), 2017-01-31(parse: `Import html5lib` failed.  Use pip, conda, o"
+fpi,2026-10-24T14:57:10+00:00,ok,2922,"2017-01-15(parse: `Import html5lib` failed.  Use pip, conda, or your preferred package management tool to install the html5lib package.), 2017-01-31(parse: `Import html5lib` failed.  Use pip, conda, o"
+constituents,2026-10-24T14:57:19+00:00,empty,0,manual constituent list not available; file left empty
+prices,2026-10-24T14:58:54+00:00,ok,513198,
+indices,2026-10-24T14:59:02+00:00,partial,62375,Nifty Healthcare(empty response)
+macro,2026-10-24T14:59:13+00:00,partial,22147,"g_sec_10y_yield(404 Client Error: Not Found for url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=IRLTLT01INM156N), repo_rate(manual file data/raw/rbi/repo_rate.csv missing)"

@@ -1,0 +1,65 @@
+# Expenditure Profile 2017-18 (Feb 2017), Statement 3 (part A). url: https://www.indiabudget.gov.in/budget_archive/ub2017-18/eb/vol1.pdf
+Actual|2015-16|19|Ministry of Defence (Misc.)|20327.69|11939.12|32266.81|8
+BE|2016-17|19|Ministry of Defence (Misc.)|24510.23|11622.95|36133.18|8
+RE|2016-17|19|Ministry of Defence (Misc.)|25968.89|12759.90|38728.79|8
+BE|2017-18|19|Ministry of Defence (Misc.)|9760.53|5091.69|14852.22|8
+Actual|2015-16|20|Defence Services (Revenue)|129739.92|...|129739.92|8
+BE|2016-17|20|Defence Services (Revenue)|143869.46|...|143869.46|8
+RE|2016-17|20|Defence Services (Revenue)|149051.34|...|149051.34|8
+BE|2017-18|20|Defence Services (Revenue)|172773.89|...|172773.89|8
+Actual|2015-16|21|Capital Outlay on Defence Services|...|71675.43|71675.43|8
+BE|2016-17|21|Capital Outlay on Defence Services|...|78586.68|78586.68|8
+RE|2016-17|21|Capital Outlay on Defence Services|...|71700.00|71700.00|8
+BE|2017-18|21|Capital Outlay on Defence Services|...|86488.01|86488.01|8
+Actual|2015-16|22|Defence Pensions|60237.60|...|60237.60|8
+BE|2016-17|22|Defence Pensions|82332.66|...|82332.66|8
+RE|2016-17|22|Defence Pensions|85625.96|...|85625.96|8
+BE|2017-18|22|Defence Pensions|85740.00|...|85740.00|8
+Actual|2015-16|80|Ministry of Railways|...|35007.87|35007.87|13
+BE|2016-17|80|Ministry of Railways|...|45000.00|45000.00|13
+RE|2016-17|80|Ministry of Railways|...|46155.00|46155.00|13
+BE|2017-18|80|Ministry of Railways|...|55000.00|55000.00|13
+Actual|2015-16|26|Ministry of Electronics and Information Technology|2396.11|114.32|2510.43|8
+BE|2016-17|26|Ministry of Electronics and Information Technology|3089.71|239.11|3328.82|8
+RE|2016-17|26|Ministry of Electronics and Information Technology|3247.32|311.61|3558.93|8
+BE|2017-18|26|Ministry of Electronics and Information Technology|3690.00|349.00|4039.00|8
+Actual|2015-16|67|Ministry of New and Renewable Energy|131.50|94.52|226.02|12
+BE|2016-17|67|Ministry of New and Renewable Energy|5035.79|...|5035.79|12
+RE|2016-17|67|Ministry of New and Renewable Energy|4345.13|15.00|4360.13|12
+BE|2017-18|67|Ministry of New and Renewable Energy|5432.84|40.00|5472.84|12
+Actual|2015-16|74|Ministry of Power|6458.73|1276.13|7734.86|12
+BE|2016-17|74|Ministry of Power|8763.39|3489.32|12252.71|12
+RE|2016-17|74|Ministry of Power|8098.12|2377.83|10475.95|12
+BE|2017-18|74|Ministry of Power|10295.46|3585.68|13881.14|12
+Actual|2015-16|31|Department of Financial Services|14537.93|27566.03|42103.96|9
+BE|2016-17|31|Department of Financial Services|4135.52|27840.00|31975.52|9
+RE|2016-17|31|Department of Financial Services|3418.62|28081.38|31500.00|9
+BE|2017-18|31|Department of Financial Services|2731.98|14718.02|17450.00|9
+Actual|2015-16|14|Department of Telecommunications|18162.85|2321.81|20484.66|7
+BE|2016-17|14|Department of Telecommunications|15555.17|2858.70|18413.87|7
+RE|2016-17|14|Department of Telecommunications|20926.75|3345.54|24272.29|7
+BE|2017-18|14|Department of Telecommunications|23301.47|3386.00|26687.47|7
+Actual|2015-16|24|Ministry of Drinking Water and Sanitation|11081.18|...|11081.18|8
+BE|2016-17|24|Ministry of Drinking Water and Sanitation|14009.70|...|14009.70|8
+RE|2016-17|24|Ministry of Drinking Water and Sanitation|16511.76|...|16511.76|8
+BE|2017-18|24|Ministry of Drinking Water and Sanitation|20010.79|...|20010.79|8
+Actual|2015-16|98|Ministry of Water Resources, River Development and Ganga Rejuvenation|6722.73|139.32|6862.05|15
+BE|2016-17|98|Ministry of Water Resources, River Development and Ganga Rejuvenation|5812.60|388.61|6201.21|15
+RE|2016-17|98|Ministry of Water Resources, River Development and Ganga Rejuvenation|4615.05|140.45|4755.50|15
+BE|2017-18|98|Ministry of Water Resources, River Development and Ganga Rejuvenation|6102.51|784.49|6887.00|15
+Actual|2015-16|81|Ministry of Road Transport and Highways|19379.93|27532.65|46912.58|13
+BE|2016-17|81|Ministry of Road Transport and Highways|40523.00|17453.00|57976.00|13
+RE|2016-17|81|Ministry of Road Transport and Highways|11343.90|41103.10|52447.00|13
+BE|2017-18|81|Ministry of Road Transport and Highways|10723.17|54176.83|64900.00|13
+Actual|2015-16|56|Ministry of Housing and Urban Poverty Alleviation|1760.73|...|1760.73|11
+BE|2016-17|56|Ministry of Housing and Urban Poverty Alleviation|5411.00|...|5411.00|11
+RE|2016-17|56|Ministry of Housing and Urban Poverty Alleviation|5285.00|...|5285.00|11
+BE|2017-18|56|Ministry of Housing and Urban Poverty Alleviation|6406.00|...|6406.00|11
+Actual|2015-16|97|Ministry of Urban Development|7830.68|10588.76|18419.44|15
+BE|2016-17|97|Ministry of Urban Development|13021.03|11501.97|24523.00|15
+RE|2016-17|97|Ministry of Urban Development|15367.96|17181.79|32549.75|15
+BE|2017-18|97|Ministry of Urban Development|14879.48|19332.36|34211.84|15
+Actual|2015-16||Grand Total|1537761.05|253021.64|1790782.69|15
+BE|2016-17||Grand Total|1731036.83|247023.62|1978060.45|15
+RE|2016-17||Grand Total|1734559.73|279847.22|2014406.95|15
+BE|2017-18||Grand Total|1836933.98|309800.80|2146734.78|15

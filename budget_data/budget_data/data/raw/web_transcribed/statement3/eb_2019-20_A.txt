@@ -1,0 +1,61 @@
+# Expenditure Profile 2019-20 (July 2019), Statement 3 (part A). url: https://www.indiabudget.gov.in/budget2019-20/doc/eb/stat3a.pdf
+Actual|2017-18|18|Ministry of Defence (Civil)|10150.22|4992.71|15142.93|8
+BE|2018-19|18|Ministry of Defence (Civil)|10624.36|5581.73|16206.09|8
+RE|2018-19|18|Ministry of Defence (Civil)|11827.50|4490.98|16318.48|8
+BE|2019-20|18|Ministry of Defence (Civil)|8780.66|4854.49|13635.15|8
+Actual|2017-18|19|Defence Services (Revenue)|182121.43|...|182121.43|8
+BE|2018-19|19|Defence Services (Revenue)|185323.19|...|185323.19|8
+RE|2018-19|19|Defence Services (Revenue)|188118.10|...|188118.10|8
+BE|2019-20|19|Defence Services (Revenue)|201901.76|...|201901.76|8
+Actual|2017-18|20|Capital Outlay on Defence Services|...|90438.40|90438.40|8
+BE|2018-19|20|Capital Outlay on Defence Services|...|93982.13|93982.13|8
+RE|2018-19|20|Capital Outlay on Defence Services|...|93982.13|93982.13|8
+BE|2019-20|20|Capital Outlay on Defence Services|...|103394.31|103394.31|8
+Actual|2017-18|21|Defence Pensions|91999.58|...|91999.58|8
+BE|2018-19|21|Defence Pensions|108853.30|...|108853.30|8
+RE|2018-19|21|Defence Pensions|106775.14|...|106775.14|8
+BE|2019-20|21|Defence Pensions|112079.57|...|112079.57|8
+Actual|2017-18|82|Ministry of Railways|1813.80|43417.55|45231.35|15
+BE|2018-19|82|Ministry of Railways|2028.00|53060.00|55088.00|15
+RE|2018-19|82|Ministry of Railways|2075.00|53060.00|55135.00|15
+BE|2019-20|82|Ministry of Railways|2181.67|65837.00|68018.67|15
+Actual|2017-18|24|Ministry of Electronics and Information Technology|3780.13|219.76|3999.89|9
+BE|2018-19|24|Ministry of Electronics and Information Technology|5675.00|325.00|6000.00|9
+RE|2018-19|24|Ministry of Electronics and Information Technology|6070.74|310.26|6381.00|9
+BE|2019-20|24|Ministry of Electronics and Information Technology|6306.00|348.00|6654.00|9
+Actual|2017-18|69|Ministry of New and Renewable Energy|3643.62|1.00|3644.62|14
+BE|2018-19|69|Ministry of New and Renewable Energy|5106.23|40.40|5146.63|14
+RE|2018-19|69|Ministry of New and Renewable Energy|5106.23|40.40|5146.63|14
+BE|2019-20|69|Ministry of New and Renewable Energy|5209.83|45.00|5254.83|14
+Actual|2017-18|76|Ministry of Power|12034.05|1940.95|13975.00|15
+BE|2018-19|76|Ministry of Power|12835.47|2211.45|15046.92|15
+RE|2018-19|76|Ministry of Power|13549.19|2076.00|15625.19|15
+BE|2019-20|76|Ministry of Power|13474.70|2400.12|15874.82|15
+Actual|2017-18|29|Department of Financial Services|1918.31|14730.00|16648.31|9
+BE|2018-19|29|Department of Financial Services|1739.05|4838.01|6577.06|9
+RE|2018-19|29|Department of Financial Services|1237.02|4478.00|5715.02|9
+BE|2019-20|29|Department of Financial Services|1305.15|3385.04|4690.19|9
+Actual|2017-18|13|Department of Telecommunications|19594.19|4206.01|23800.20|7
+BE|2018-19|13|Department of Telecommunications|23052.53|5002.75|28055.28|7
+RE|2018-19|13|Department of Telecommunications|18119.62|3456.75|21576.37|7
+BE|2019-20|13|Department of Telecommunications|22343.64|4994.72|27338.36|7
+Actual|2017-18|61|Department of Drinking Water and Sanitation|23938.77|...|23938.77|13
+BE|2018-19|61|Department of Drinking Water and Sanitation|22356.60|...|22356.60|13
+RE|2018-19|61|Department of Drinking Water and Sanitation|19992.97|...|19992.97|13
+BE|2019-20|61|Department of Drinking Water and Sanitation|20016.34|...|20016.34|13
+Actual|2017-18|60|Department of Water Resources, River Development and Ganga Rejuvenation|4985.98|327.49|5313.47|13
+BE|2018-19|60|Department of Water Resources, River Development and Ganga Rejuvenation|8152.14|707.86|8860.00|13
+RE|2018-19|60|Department of Water Resources, River Development and Ganga Rejuvenation|7269.25|343.27|7612.52|13
+BE|2019-20|60|Department of Water Resources, River Development and Ganga Rejuvenation|7853.78|391.47|8245.25|13
+Actual|2017-18|83|Ministry of Road Transport and Highways|10262.36|50752.40|61014.76|15
+BE|2018-19|83|Ministry of Road Transport and Highways|11559.75|59440.25|71000.00|15
+RE|2018-19|83|Ministry of Road Transport and Highways|10061.81|68563.69|78625.50|15
+BE|2019-20|83|Ministry of Road Transport and Highways|10957.39|72058.58|83015.97|15
+Actual|2017-18|56|Ministry of Housing and Urban Affairs|24714.55|15346.47|40061.02|12
+BE|2018-19|56|Ministry of Housing and Urban Affairs|25349.73|16415.40|41765.13|12
+RE|2018-19|56|Ministry of Housing and Urban Affairs|25955.25|17009.88|42965.13|12
+BE|2019-20|56|Ministry of Housing and Urban Affairs|28487.84|19544.33|48032.17|12
+Actual|2017-18||Grand Total|1878833.52|263139.54|2141973.06|18
+BE|2018-19||Grand Total|2141772.00|300441.30|2442213.30|18
+RE|2018-19||Grand Total|2140611.51|316623.51|2457235.02|18
+BE|2019-20||Grand Total|2447780.34|338569.11|2786349.45|18

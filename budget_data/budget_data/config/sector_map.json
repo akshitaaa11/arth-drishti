@@ -1,0 +1,782 @@
+{
+  "version": "2026-10-23",
+  "notes": "Stock lists are a starting point. Phase 0 must validate every yahoo_symbol by downloading prices; fix or drop any that fail. listing_date is filled from the first trading day in the price data.",
+  "sectors": [
+    {
+      "sector_id": "defence",
+      "name": "Defence & Aerospace",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Defence",
+        "Defence capital outlay"
+      ],
+      "nsdl_fpi_sector": "Capital Goods",
+      "stocks": [
+        {
+          "symbol": "HAL",
+          "yahoo_symbol": "HAL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "BEL",
+          "yahoo_symbol": "BEL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "BDL",
+          "yahoo_symbol": "BDL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "MAZDOCK",
+          "yahoo_symbol": "MAZDOCK.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "COCHINSHIP",
+          "yahoo_symbol": "COCHINSHIP.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "GRSE",
+          "yahoo_symbol": "GRSE.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "BEML",
+          "yahoo_symbol": "BEML.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "DATAPATTNS",
+          "yahoo_symbol": "DATAPATTNS.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "roads",
+      "name": "Roads & Construction",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Road Transport and Highways",
+        "PMGSY"
+      ],
+      "nsdl_fpi_sector": "Construction",
+      "stocks": [
+        {
+          "symbol": "LT",
+          "yahoo_symbol": "LT.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "IRB",
+          "yahoo_symbol": "IRB.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "KNRCON",
+          "yahoo_symbol": "KNRCON.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "PNCINFRA",
+          "yahoo_symbol": "PNCINFRA.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "ULTRACEMCO",
+          "yahoo_symbol": "ULTRACEMCO.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "NCC",
+          "yahoo_symbol": "NCC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "ASHOKA",
+          "yahoo_symbol": "ASHOKA.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "HGINFRA",
+          "yahoo_symbol": "HGINFRA.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "railways",
+      "name": "Railways",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Railways"
+      ],
+      "nsdl_fpi_sector": "Capital Goods",
+      "stocks": [
+        {
+          "symbol": "RVNL",
+          "yahoo_symbol": "RVNL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "IRCON",
+          "yahoo_symbol": "IRCON.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "IRFC",
+          "yahoo_symbol": "IRFC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "RAILTEL",
+          "yahoo_symbol": "RAILTEL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "TITAGARH",
+          "yahoo_symbol": "TITAGARH.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "IRCTC",
+          "yahoo_symbol": "IRCTC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "RITES",
+          "yahoo_symbol": "RITES.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "TEXRAIL",
+          "yahoo_symbol": "TEXRAIL.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "housing",
+      "name": "Housing & Real Estate",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Housing and Urban Affairs",
+        "PMAY-Urban",
+        "PMAY-Gramin",
+        "AMRUT"
+      ],
+      "nsdl_fpi_sector": "Realty",
+      "stocks": [
+        {
+          "symbol": "DLF",
+          "yahoo_symbol": "DLF.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "GODREJPROP",
+          "yahoo_symbol": "GODREJPROP.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "NBCC",
+          "yahoo_symbol": "NBCC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "HUDCO",
+          "yahoo_symbol": "HUDCO.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "OBEROIRLTY",
+          "yahoo_symbol": "OBEROIRLTY.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "PRESTIGE",
+          "yahoo_symbol": "PRESTIGE.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "SOBHA",
+          "yahoo_symbol": "SOBHA.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "LICHSGFIN",
+          "yahoo_symbol": "LICHSGFIN.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "healthcare",
+      "name": "Healthcare & Pharma",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Health and Family Welfare",
+        "National Health Mission",
+        "Biopharma SHAKTI"
+      ],
+      "nsdl_fpi_sector": "Healthcare",
+      "stocks": [
+        {
+          "symbol": "SUNPHARMA",
+          "yahoo_symbol": "SUNPHARMA.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "CIPLA",
+          "yahoo_symbol": "CIPLA.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "APOLLOHOSP",
+          "yahoo_symbol": "APOLLOHOSP.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "DRREDDY",
+          "yahoo_symbol": "DRREDDY.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "LUPIN",
+          "yahoo_symbol": "LUPIN.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "FORTIS",
+          "yahoo_symbol": "FORTIS.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "BIOCON",
+          "yahoo_symbol": "BIOCON.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "POLYMED",
+          "yahoo_symbol": "POLYMED.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "agriculture",
+      "name": "Agriculture & Agri-inputs",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Agriculture and Farmers Welfare",
+        "PM-KISAN",
+        "PMFBY"
+      ],
+      "nsdl_fpi_sector": "Chemicals",
+      "stocks": [
+        {
+          "symbol": "UPL",
+          "yahoo_symbol": "UPL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "PIIND",
+          "yahoo_symbol": "PIIND.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "DHANUKA",
+          "yahoo_symbol": "DHANUKA.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "M&M",
+          "yahoo_symbol": "M&M.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "ESCORTS",
+          "yahoo_symbol": "ESCORTS.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "RALLIS",
+          "yahoo_symbol": "RALLIS.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "BAYERCROP",
+          "yahoo_symbol": "BAYERCROP.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "GODREJAGRO",
+          "yahoo_symbol": "GODREJAGRO.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "fertilisers",
+      "name": "Fertilisers",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Chemicals and Fertilisers",
+        "Fertiliser subsidy"
+      ],
+      "nsdl_fpi_sector": "Chemicals",
+      "stocks": [
+        {
+          "symbol": "CHAMBLFERT",
+          "yahoo_symbol": "CHAMBLFERT.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "COROMANDEL",
+          "yahoo_symbol": "COROMANDEL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "RCF",
+          "yahoo_symbol": "RCF.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "NFL",
+          "yahoo_symbol": "NFL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "GSFC",
+          "yahoo_symbol": "GSFC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "FACT",
+          "yahoo_symbol": "FACT.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "DEEPAKFERT",
+          "yahoo_symbol": "DEEPAKFERT.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "PARADEEP",
+          "yahoo_symbol": "PARADEEP.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "fmcg",
+      "name": "FMCG & Food",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Consumer Affairs, Food and Public Distribution",
+        "Food subsidy"
+      ],
+      "nsdl_fpi_sector": "FMCG",
+      "stocks": [
+        {
+          "symbol": "HINDUNILVR",
+          "yahoo_symbol": "HINDUNILVR.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "ITC",
+          "yahoo_symbol": "ITC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "BRITANNIA",
+          "yahoo_symbol": "BRITANNIA.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "KRBL",
+          "yahoo_symbol": "KRBL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "NESTLEIND",
+          "yahoo_symbol": "NESTLEIND.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "DABUR",
+          "yahoo_symbol": "DABUR.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "TATACONSUM",
+          "yahoo_symbol": "TATACONSUM.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "LTFOODS",
+          "yahoo_symbol": "LTFOODS.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "telecom",
+      "name": "Telecom & Digital Infra",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Communications",
+        "Bharatnet"
+      ],
+      "nsdl_fpi_sector": "Telecommunication",
+      "stocks": [
+        {
+          "symbol": "BHARTIARTL",
+          "yahoo_symbol": "BHARTIARTL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "HFCL",
+          "yahoo_symbol": "HFCL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "TEJASNET",
+          "yahoo_symbol": "TEJASNET.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "ITI",
+          "yahoo_symbol": "ITI.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "INDUSTOWER",
+          "yahoo_symbol": "INDUSTOWER.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "STLTECH",
+          "yahoo_symbol": "STLTECH.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "TATACOMM",
+          "yahoo_symbol": "TATACOMM.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "IDEA",
+          "yahoo_symbol": "IDEA.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "rural",
+      "name": "Rural Consumption & Credit",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Rural Development",
+        "MGNREGS / VB-G RAM G"
+      ],
+      "nsdl_fpi_sector": "Automobile and Auto Components; Financial Services",
+      "stocks": [
+        {
+          "symbol": "HEROMOTOCO",
+          "yahoo_symbol": "HEROMOTOCO.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "EMAMI",
+          "yahoo_symbol": "EMAMI.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "CREDITACC",
+          "yahoo_symbol": "CREDITACC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "TVSMOTOR",
+          "yahoo_symbol": "TVSMOTOR.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "MUTHOOTFIN",
+          "yahoo_symbol": "MUTHOOTFIN.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "MANAPPURAM",
+          "yahoo_symbol": "MANAPPURAM.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "JYOTHYLAB",
+          "yahoo_symbol": "JYOTHYLAB.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "M&MFIN",
+          "yahoo_symbol": "M&MFIN.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "water",
+      "name": "Water & Pipes",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Jal Shakti",
+        "Jal Jeevan Mission"
+      ],
+      "nsdl_fpi_sector": "Capital Goods",
+      "stocks": [
+        {
+          "symbol": "WABAG",
+          "yahoo_symbol": "WABAG.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "JINDALSAW",
+          "yahoo_symbol": "JINDALSAW.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "WELCORP",
+          "yahoo_symbol": "WELCORP.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "MAHSEAMLES",
+          "yahoo_symbol": "MAHSEAMLES.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "FINPIPE",
+          "yahoo_symbol": "FINPIPE.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "SUPREMEIND",
+          "yahoo_symbol": "SUPREMEIND.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "ASTRAL",
+          "yahoo_symbol": "ASTRAL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "KSB",
+          "yahoo_symbol": "KSB.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "education",
+      "name": "Education",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Education",
+        "Samagra Shiksha",
+        "PM POSHAN"
+      ],
+      "nsdl_fpi_sector": "Consumer Services",
+      "stocks": [
+        {
+          "symbol": "NAVNETEDUL",
+          "yahoo_symbol": "NAVNETEDUL.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "APTECHT",
+          "yahoo_symbol": "APTECHT.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "NIITLTD",
+          "yahoo_symbol": "NIITLTD.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "SCHAND",
+          "yahoo_symbol": "SCHAND.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "CAREERP",
+          "yahoo_symbol": "CAREERP.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "ZEELEARN",
+          "yahoo_symbol": "ZEELEARN.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "power",
+      "name": "Power & Renewables",
+      "is_control": false,
+      "budget_lines": [
+        "Ministry of Power",
+        "Ministry of New and Renewable Energy",
+        "PM Surya Ghar",
+        "RDSS"
+      ],
+      "nsdl_fpi_sector": "Power",
+      "stocks": [
+        {
+          "symbol": "NTPC",
+          "yahoo_symbol": "NTPC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "POWERGRID",
+          "yahoo_symbol": "POWERGRID.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "TATAPOWER",
+          "yahoo_symbol": "TATAPOWER.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "IREDA",
+          "yahoo_symbol": "IREDA.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "NHPC",
+          "yahoo_symbol": "NHPC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "SJVN",
+          "yahoo_symbol": "SJVN.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "ADANIGREEN",
+          "yahoo_symbol": "ADANIGREEN.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "SUZLON",
+          "yahoo_symbol": "SUZLON.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "it_control",
+      "name": "IT Services (control)",
+      "is_control": true,
+      "budget_lines": [
+        "Ministry of Electronics and Information Technology",
+        "RDI scheme"
+      ],
+      "nsdl_fpi_sector": "Information Technology",
+      "stocks": [
+        {
+          "symbol": "TCS",
+          "yahoo_symbol": "TCS.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "INFY",
+          "yahoo_symbol": "INFY.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "HCLTECH",
+          "yahoo_symbol": "HCLTECH.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "WIPRO",
+          "yahoo_symbol": "WIPRO.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "TECHM",
+          "yahoo_symbol": "TECHM.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "LTIM",
+          "yahoo_symbol": "LTIM.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "MPHASIS",
+          "yahoo_symbol": "MPHASIS.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "PERSISTENT",
+          "yahoo_symbol": "PERSISTENT.NS",
+          "listing_date": null
+        }
+      ]
+    },
+    {
+      "sector_id": "psu_banks",
+      "name": "PSU Banks & Infra Finance",
+      "is_control": false,
+      "budget_lines": [
+        "Department of Financial Services",
+        "Credit guarantee schemes"
+      ],
+      "nsdl_fpi_sector": "Financial Services",
+      "stocks": [
+        {
+          "symbol": "SBIN",
+          "yahoo_symbol": "SBIN.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "BANKBARODA",
+          "yahoo_symbol": "BANKBARODA.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "PFC",
+          "yahoo_symbol": "PFC.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "RECLTD",
+          "yahoo_symbol": "RECLTD.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "PNB",
+          "yahoo_symbol": "PNB.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "CANBK",
+          "yahoo_symbol": "CANBK.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "UNIONBANK",
+          "yahoo_symbol": "UNIONBANK.NS",
+          "listing_date": null
+        },
+        {
+          "symbol": "INDIANB",
+          "yahoo_symbol": "INDIANB.NS",
+          "listing_date": null
+        }
+      ]
+    }
+  ]
+}

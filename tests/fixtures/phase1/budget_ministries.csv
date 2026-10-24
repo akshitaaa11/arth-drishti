@@ -1,0 +1,2 @@
+budget_year,fiscal_year,stage,line_type,line_item,canonical_name,amount_cr,source_doc,source_page,source_url,fetched_at
+2024-25,2024-25,BE,ministry,Defence,Defence,100,prs-budget.pdf,5,https://example.invalid/budget,2026-10-23T12:00:00+00:00

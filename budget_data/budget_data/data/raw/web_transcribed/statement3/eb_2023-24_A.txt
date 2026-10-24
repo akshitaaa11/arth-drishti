@@ -1,0 +1,61 @@
+# Expenditure Profile 2023-24 (Feb 2023), Statement 3 (part A). url: https://www.indiabudget.gov.in/budget2023-24/doc/eb/vol1.pdf
+Actual|2021-22|19|Ministry of Defence (Civil)|10535.84|6799.29|17335.13|7
+Actual|2021-22|20|Defence Services (Revenue)|228558.93|...|228558.93|7
+Actual|2021-22|21|Capital Outlay on Defence Services|...|137986.97|137986.97|7
+Actual|2021-22|22|Defence Pensions|116799.85|...|116799.85|8
+Actual|2021-22|85|Ministry of Railways|17971.60|117270.54|135242.14|18
+Actual|2021-22|27|Ministry of Electronics and Information Technology|7766.88|351.77|8118.65|8
+Actual|2021-22|71|Ministry of New and Renewable Energy|4006.97|2575.98|6582.95|16
+Actual|2021-22|79|Ministry of Power|18768.28|2826.65|21594.93|17
+Actual|2021-22|32|Department of Financial Services|7375.98|36634.00|44009.98|9
+Actual|2021-22|13|Department of Telecommunications|28470.55|3327.82|31798.37|6
+Actual|2021-22|63|Department of Drinking Water and Sanitation|66251.69|...|66251.69|14
+Actual|2021-22|62|Department of Water Resources, River Development and Ganga Rejuvenation|17031.53|183.63|17215.16|14
+Actual|2021-22|86|Ministry of Road Transport and Highways|10239.00|113311.60|123550.60|18
+Actual|2021-22|60|Ministry of Housing and Urban Affairs|80894.44|25946.02|106840.46|14
+Actual|2021-22||Grand Total|3200926.29|592874.34|3793800.63|21
+BE|2022-23|19|Ministry of Defence (Civil)|12050.01|8049.99|20100.00|7
+BE|2022-23|20|Defence Services (Revenue)|233000.54|...|233000.54|7
+BE|2022-23|21|Capital Outlay on Defence Services|...|152369.61|152369.61|7
+BE|2022-23|22|Defence Pensions|119696.00|...|119696.00|8
+BE|2022-23|85|Ministry of Railways|3267.13|137100.00|140367.13|18
+BE|2022-23|27|Ministry of Electronics and Information Technology|13911.99|388.01|14300.00|8
+BE|2022-23|71|Ministry of New and Renewable Energy|6888.94|11.74|6900.68|16
+BE|2022-23|79|Ministry of Power|16061.63|13.11|16074.74|17
+BE|2022-23|32|Department of Financial Services|1102.70|4211.03|5313.73|9
+BE|2022-23|13|Department of Telecommunications|30436.38|54150.42|84586.80|6
+BE|2022-23|63|Department of Drinking Water and Sanitation|67221.12|...|67221.12|14
+BE|2022-23|62|Department of Water Resources, River Development and Ganga Rejuvenation|18548.05|419.83|18967.88|14
+BE|2022-23|86|Ministry of Road Transport and Highways|11363.71|187744.00|199107.71|18
+BE|2022-23|60|Ministry of Housing and Urban Affairs|49208.45|27341.01|76549.46|14
+BE|2022-23||Grand Total|3194662.90|750245.77|3944908.67|21
+RE|2022-23|19|Ministry of Defence (Civil)|13897.34|7978.79|21876.13|7
+RE|2022-23|20|Defence Services (Revenue)|259500.48|...|259500.48|7
+RE|2022-23|21|Capital Outlay on Defence Services|...|150000.00|150000.00|7
+RE|2022-23|22|Defence Pensions|153414.49|...|153414.49|8
+RE|2022-23|85|Ministry of Railways|3211.90|159100.00|162311.90|18
+RE|2022-23|27|Ministry of Electronics and Information Technology|11443.49|276.46|11719.95|8
+RE|2022-23|71|Ministry of New and Renewable Energy|7019.26|13.74|7033.00|16
+RE|2022-23|79|Ministry of Power|13083.46|23.12|13106.58|17
+RE|2022-23|32|Department of Financial Services|1366.42|3536.00|4902.42|9
+RE|2022-23|13|Department of Telecommunications|44575.22|37245.89|81821.11|6
+RE|2022-23|63|Department of Drinking Water and Sanitation|60029.12|...|60029.12|14
+RE|2022-23|62|Department of Water Resources, River Development and Ganga Rejuvenation|13704.88|295.12|14000.00|14
+RE|2022-23|86|Ministry of Road Transport and Highways|10723.80|206302.82|217026.62|18
+RE|2022-23|60|Ministry of Housing and Urban Affairs|50864.75|23680.89|74545.64|14
+RE|2022-23||Grand Total|3458958.79|728273.56|4187232.35|21
+BE|2023-24|19|Ministry of Defence (Civil)|13837.71|8774.79|22612.50|7
+BE|2023-24|20|Defence Services (Revenue)|270120.14|...|270120.14|7
+BE|2023-24|21|Capital Outlay on Defence Services|...|162600.00|162600.00|7
+BE|2023-24|22|Defence Pensions|138205.00|...|138205.00|8
+BE|2023-24|85|Ministry of Railways|1267.51|240000.00|241267.51|18
+BE|2023-24|27|Ministry of Electronics and Information Technology|16180.36|368.68|16549.04|8
+BE|2023-24|71|Ministry of New and Renewable Energy|10210.35|11.65|10222.00|16
+BE|2023-24|79|Ministry of Power|20654.52|16.80|20671.32|17
+BE|2023-24|32|Department of Financial Services|1112.35|212.29|1324.64|9
+BE|2023-24|13|Department of Telecommunications|35887.23|61691.82|97579.05|6
+BE|2023-24|63|Department of Drinking Water and Sanitation|77221.80|1.20|77223.00|14
+BE|2023-24|62|Department of Water Resources, River Development and Ganga Rejuvenation|19694.19|360.48|20054.67|14
+BE|2023-24|86|Ministry of Road Transport and Highways|11829.18|258605.53|270434.71|18
+BE|2023-24|60|Ministry of Housing and Urban Affairs|50434.33|25997.27|76431.60|14
+BE|2023-24||Grand Total|3502136.44|1000961.01|4503097.45|21
