@@ -13,6 +13,7 @@ from bsp.ingest._common import (
     ensure_dirs,
     write_csv_guarded,
 )
+from bsp.quality.schemas import validate_macro
 
 YAHOO_MACRO = {
     "USDINR=X": ("usd_inr", "INR per USD"),
@@ -92,7 +93,11 @@ def collect_macro() -> pd.DataFrame:
             previous = pd.read_csv(previous_path)
             kept = previous[~previous["series"].isin(df["series"].unique())]
             df = pd.concat([df, kept], ignore_index=True)
+        # Yahoo returns tz-aware timestamps and FRED/World Bank plain dates: store one ISO date per row.
+        df["date"] = df["date"].astype(str).str[:10]
+        df = df.drop_duplicates(subset=["series", "date"], keep="first")
         df = df.sort_values(["series", "date"]).reset_index(drop=True)
+        validate_macro(df)
         df.to_csv(CSV_DIR / "macro.csv", index=False)
     else:
         empty = pd.DataFrame(columns=["series", "date", "value", "unit", "source", "fetched_at"])

@@ -11,6 +11,7 @@ from bsp.ingest._common import (
     ensure_dirs,
     write_csv_guarded,
 )
+from bsp.quality.schemas import validate_benchmarks
 
 INDICES = {
     "^CRSLDX": "Nifty 500",
@@ -70,6 +71,7 @@ def collect_benchmarks() -> pd.DataFrame:
         df = pd.concat(frames, ignore_index=True).drop_duplicates(subset=["index_name", "date"]).sort_values(["index_name", "date"]).reset_index(drop=True)
         df["source"] = df["ticker"].map(lambda x: "Manual download (data/raw/indices)" if str(x).startswith("manual:") else "Yahoo Finance via yfinance")
         df["fetched_at"] = pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds")
+        validate_benchmarks(df)
         df.to_csv(CSV_DIR / "index_daily.csv", index=False)
         summary = df.groupby("index_name")["date"].agg(["min", "max", "count"]).reset_index()
         summary.columns = ["index_name", "first_date", "last_date", "rows"]

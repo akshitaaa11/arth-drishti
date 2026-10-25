@@ -4,6 +4,7 @@ import pandas as pd
 import yfinance as yf
 
 from bsp.ingest._common import (
+    CFG_DIR,
     CSV_DIR,
     RAW_DIR,
     REPORT_DIR,
@@ -13,6 +14,7 @@ from bsp.ingest._common import (
     write_csv_guarded,
 )
 from bsp.quality.price_cleaning import clean_prices, flag_jumps
+from bsp.quality.schemas import validate_prices
 
 START = "2004-12-01"
 
@@ -55,6 +57,23 @@ def _load_splits(stocks: pd.DataFrame) -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=["symbol", "date", "ratio"])
 
 
+def _fill_listing_dates(first_dates: pd.DataFrame) -> None:
+    """Record config/stocks.csv ``listing_date`` from the first real trading day.
+
+    Only for stocks whose first trading day falls clearly inside the download window; a stock already
+    trading when the window opens has no observable listing date and is left blank.
+    """
+    path = CFG_DIR / "stocks.csv"
+    stocks = pd.read_csv(path)
+    cutoff = (pd.Timestamp(START) + pd.Timedelta(days=14)).date().isoformat()
+    seen = first_dates.set_index("symbol")["first_price_date"].astype(str)
+    observed = seen[seen > cutoff]
+    stocks["listing_date"] = stocks["listing_date"].astype("string")
+    mask = stocks["symbol"].isin(observed.index)
+    stocks.loc[mask, "listing_date"] = stocks.loc[mask, "symbol"].map(observed)
+    stocks.to_csv(path, index=False)
+
+
 def collect_prices() -> pd.DataFrame:
     ensure_dirs()
     rows: list[pd.DataFrame] = []
@@ -88,6 +107,7 @@ def collect_prices() -> pd.DataFrame:
     result.adjustments.to_csv(REPORT_DIR / "price_split_adjustments.csv", index=False)
 
     frame = result.prices
+    validate_prices(frame)  # raises (and leaves the previous CSV untouched) on future dates, duplicates, non-positive prices
     frame["traded_value_cr"] = (frame["close"] * frame["volume"] / 1e7).round(3)
     frame["source"] = "Yahoo Finance via yfinance"
     frame["source_url"] = "https://finance.yahoo.com"
@@ -96,6 +116,7 @@ def collect_prices() -> pd.DataFrame:
 
     first_dates = frame.groupby("symbol")["date"].min().reset_index(name="first_price_date")
     first_dates.to_csv(CSV_DIR / "stock_first_price_date.csv", index=False)
+    _fill_listing_dates(first_dates)
 
     append_fetch_log("prices", "ok" if not failed else "partial", len(frame), ", ".join(failed)[:200])
     return frame

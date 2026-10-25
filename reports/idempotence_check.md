@@ -1,6 +1,6 @@
 # Idempotence check
 
-Run at 2026-10-25T08:47:01+00:00 by `scripts/check_idempotence.py`. Each Phase 2 ingestion job is run twice; data rows (excluding the header) must not change between runs.
+Run at 2026-10-25T08:59:55+00:00 by `scripts/check_idempotence.py`. Each Phase 2 ingestion job is run twice; data rows (excluding the header) must not change between runs.
 
 | Job | CSV | Before | After run 1 | After run 2 | Result |
 | --- | --- | ---: | ---: | ---: | --- |
