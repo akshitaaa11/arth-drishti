@@ -17,3 +17,4 @@ indices,2026-10-25T08:29:22+00:00,partial,62375,Nifty Healthcare(empty response)
 constituents,2026-10-25T08:29:22+00:00,empty,0,manual constituent list not available; file left empty
 macro,2026-10-25T08:29:25+00:00,partial,20542,"cpi_index_2015(HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Max retries exceeded with url: /graph/fredgraph.csv?id=INDCPIALLMINMEI (Caused by ProxyError('Unable to connect to proxy', OSE"
 fpi,2026-10-25T08:30:18+00:00,empty,0,"2017-01-15, 2017-01-31, 2017-02-15, 2017-02-28, 2017-03-15, 2017-03-31, 2017-04-15, 2017-04-30, 2017-05-15, 2017-05-31, 2017-06-15, 2017-06-30, 2017-07-15, 2017-07-31, 2017-08-15, 2017-08-31, 2017-09-"
+constituents,2026-10-25T08:34:26+00:00,empty,0,no files in data/raw/nifty500_constituents; run scripts/collect/nifty500_history.py (existing CSV kept)

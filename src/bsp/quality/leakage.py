@@ -1,9 +1,10 @@
 """Leakage validation checks for point-in-time feature store integrity.
 
-Enforces three rules:
+Enforces four rules:
   1. No look-ahead: every feature's as_of_date must be <= budget presentation date (or < prediction date).
   2. No same-year actuals: budget year t may only use historical Actuals from <= t-2.
   3. No unlisted stocks: a stock cannot appear in a budget year before its listing/first price date.
+  4. No out-of-universe stocks: where Nifty 500 history covers a budget day, only members on that day appear.
 """
 
 from __future__ import annotations
@@ -13,6 +14,7 @@ from pathlib import Path
 import pandas as pd
 
 from bsp.common.config import get_project_root
+from bsp.features.universe import Universe
 
 
 class LeakageError(Exception):
@@ -100,6 +102,35 @@ def validate_point_in_time_universe(
         raise LeakageError(f"Found {len(violations)} point-in-time universe violations:\n{sample}")
 
 
+def validate_index_membership(
+    stock_features_df: pd.DataFrame,
+    universe: Universe,
+    budget_events: pd.DataFrame,
+    symbol_col: str = "symbol",
+    budget_col: str = "budget_id",
+) -> None:
+    """Ensure no stock appears for a budget day on which it was not a Nifty 500 member.
+
+    Budgets outside the constituent history's coverage cannot be checked and are skipped.
+    """
+    b_map = dict(zip(budget_events["budget_id"], budget_events["presented_on"]))
+    violations = []
+    pairs = stock_features_df[[symbol_col, budget_col]].drop_duplicates()
+    members_cache: dict[str, set[str] | None] = {}
+    for sym, b_id in zip(pairs[symbol_col].astype(str), pairs[budget_col].astype(str)):
+        p_date = b_map.get(b_id)
+        if not p_date:
+            continue
+        if p_date not in members_cache:
+            members_cache[p_date] = universe.members(p_date)
+        members = members_cache[p_date]
+        if members is not None and sym not in members:
+            violations.append(f"Stock {sym} appears in {b_id} (budget date {p_date}) but was not a Nifty 500 member")
+    if violations:
+        sample = "\n".join(violations[:5])
+        raise LeakageError(f"Found {len(violations)} out-of-universe violations:\n{sample}")
+
+
 def validate_feature_store(project_root: Path | None = None) -> None:
     """Run all leakage checks against the built feature store."""
     root = project_root or get_project_root()
@@ -131,3 +162,6 @@ def validate_feature_store(project_root: Path | None = None) -> None:
         df_stk = pd.read_csv(stk_path)
         validate_feature_dates(df_stk, b_events)
         validate_point_in_time_universe(df_stk, first_price_dates, b_events)
+        validate_index_membership(
+            df_stk, Universe.from_csv(root / "data" / "csv" / "nifty500_constituents.csv"), b_events
+        )

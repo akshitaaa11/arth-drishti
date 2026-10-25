@@ -8,7 +8,8 @@ Features:
   - beta_90d (short-horizon beta on [-90, -1])
   - size_traded_val (log1p of average daily traded value in crore)
 
-Strict point-in-time universe filter: stocks must be listed on or before budget day.
+Strict point-in-time universe filter: stocks must be listed on or before budget day and, where the
+constituent history covers that budget day, be Nifty 500 members on it (see features/universe.py).
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ import pandas as pd
 from bsp.common.config import get_project_root
 from bsp.events.study import fit_market_model
 from bsp.features.baskets import MarketDataBundle, build_market_data_bundle
+from bsp.features.universe import Universe
 
 
 def build_stock_features(
@@ -51,6 +53,8 @@ def build_stock_features(
 
     long_records: list[dict[str, Any]] = []
     wide_records: list[dict[str, Any]] = []
+    universe = Universe.from_csv(root / "data" / "csv" / "nifty500_constituents.csv")
+    universe_report: list[dict[str, Any]] = []
 
     for _, b_row in df_events.iterrows():
         b_id = str(b_row["budget_id"])
@@ -75,10 +79,20 @@ def build_stock_features(
         s90_end = max(0, curr_idx)
         mkt_90 = mkt_returns[s90_start:s90_end] if s90_end > s90_start else np.array([])
 
+        members = universe.members(p_date)
+        report_row: dict[str, Any] = {"budget_id": b_id, "presented_on": p_date, "universe_covered": members is not None,
+                      "dropped_not_listed": 0, "dropped_not_in_nifty500": 0, "kept": 0}
+        universe_report.append(report_row)
+
         for sym in bundle.stock_prices.columns:
             first_d = bundle.first_price_dates.get(sym)
             if first_d and first_d > p_date:
                 # Stock was NOT listed on or before budget day -> skip
+                report_row["dropped_not_listed"] += 1
+                continue
+            if members is not None and sym not in members:
+                # Listed, but not a Nifty 500 member on budget day -> outside the point-in-time universe
+                report_row["dropped_not_in_nifty500"] += 1
                 continue
 
             prices_s = bundle.stock_prices[sym]
@@ -184,6 +198,11 @@ def build_stock_features(
 
     df_long = pd.DataFrame(long_records)
     df_wide = pd.DataFrame(wide_records)
+    if len(df_wide):
+        counts = df_wide.groupby("budget_id").size()
+        for row in universe_report:
+            row["kept"] = int(counts.get(row["budget_id"], 0))
+    df_wide.attrs["universe_report"] = universe_report
     return df_long, df_wide
 
 
@@ -200,4 +219,7 @@ def build_and_save_stock_features(
 
     df_long.to_csv(out_long, index=False, float_format="%.10g")
     df_wide.to_csv(out_wide, index=False, float_format="%.10g")
+    report_dir = root / "reports"
+    report_dir.mkdir(exist_ok=True)
+    pd.DataFrame(df_wide.attrs.get("universe_report", [])).to_csv(report_dir / "universe_filter.csv", index=False)
     return df_long, df_wide

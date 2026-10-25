@@ -44,7 +44,18 @@ Checked 2026-10-25 from the cloud sandbox, whose network allowlist blocks NSDL, 
 | 10-year G-sec yield (FRED `IRLTLT01INM156N`) | No `g_sec_10y_yield` series in `macro.csv`. FRED returns 404 for that series URL earlier and is blocked here now. | On a laptop run `python -m bsp.ingest.macro`. If FRED still 404s, download the series from RBI DBIE and add it as a manual file (needs a loader; not built). |
 | Repo rate | No `repo_rate` series. `data/raw/rbi/repo_rate.csv` does not exist. `policy_discount_rate` (World Bank/FRED, annual-frequency source) is the only policy-rate proxy. | Download the policy repo-rate history from RBI DBIE and save it as `data/raw/rbi/repo_rate.csv` with columns `date,value`; then run `python -m bsp.ingest.macro`. |
 | Nifty Healthcare index | Yahoo returns 404 "Quote not found" for `^CNXHEALTH` (retried 2026-10-25). No official index cross-check for Healthcare. | Optional: put a niftyindices.com download in `data/raw/indices/` with columns `index_name,date,close` (the manual loader is in `ingest/benchmarks.py`). Otherwise: no official index cross-check for Healthcare. |
-| Point-in-time Nifty 500 constituents | `nifty500_constituents.csv` is header-only; see Task 3 notes below once attempted. | See below. |
+| Point-in-time Nifty 500 constituents | `nifty500_constituents.csv` is header-only (columns `symbol, effective_from, effective_to, source, source_url, fetched_at`). niftyindices.com and NSE are blocked from the sandbox, so neither the current list nor any index-change press release could be downloaded. History cannot be rebuilt back to any year yet. Until the file is populated the universe filter drops nothing (0 stock-year rows dropped; see `reports/universe_filter.csv`) and only the listing-date check applies. | See "Nifty 500 history: how to finish" below. |
+
+### Nifty 500 history: how to finish (by hand, on a laptop)
+
+`scripts/collect/nifty500_history.py` is written and unit-tested on hand-made fixtures (`tests/test_nifty500_history.py`) but has **never run against real niftyindices/NSE files**, so the press-release layout it assumes is unverified.
+
+1. Download the current list from `https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv` (the script does this itself on a laptop; otherwise save it as `data/raw/nifty500_constituents/ind_nifty500list_<YYYY-MM-DD>.csv`).
+2. Collect the niftyindices.com / NSE index-change press releases ("Changes in Nifty indices", semi-annual and ad hoc). Save each as `data/raw/nifty500_constituents/press_releases/<YYYY-MM-DD>.pdf`, where the date is the day the change takes effect, and/or list `effective_date,url` in `config/nifty500_press_releases.csv` so the script downloads them.
+3. Run `python scripts/collect/nifty500_history.py`. Releases it cannot parse, and company names it cannot map to a symbol, are listed in `reports/nifty500_history_report.csv`; map names by hand in `config/nifty500_name_aliases.csv` (`company_name,symbol`).
+4. Run `python -m bsp.ingest.constituents` and `make features`. Coverage starts the day before the oldest release you supply; budgets before that date are **not** filtered (earlier years are never filled). State the first covered year here once known.
+
+Known limits of the method: symbol changes/mergers are not tracked; a company that is both included and excluded in one release is reported, not resolved.
 
 ## Out of Phase 1
 
