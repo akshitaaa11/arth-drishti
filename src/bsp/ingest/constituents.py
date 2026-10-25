@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from bsp.ingest._common import CSV_DIR, RAW_DIR, append_fetch_log, ensure_dirs
+from bsp.ingest._common import CSV_DIR, RAW_DIR, append_fetch_log, ensure_dirs, write_csv_guarded
 
 
 def collect_constituents() -> pd.DataFrame:
@@ -21,7 +21,7 @@ def collect_constituents() -> pd.DataFrame:
         output = pd.concat(collected, ignore_index=True).drop_duplicates(subset=["symbol", "effective_from", "effective_to"]).sort_values(["symbol", "effective_from"]).reset_index(drop=True)
     else:
         output = pd.DataFrame(columns=["symbol", "effective_from", "effective_to"])
-    output.to_csv(CSV_DIR / "nifty500_constituents.csv", index=False)
+    write_csv_guarded(output, CSV_DIR / "nifty500_constituents.csv")
     append_fetch_log("constituents", "ok" if len(output) else "empty", len(output), "manual constituent list not available; file left empty")
     return output
 

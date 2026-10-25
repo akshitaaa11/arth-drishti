@@ -24,6 +24,22 @@ def load_stocks() -> pd.DataFrame:
     return pd.read_csv(CFG_DIR / "stocks.csv")
 
 
+def write_csv_guarded(frame: pd.DataFrame, path: Path) -> bool:
+    """Write ``frame`` to ``path`` unless that would replace a populated CSV with an empty one.
+
+    A blocked or failed download must never wipe data from an earlier successful run.
+    Returns True when the file was written.
+    """
+    if frame.empty and path.exists():
+        try:
+            if len(pd.read_csv(path, nrows=1)):
+                return False
+        except pd.errors.EmptyDataError:
+            pass
+    frame.to_csv(path, index=False)
+    return True
+
+
 def append_fetch_log(job: str, status: str, rows: int = 0, detail: str = "") -> None:
     ensure_dirs()
     path = CSV_DIR / "fetch_log.csv"

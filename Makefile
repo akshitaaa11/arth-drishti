@@ -57,7 +57,7 @@ load:
 
 data: parse-pdfs collect load
 
-features:
+features: db-migrate
 	@$(PY) -m bsp.features.build
 
 train:

@@ -5,7 +5,13 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
-from bsp.ingest._common import CSV_DIR, append_fetch_log, ensure_dirs, load_stocks
+from bsp.ingest._common import (
+    CSV_DIR,
+    append_fetch_log,
+    ensure_dirs,
+    load_stocks,
+    write_csv_guarded,
+)
 
 START = "2004-12-01"
 
@@ -42,7 +48,7 @@ def collect_prices() -> pd.DataFrame:
             failed.append(f"{stock.symbol}({exc})")
     if not rows:
         empty = pd.DataFrame(columns=["symbol", "date", "open", "high", "low", "close", "adj_close", "volume", "traded_value_cr", "source", "source_url", "fetched_at"])
-        empty.to_csv(CSV_DIR / "prices_daily.csv", index=False)
+        write_csv_guarded(empty, CSV_DIR / "prices_daily.csv")
         append_fetch_log("prices", "failed", 0, "no stock prices downloaded")
         return empty
     frame = pd.concat(rows, ignore_index=True).drop_duplicates(subset=["symbol", "date"]).sort_values(["symbol", "date"]).reset_index(drop=True)

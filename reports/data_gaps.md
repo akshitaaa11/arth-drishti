@@ -34,6 +34,18 @@ All 25 values in `reports/budget_spot_check.csv` are marked as found on their ci
 
 `config/ministry_aliases.csv` documents legacy ministry and department names. `Power + MNRE` and `Other Ministries` are explicitly derived aggregates; neither is presented as a printed source line.
 
+## Phase 2 market, flow and macro gaps
+
+Checked 2026-10-25 from the cloud sandbox, whose network allowlist blocks NSDL, FRED, niftyindices.com, NSE and the World Bank (HTTP 403 from the egress proxy). Yahoo Finance is reachable. All collectors were hardened so a blocked run keeps the previous CSV instead of overwriting it with an empty one (`write_csv_guarded`; `macro.py` also keeps the rows of any series that failed this run).
+
+| Gap | Effect | Status / what to do by hand |
+| --- | --- | --- |
+| NSDL FPI before 2018-09-15 | `fpi_sector_fortnightly.csv` still starts at `period_end` 2018-09-15 (2,922 rows). The 2017-01 to 2018-08 fortnights failed earlier because `html5lib` was missing; it is now a dependency. NSDL is blocked here, so the re-run could not fetch them. | On a laptop: `pip install -e ".[dev]"` then `python -m bsp.ingest.fpi`. Raw pages are cached in `data/raw/nsdl_fpi/`. |
+| 10-year G-sec yield (FRED `IRLTLT01INM156N`) | No `g_sec_10y_yield` series in `macro.csv`. FRED returns 404 for that series URL earlier and is blocked here now. | On a laptop run `python -m bsp.ingest.macro`. If FRED still 404s, download the series from RBI DBIE and add it as a manual file (needs a loader; not built). |
+| Repo rate | No `repo_rate` series. `data/raw/rbi/repo_rate.csv` does not exist. `policy_discount_rate` (World Bank/FRED, annual-frequency source) is the only policy-rate proxy. | Download the policy repo-rate history from RBI DBIE and save it as `data/raw/rbi/repo_rate.csv` with columns `date,value`; then run `python -m bsp.ingest.macro`. |
+| Nifty Healthcare index | Yahoo returns 404 "Quote not found" for `^CNXHEALTH` (retried 2026-10-25). No official index cross-check for Healthcare. | Optional: put a niftyindices.com download in `data/raw/indices/` with columns `index_name,date,close` (the manual loader is in `ingest/benchmarks.py`). Otherwise: no official index cross-check for Healthcare. |
+| Point-in-time Nifty 500 constituents | `nifty500_constituents.csv` is header-only; see Task 3 notes below once attempted. | See below. |
+
 ## Out of Phase 1
 
-No Phase 2 market, index, macro or FPI collection was started. Historical index constituents, prices and other later-phase sources remain out of scope for this Phase 1 build.
+Phase 1 itself did not cover market, index, macro or FPI collection; see the Phase 2 section above.
