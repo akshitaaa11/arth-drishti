@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true  # data/csv/prices_daily.csv is stored in Git LFS
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -45,6 +47,8 @@ jobs:
       DATABASE_URL: postgresql+psycopg2://postgres:postgres@localhost:5432/bsp
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true  # data/csv/prices_daily.csv is stored in Git LFS
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
