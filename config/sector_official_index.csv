@@ -1,0 +1,9 @@
+sector_id,official_index,note
+fmcg,Nifty FMCG,same industry
+it_control,Nifty IT,same industry
+psu_banks,Nifty PSU Bank,same industry
+healthcare,Nifty Pharma,closest available (Nifty Healthcare is not on Yahoo)
+housing,Nifty Realty,closest available proxy for housing/real estate
+roads,Nifty Infrastructure,closest available proxy
+power,Nifty Energy,closest available proxy
+rural,Nifty India Consumption,closest available proxy

@@ -1,0 +1,16 @@
+sector_id,first_date,active_stocks_at_start,first_date_with_3_plus_stocks,official_index,overlap_days,daily_return_corr
+agriculture,2004-12-02,4,2004-12-02,,,
+defence,2004-12-02,2,2017-08-14,,,
+education,2004-12-02,3,2004-12-02,,,
+fertilisers,2004-12-02,6,2004-12-02,,,
+fmcg,2004-12-02,6,2004-12-02,Nifty FMCG,3857,0.7204
+healthcare,2004-12-02,6,2004-12-02,Nifty Pharma,3872,0.8386
+housing,2004-12-02,1,2007-07-06,Nifty Realty,3993,0.8709
+it_control,2004-12-02,5,2004-12-02,Nifty IT,4700,0.9344
+power,2004-12-02,2,2005-10-20,Nifty Energy,3858,0.687
+psu_banks,2004-12-02,5,2004-12-02,Nifty PSU Bank,3858,0.9395
+railways,2004-12-02,1,2018-07-04,,,
+roads,2004-12-02,3,2004-12-02,Nifty Infrastructure,3993,0.7559
+rural,2004-12-02,2,2006-03-20,Nifty India Consumption,3744,0.6827
+telecom,2004-12-02,5,2004-12-02,,,
+water,2004-12-02,6,2004-12-02,,,
