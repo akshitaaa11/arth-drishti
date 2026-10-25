@@ -21,3 +21,23 @@ constituents,2026-10-25T08:34:26+00:00,empty,0,no files in data/raw/nifty500_con
 prices,2026-10-25T08:38:48+00:00,ok,511915,
 prices,2026-10-25T08:40:09+00:00,ok,511915,
 prices,2026-10-25T08:41:01+00:00,ok,511915,
+prices,2026-10-25T08:44:05+00:00,ok,511915,
+prices,2026-10-25T08:44:52+00:00,ok,511915,
+indices,2026-10-25T08:44:58+00:00,partial,62375,Nifty Healthcare(empty response)
+indices,2026-10-25T08:45:03+00:00,partial,62375,Nifty Healthcare(empty response)
+constituents,2026-10-25T08:45:03+00:00,empty,0,no files in data/raw/nifty500_constituents; run scripts/collect/nifty500_history.py (existing CSV kept)
+constituents,2026-10-25T08:45:03+00:00,empty,0,no files in data/raw/nifty500_constituents; run scripts/collect/nifty500_history.py (existing CSV kept)
+macro,2026-10-25T08:45:06+00:00,partial,20542,"cpi_index_2015(HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Max retries exceeded with url: /graph/fredgraph.csv?id=INDCPIALLMINMEI (Caused by ProxyError('Unable to connect to proxy', OSE"
+macro,2026-10-25T08:45:09+00:00,partial,20542,"cpi_index_2015(HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Max retries exceeded with url: /graph/fredgraph.csv?id=INDCPIALLMINMEI (Caused by ProxyError('Unable to connect to proxy', OSE"
+fpi,2026-10-25T08:46:02+00:00,empty,0,"2017-01-15, 2017-01-31, 2017-02-15, 2017-02-28, 2017-03-15, 2017-03-31, 2017-04-15, 2017-04-30, 2017-05-15, 2017-05-31, 2017-06-15, 2017-06-30, 2017-07-15, 2017-07-31, 2017-08-15, 2017-08-31, 2017-09-"
+fpi,2026-10-25T08:46:51+00:00,empty,0,"2017-01-15, 2017-01-31, 2017-02-15, 2017-02-28, 2017-03-15, 2017-03-31, 2017-04-15, 2017-04-30, 2017-05-15, 2017-05-31, 2017-06-15, 2017-06-30, 2017-07-15, 2017-07-31, 2017-08-15, 2017-08-31, 2017-09-"
+prices,2026-10-25T08:47:46+00:00,ok,511915,
+prices,2026-10-25T08:48:30+00:00,ok,511915,
+indices,2026-10-25T08:48:36+00:00,partial,62375,Nifty Healthcare(empty response)
+indices,2026-10-25T08:48:41+00:00,partial,62375,Nifty Healthcare(empty response)
+constituents,2026-10-25T08:48:41+00:00,empty,0,no files in data/raw/nifty500_constituents; run scripts/collect/nifty500_history.py (existing CSV kept)
+constituents,2026-10-25T08:48:41+00:00,empty,0,no files in data/raw/nifty500_constituents; run scripts/collect/nifty500_history.py (existing CSV kept)
+macro,2026-10-25T08:48:43+00:00,partial,20542,"cpi_index_2015(HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Max retries exceeded with url: /graph/fredgraph.csv?id=INDCPIALLMINMEI (Caused by ProxyError('Unable to connect to proxy', OSE"
+macro,2026-10-25T08:48:46+00:00,partial,20542,"cpi_index_2015(HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Max retries exceeded with url: /graph/fredgraph.csv?id=INDCPIALLMINMEI (Caused by ProxyError('Unable to connect to proxy', OSE"
+fpi,2026-10-25T08:49:35+00:00,empty,0,"2017-01-15, 2017-01-31, 2017-02-15, 2017-02-28, 2017-03-15, 2017-03-31, 2017-04-15, 2017-04-30, 2017-05-15, 2017-05-31, 2017-06-15, 2017-06-30, 2017-07-15, 2017-07-31, 2017-08-15, 2017-08-31, 2017-09-"
+fpi,2026-10-25T08:50:23+00:00,empty,0,"2017-01-15, 2017-01-31, 2017-02-15, 2017-02-28, 2017-03-15, 2017-03-31, 2017-04-15, 2017-04-30, 2017-05-15, 2017-05-31, 2017-06-15, 2017-06-30, 2017-07-15, 2017-07-31, 2017-08-15, 2017-08-31, 2017-09-"
