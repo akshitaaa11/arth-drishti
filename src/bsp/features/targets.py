@@ -235,5 +235,5 @@ def build_and_save_targets(
     df_targets = compute_targets_for_bundle(bundle, budget_events)
 
     out_csv = root / "data" / "csv" / "targets.csv"
-    df_targets.to_csv(out_csv, index=False)
+    df_targets.to_csv(out_csv, index=False, float_format="%.10g")
     return df_targets

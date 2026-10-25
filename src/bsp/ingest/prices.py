@@ -34,7 +34,7 @@ def collect_prices() -> pd.DataFrame:
     failed: list[str] = []
     for stock in load_stocks().itertuples():
         try:
-            history = _history(stock.yahoo_symbol)
+            history = _history(str(stock.yahoo_symbol))
             history = history.rename(columns={"Date": "date", "Open": "open", "High": "high", "Low": "low", "Close": "close", "Adj Close": "adj_close", "Volume": "volume"})
             history.insert(0, "symbol", stock.symbol)
             rows.append(history[["symbol", "date", "open", "high", "low", "close", "adj_close", "volume"]])
@@ -52,7 +52,7 @@ def collect_prices() -> pd.DataFrame:
     frame["fetched_at"] = pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds")
     frame.to_csv(CSV_DIR / "prices_daily.csv", index=False)
 
-    first_dates = frame.groupby("symbol", as_index=False)["date"].min().rename(columns={"date": "first_price_date"})
+    first_dates = frame.groupby("symbol")["date"].min().reset_index(name="first_price_date")
     first_dates.to_csv(CSV_DIR / "stock_first_price_date.csv", index=False)
 
     quality = frame.copy()

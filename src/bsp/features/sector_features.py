@@ -384,6 +384,6 @@ def build_and_save_sector_features(
     out_long = root / "data" / "csv" / "features_sector_year.csv"
     out_wide = root / "data" / "csv" / "features_sector_year_wide.csv"
 
-    df_long.to_csv(out_long, index=False)
-    df_wide.to_csv(out_wide, index=False)
+    df_long.to_csv(out_long, index=False, float_format="%.10g")
+    df_wide.to_csv(out_wide, index=False, float_format="%.10g")
     return df_long, df_wide

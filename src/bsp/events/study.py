@@ -243,5 +243,5 @@ def build_and_save_event_study(
     df_es = run_event_study(bundle, budget_events)
 
     out_csv = root / "data" / "csv" / "event_study.csv"
-    df_es.to_csv(out_csv, index=False)
+    df_es.to_csv(out_csv, index=False, float_format="%.10g")
     return df_es

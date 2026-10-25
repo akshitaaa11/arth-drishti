@@ -154,7 +154,7 @@ def build_market_data_bundle(project_root: Path | None = None) -> MarketDataBund
 
     df_baskets = pd.DataFrame(baskets_records)
     out_baskets_path = root / "data" / "csv" / "sector_baskets_daily.csv"
-    df_baskets.to_csv(out_baskets_path, index=False)
+    df_baskets.to_csv(out_baskets_path, index=False, float_format="%.10g")
 
     return MarketDataBundle(
         trading_days=trading_days,
