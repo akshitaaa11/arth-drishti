@@ -5,7 +5,15 @@ import io
 import pandas as pd
 import requests
 
-from bsp.ingest._common import CSV_DIR, RAW_DIR, UA, append_fetch_log, ensure_dirs
+from bsp.ingest._common import (
+    CSV_DIR,
+    RAW_DIR,
+    UA,
+    append_fetch_log,
+    ensure_dirs,
+    write_csv_guarded,
+)
+from bsp.quality.schemas import validate_macro
 
 YAHOO_MACRO = {
     "USDINR=X": ("usd_inr", "INR per USD"),
@@ -78,11 +86,22 @@ def collect_macro() -> pd.DataFrame:
         errors.append("repo_rate(manual file data/raw/rbi/repo_rate.csv missing)")
     if parts:
         df = pd.concat(parts, ignore_index=True)
-        df["fetched_at"] = pd.Timestamp.utcnow().isoformat(timespec="seconds")
+        df["fetched_at"] = pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds")
+        # A series that failed this run keeps its rows (and original fetched_at) from the previous run.
+        previous_path = CSV_DIR / "macro.csv"
+        if previous_path.exists():
+            previous = pd.read_csv(previous_path)
+            kept = previous[~previous["series"].isin(df["series"].unique())]
+            df = pd.concat([df, kept], ignore_index=True)
+        # Yahoo returns tz-aware timestamps and FRED/World Bank plain dates: store one ISO date per row.
+        df["date"] = df["date"].astype(str).str[:10]
+        df = df.drop_duplicates(subset=["series", "date"], keep="first")
+        df = df.sort_values(["series", "date"]).reset_index(drop=True)
+        validate_macro(df)
         df.to_csv(CSV_DIR / "macro.csv", index=False)
     else:
         empty = pd.DataFrame(columns=["series", "date", "value", "unit", "source", "fetched_at"])
-        empty.to_csv(CSV_DIR / "macro.csv", index=False)
+        write_csv_guarded(empty, CSV_DIR / "macro.csv")
     append_fetch_log("macro", "ok" if not errors else "partial", sum(len(part) for part in parts), ", ".join(errors)[:200])
     return pd.read_csv(CSV_DIR / "macro.csv") if (CSV_DIR / "macro.csv").exists() else pd.DataFrame()
 

@@ -1,117 +1,117 @@
 sector_id,sector_name,symbol,yahoo_symbol,listing_date
-defence,Defence & Aerospace,HAL,HAL.NS,
+defence,Defence & Aerospace,HAL,HAL.NS,2018-04-02
 defence,Defence & Aerospace,BEL,BEL.NS,
-defence,Defence & Aerospace,BDL,BDL.NS,
-defence,Defence & Aerospace,MAZDOCK,MAZDOCK.NS,
-defence,Defence & Aerospace,COCHINSHIP,COCHINSHIP.NS,
-defence,Defence & Aerospace,GRSE,GRSE.NS,
+defence,Defence & Aerospace,BDL,BDL.NS,2018-03-23
+defence,Defence & Aerospace,MAZDOCK,MAZDOCK.NS,2020-10-12
+defence,Defence & Aerospace,COCHINSHIP,COCHINSHIP.NS,2017-08-11
+defence,Defence & Aerospace,GRSE,GRSE.NS,2018-10-24
 defence,Defence & Aerospace,BEML,BEML.NS,
-defence,Defence & Aerospace,DATAPATTNS,DATAPATTNS.NS,
+defence,Defence & Aerospace,DATAPATTNS,DATAPATTNS.NS,2021-12-24
 roads,Roads & Construction,LT,LT.NS,
-roads,Roads & Construction,IRB,IRB.NS,
-roads,Roads & Construction,KNRCON,KNRCON.NS,
-roads,Roads & Construction,PNCINFRA,PNCINFRA.NS,
+roads,Roads & Construction,IRB,IRB.NS,2008-02-25
+roads,Roads & Construction,KNRCON,KNRCON.NS,2008-02-18
+roads,Roads & Construction,PNCINFRA,PNCINFRA.NS,2015-05-26
 roads,Roads & Construction,ULTRACEMCO,ULTRACEMCO.NS,
 roads,Roads & Construction,NCC,NCC.NS,
-roads,Roads & Construction,ASHOKA,ASHOKA.NS,
-roads,Roads & Construction,HGINFRA,HGINFRA.NS,
-railways,Railways,RVNL,RVNL.NS,
-railways,Railways,IRCON,IRCON.NS,
-railways,Railways,IRFC,IRFC.NS,
-railways,Railways,RAILTEL,RAILTEL.NS,
-railways,Railways,TITAGARH,TITAGARH.NS,
-railways,Railways,IRCTC,IRCTC.NS,
-railways,Railways,RITES,RITES.NS,
+roads,Roads & Construction,ASHOKA,ASHOKA.NS,2010-10-14
+roads,Roads & Construction,HGINFRA,HGINFRA.NS,2018-03-09
+railways,Railways,RVNL,RVNL.NS,2019-04-11
+railways,Railways,IRCON,IRCON.NS,2018-09-28
+railways,Railways,IRFC,IRFC.NS,2021-01-29
+railways,Railways,RAILTEL,RAILTEL.NS,2021-02-26
+railways,Railways,TITAGARH,TITAGARH.NS,2008-04-22
+railways,Railways,IRCTC,IRCTC.NS,2019-10-14
+railways,Railways,RITES,RITES.NS,2018-07-03
 railways,Railways,TEXRAIL,TEXRAIL.NS,
-housing,Housing & Real Estate,DLF,DLF.NS,
-housing,Housing & Real Estate,GODREJPROP,GODREJPROP.NS,
-housing,Housing & Real Estate,NBCC,NBCC.NS,
-housing,Housing & Real Estate,HUDCO,HUDCO.NS,
-housing,Housing & Real Estate,OBEROIRLTY,OBEROIRLTY.NS,
-housing,Housing & Real Estate,PRESTIGE,PRESTIGE.NS,
-housing,Housing & Real Estate,SOBHA,SOBHA.NS,
+housing,Housing & Real Estate,DLF,DLF.NS,2007-07-05
+housing,Housing & Real Estate,GODREJPROP,GODREJPROP.NS,2010-01-05
+housing,Housing & Real Estate,NBCC,NBCC.NS,2012-04-12
+housing,Housing & Real Estate,HUDCO,HUDCO.NS,2017-05-19
+housing,Housing & Real Estate,OBEROIRLTY,OBEROIRLTY.NS,2010-10-20
+housing,Housing & Real Estate,PRESTIGE,PRESTIGE.NS,2010-10-27
+housing,Housing & Real Estate,SOBHA,SOBHA.NS,2006-12-20
 housing,Housing & Real Estate,LICHSGFIN,LICHSGFIN.NS,
 healthcare,Healthcare & Pharma,SUNPHARMA,SUNPHARMA.NS,
 healthcare,Healthcare & Pharma,CIPLA,CIPLA.NS,
 healthcare,Healthcare & Pharma,APOLLOHOSP,APOLLOHOSP.NS,
 healthcare,Healthcare & Pharma,DRREDDY,DRREDDY.NS,
 healthcare,Healthcare & Pharma,LUPIN,LUPIN.NS,
-healthcare,Healthcare & Pharma,FORTIS,FORTIS.NS,
+healthcare,Healthcare & Pharma,FORTIS,FORTIS.NS,2007-05-09
 healthcare,Healthcare & Pharma,BIOCON,BIOCON.NS,
-healthcare,Healthcare & Pharma,POLYMED,POLYMED.NS,
+healthcare,Healthcare & Pharma,POLYMED,POLYMED.NS,2011-12-07
 agriculture,Agriculture & Agri-inputs,UPL,UPL.NS,
-agriculture,Agriculture & Agri-inputs,PIIND,PIIND.NS,
-agriculture,Agriculture & Agri-inputs,DHANUKA,DHANUKA.NS,
+agriculture,Agriculture & Agri-inputs,PIIND,PIIND.NS,2011-06-15
+agriculture,Agriculture & Agri-inputs,DHANUKA,DHANUKA.NS,2011-06-29
 agriculture,Agriculture & Agri-inputs,M&M,M&M.NS,
 agriculture,Agriculture & Agri-inputs,ESCORTS,ESCORTS.NS,
 agriculture,Agriculture & Agri-inputs,RALLIS,RALLIS.NS,
-agriculture,Agriculture & Agri-inputs,BAYERCROP,BAYERCROP.NS,
-agriculture,Agriculture & Agri-inputs,GODREJAGRO,GODREJAGRO.NS,
+agriculture,Agriculture & Agri-inputs,BAYERCROP,BAYERCROP.NS,2010-01-08
+agriculture,Agriculture & Agri-inputs,GODREJAGRO,GODREJAGRO.NS,2017-10-16
 fertilisers,Fertilisers,CHAMBLFERT,CHAMBLFERT.NS,
 fertilisers,Fertilisers,COROMANDEL,COROMANDEL.NS,
 fertilisers,Fertilisers,RCF,RCF.NS,
-fertilisers,Fertilisers,NFL,NFL.NS,
+fertilisers,Fertilisers,NFL,NFL.NS,2006-12-28
 fertilisers,Fertilisers,GSFC,GSFC.NS,
 fertilisers,Fertilisers,FACT,FACT.NS,
 fertilisers,Fertilisers,DEEPAKFERT,DEEPAKFERT.NS,
-fertilisers,Fertilisers,PARADEEP,PARADEEP.NS,
+fertilisers,Fertilisers,PARADEEP,PARADEEP.NS,2022-05-27
 fmcg,FMCG & Food,HINDUNILVR,HINDUNILVR.NS,
 fmcg,FMCG & Food,ITC,ITC.NS,
 fmcg,FMCG & Food,BRITANNIA,BRITANNIA.NS,
 fmcg,FMCG & Food,KRBL,KRBL.NS,
-fmcg,FMCG & Food,NESTLEIND,NESTLEIND.NS,
+fmcg,FMCG & Food,NESTLEIND,NESTLEIND.NS,2010-01-08
 fmcg,FMCG & Food,DABUR,DABUR.NS,
 fmcg,FMCG & Food,TATACONSUM,TATACONSUM.NS,
-fmcg,FMCG & Food,LTFOODS,LTFOODS.NS,
+fmcg,FMCG & Food,LTFOODS,LTFOODS.NS,2006-12-19
 telecom,Telecom & Digital Infra,BHARTIARTL,BHARTIARTL.NS,
 telecom,Telecom & Digital Infra,HFCL,HFCL.NS,
-telecom,Telecom & Digital Infra,TEJASNET,TEJASNET.NS,
+telecom,Telecom & Digital Infra,TEJASNET,TEJASNET.NS,2017-06-27
 telecom,Telecom & Digital Infra,ITI,ITI.NS,
-telecom,Telecom & Digital Infra,INDUSTOWER,INDUSTOWER.NS,
+telecom,Telecom & Digital Infra,INDUSTOWER,INDUSTOWER.NS,2012-12-28
 telecom,Telecom & Digital Infra,STLTECH,STLTECH.NS,
 telecom,Telecom & Digital Infra,TATACOMM,TATACOMM.NS,
-telecom,Telecom & Digital Infra,IDEA,IDEA.NS,
+telecom,Telecom & Digital Infra,IDEA,IDEA.NS,2007-03-09
 rural,Rural Consumption & Credit,HEROMOTOCO,HEROMOTOCO.NS,
-rural,Rural Consumption & Credit,EMAMILTD,EMAMILTD.NS,
-rural,Rural Consumption & Credit,CREDITACC,CREDITACC.NS,
+rural,Rural Consumption & Credit,EMAMILTD,EMAMILTD.NS,2006-08-03
+rural,Rural Consumption & Credit,CREDITACC,CREDITACC.NS,2018-08-23
 rural,Rural Consumption & Credit,TVSMOTOR,TVSMOTOR.NS,
-rural,Rural Consumption & Credit,MUTHOOTFIN,MUTHOOTFIN.NS,
-rural,Rural Consumption & Credit,MANAPPURAM,MANAPPURAM.NS,
-rural,Rural Consumption & Credit,JYOTHYLAB,JYOTHYLAB.NS,
-rural,Rural Consumption & Credit,M&MFIN,M&MFIN.NS,
-water,Water & Pipes,WABAG,WABAG.NS,
+rural,Rural Consumption & Credit,MUTHOOTFIN,MUTHOOTFIN.NS,2011-05-06
+rural,Rural Consumption & Credit,MANAPPURAM,MANAPPURAM.NS,2010-06-30
+rural,Rural Consumption & Credit,JYOTHYLAB,JYOTHYLAB.NS,2007-12-19
+rural,Rural Consumption & Credit,M&MFIN,M&MFIN.NS,2006-03-17
+water,Water & Pipes,WABAG,WABAG.NS,2010-10-13
 water,Water & Pipes,JINDALSAW,JINDALSAW.NS,
 water,Water & Pipes,WELCORP,WELCORP.NS,
 water,Water & Pipes,MAHSEAMLES,MAHSEAMLES.NS,
 water,Water & Pipes,FINPIPE,FINPIPE.NS,
 water,Water & Pipes,SUPREMEIND,SUPREMEIND.NS,
-water,Water & Pipes,ASTRAL,ASTRAL.NS,
+water,Water & Pipes,ASTRAL,ASTRAL.NS,2007-03-20
 water,Water & Pipes,KSB,KSB.NS,
 education,Education,NAVNETEDUL,NAVNETEDUL.NS,
 education,Education,APTECHT,APTECHT.NS,
 education,Education,NIITLTD,NIITLTD.NS,
-education,Education,SCHAND,SCHAND.NS,
-education,Education,ZEELEARN,ZEELEARN.NS,
+education,Education,SCHAND,SCHAND.NS,2017-05-09
+education,Education,ZEELEARN,ZEELEARN.NS,2010-12-20
 power,Power & Renewables,NTPC,NTPC.NS,
-power,Power & Renewables,POWERGRID,POWERGRID.NS,
+power,Power & Renewables,POWERGRID,POWERGRID.NS,2007-10-05
 power,Power & Renewables,TATAPOWER,TATAPOWER.NS,
-power,Power & Renewables,IREDA,IREDA.NS,
-power,Power & Renewables,NHPC,NHPC.NS,
-power,Power & Renewables,SJVN,SJVN.NS,
-power,Power & Renewables,ADANIGREEN,ADANIGREEN.NS,
-power,Power & Renewables,SUZLON,SUZLON.NS,
+power,Power & Renewables,IREDA,IREDA.NS,2023-11-29
+power,Power & Renewables,NHPC,NHPC.NS,2009-09-01
+power,Power & Renewables,SJVN,SJVN.NS,2010-05-20
+power,Power & Renewables,ADANIGREEN,ADANIGREEN.NS,2018-06-18
+power,Power & Renewables,SUZLON,SUZLON.NS,2005-10-19
 it_control,IT Services (control),TCS,TCS.NS,
 it_control,IT Services (control),INFY,INFY.NS,
 it_control,IT Services (control),HCLTECH,HCLTECH.NS,
 it_control,IT Services (control),WIPRO,WIPRO.NS,
-it_control,IT Services (control),TECHM,TECHM.NS,
+it_control,IT Services (control),TECHM,TECHM.NS,2006-08-28
 it_control,IT Services (control),MPHASIS,MPHASIS.NS,
-it_control,IT Services (control),PERSISTENT,PERSISTENT.NS,
+it_control,IT Services (control),PERSISTENT,PERSISTENT.NS,2010-04-06
 psu_banks,PSU Banks & Infra Finance,SBIN,SBIN.NS,
 psu_banks,PSU Banks & Infra Finance,BANKBARODA,BANKBARODA.NS,
-psu_banks,PSU Banks & Infra Finance,PFC,PFC.NS,
-psu_banks,PSU Banks & Infra Finance,RECLTD,RECLTD.NS,
+psu_banks,PSU Banks & Infra Finance,PFC,PFC.NS,2007-02-23
+psu_banks,PSU Banks & Infra Finance,RECLTD,RECLTD.NS,2008-03-12
 psu_banks,PSU Banks & Infra Finance,PNB,PNB.NS,
 psu_banks,PSU Banks & Infra Finance,CANBK,CANBK.NS,
 psu_banks,PSU Banks & Infra Finance,UNIONBANK,UNIONBANK.NS,
-psu_banks,PSU Banks & Infra Finance,INDIANB,INDIANB.NS,
+psu_banks,PSU Banks & Infra Finance,INDIANB,INDIANB.NS,2007-03-01

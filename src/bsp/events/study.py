@@ -147,7 +147,7 @@ def run_event_study(
 
         # Estimation window: [-250, -31]
         est_start = max(0, day0_idx - 250)
-        est_end = max(0, day0_idx - 31)
+        est_end = max(0, day0_idx - 30)  # exclusive end: day -31 is the last estimation day
 
         if est_end <= est_start:
             continue

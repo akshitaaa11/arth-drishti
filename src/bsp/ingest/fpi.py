@@ -5,7 +5,14 @@ from datetime import date, timedelta
 
 import pandas as pd
 
-from bsp.ingest._common import CSV_DIR, RAW_DIR, UA, append_fetch_log, ensure_dirs
+from bsp.ingest._common import (
+    CSV_DIR,
+    RAW_DIR,
+    UA,
+    append_fetch_log,
+    ensure_dirs,
+    write_csv_guarded,
+)
 
 MONTHS = [
     "January", "February", "March", "April", "May", "June",
@@ -133,9 +140,9 @@ def collect_fpi() -> pd.DataFrame:
         long.to_csv(CSV_DIR / "fpi_sector_fortnightly_long.csv", index=False)
     else:
         empty = pd.DataFrame(columns=["period_end", "nsdl_sector", "equity_net_cr", "debt_net_cr", "equity_aum_cr", "source_url", "source", "fetched_at"])
-        empty.to_csv(CSV_DIR / "fpi_sector_fortnightly.csv", index=False)
+        write_csv_guarded(empty, CSV_DIR / "fpi_sector_fortnightly.csv")
         empty_long = pd.DataFrame(columns=["period_end", "sector", "column_header", "value", "source_url", "source", "fetched_at"])
-        empty_long.to_csv(CSV_DIR / "fpi_sector_fortnightly_long.csv", index=False)
+        write_csv_guarded(empty_long, CSV_DIR / "fpi_sector_fortnightly_long.csv")
 
     append_fetch_log("fpi", "ok" if len(frames) else "empty", sum(len(frame) for frame in frames), ", ".join(missing)[:200])
     return pd.read_csv(CSV_DIR / "fpi_sector_fortnightly.csv") if (CSV_DIR / "fpi_sector_fortnightly.csv").exists() else pd.DataFrame()

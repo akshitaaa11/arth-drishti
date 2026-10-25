@@ -25,8 +25,8 @@ def upgrade() -> None:
         sa.Column("presented_on", sa.Date, nullable=False),
         sa.Column("budget_type", sa.String(length=32), nullable=False),
         sa.Column("finance_minister", sa.String(length=128), nullable=True),
-        sa.Column("is_interim", sa.Boolean(), nullable=False, server_default=sa.text("0")),
-        sa.Column("is_election_year", sa.Boolean(), nullable=False, server_default=sa.text("0")),
+        sa.Column("is_interim", sa.Boolean(), nullable=False, server_default=sa.false()),
+        sa.Column("is_election_year", sa.Boolean(), nullable=False, server_default=sa.false()),
         sa.Column("notes", sa.Text(), nullable=True),
     )
 

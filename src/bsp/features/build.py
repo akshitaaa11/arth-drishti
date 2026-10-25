@@ -76,6 +76,8 @@ def load_features_into_db(
             df_sec = pd.read_csv(sec_path)
             conn.execute(text("DELETE FROM features_sector_year"))
             # Insert in chunks
+            # NaN must become NULL: Postgres stores NaN as a real float value, which poisons SUM/AVG.
+            df_sec = df_sec.astype(object).where(df_sec.notna(), None)
             sec_records: list[dict[str, Any]] = [
                 {str(k): v for k, v in r.items()} for r in df_sec.to_dict(orient="records")
             ]
@@ -95,6 +97,8 @@ def load_features_into_db(
         if stk_path.exists():
             df_stk = pd.read_csv(stk_path)
             conn.execute(text("DELETE FROM features_stock_year"))
+            # NaN must become NULL: Postgres stores NaN as a real float value, which poisons SUM/AVG.
+            df_stk = df_stk.astype(object).where(df_stk.notna(), None)
             stk_records: list[dict[str, Any]] = [
                 {str(k): v for k, v in r.items()} for r in df_stk.to_dict(orient="records")
             ]
@@ -165,7 +169,7 @@ def load_features_into_db(
                     es_chunk = es_records[i : i + chunk_size]
                     conn.execute(
                         text(
-                            "INSERT INTO event_study (entity, budget_id, window, car, t_stat, alpha, beta) "
+                            "INSERT INTO event_study (entity, budget_id, \"window\", car, t_stat, alpha, beta) "
                             "VALUES (:entity, :budget_id, :window, :car, :t_stat, :alpha, :beta)"
                         ),
                         es_chunk,

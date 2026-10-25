@@ -188,7 +188,12 @@ def test_database_tables_populated(tmp_path, monkeypatch):
         tgt_count = conn.execute(text("SELECT COUNT(*) FROM targets")).scalar()
         es_count = conn.execute(text("SELECT COUNT(*) FROM event_study")).scalar()
 
-    assert sec_count == 10560
-    assert stk_count == 24700
-    assert tgt_count == 11440
-    assert es_count == 14240
+    csv_dir = ROOT / "data" / "csv"
+    expected = {
+        "features_sector_year": sec_count,
+        "features_stock_year": stk_count,
+        "targets": tgt_count,
+        "event_study": es_count,
+    }
+    for table, loaded in expected.items():
+        assert loaded == len(pd.read_csv(csv_dir / f"{table}.csv")) > 0, table

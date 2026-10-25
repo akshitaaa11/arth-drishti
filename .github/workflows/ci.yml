@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true  # data/csv/prices_daily.csv is stored in Git LFS
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -23,3 +25,44 @@ jobs:
         run: python -m mypy src
       - name: Unit tests
         run: python -m pytest -q
+
+  migrate-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: bsp
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d bsp"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@localhost:5432/bsp
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true  # data/csv/prices_daily.csv is stored in Git LFS
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+      - name: Migrate a clean Postgres database
+        run: python -m alembic upgrade head
+      - name: make load (first run) and verify rows match the CSVs
+        run: |
+          make load
+          python scripts/verify_load.py
+      - name: make load (second run, must be idempotent) and verify again
+        run: |
+          make load
+          python scripts/verify_load.py

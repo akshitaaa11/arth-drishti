@@ -1,0 +1,15 @@
+Press Release: Changes in S&P BSE and NSE indices
+Nifty 50
+Companies Excluded
+1. Zeta Limited
+Companies Included
+1. Eta Limited
+Nifty 500
+Companies Excluded
+1. Beta Industries Limited
+2. Gamma Ltd
+Companies Included
+1. Alpha Corp Limited
+Nifty Next 50
+Companies Included
+1. Theta Limited

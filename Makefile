@@ -52,12 +52,14 @@ collect:
 	@$(PY) -m bsp.ingest.macro
 	@$(PY) -m bsp.ingest.fpi
 
-load:
+load: db-migrate
 	@$(PY) -m bsp.parsers.load
+	@$(PY) -m bsp.ingest.load
+	@$(PY) -m bsp.features.build --skip-build
 
 data: parse-pdfs collect load
 
-features:
+features: db-migrate
 	@$(PY) -m bsp.features.build
 
 train:
