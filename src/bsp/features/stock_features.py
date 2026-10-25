@@ -71,7 +71,7 @@ def build_stock_features(
         # Market return slice for beta estimation
         # Estimation window [-250, -31]
         est_start = max(0, curr_idx - 250)
-        est_end = max(0, curr_idx - 31)
+        est_end = max(0, curr_idx - 30)  # exclusive end: day -31 is the last estimation day
         mkt_est = mkt_returns[est_start:est_end] if est_end > est_start else np.array([])
 
         # Short window [-90, -1]
