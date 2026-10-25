@@ -1,17 +1,18 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 import pandas as pd
 import yfinance as yf
 
 from bsp.ingest._common import (
     CSV_DIR,
+    RAW_DIR,
+    REPORT_DIR,
     append_fetch_log,
     ensure_dirs,
     load_stocks,
     write_csv_guarded,
 )
+from bsp.quality.price_cleaning import clean_prices, flag_jumps
 
 START = "2004-12-01"
 
@@ -34,6 +35,26 @@ def _history(ticker: str, retries: int = 3) -> pd.DataFrame:
     raise RuntimeError(last_error)
 
 
+def _load_splits(stocks: pd.DataFrame) -> pd.DataFrame:
+    """Split history per symbol, cached under data/raw/yahoo_actions/ (one download per symbol)."""
+    actions_dir = RAW_DIR / "yahoo_actions"
+    actions_dir.mkdir(parents=True, exist_ok=True)
+    frames: list[pd.DataFrame] = []
+    for stock in stocks.itertuples():
+        path = actions_dir / f"{stock.symbol}_splits.csv"
+        if not path.exists():
+            try:
+                series = yf.Ticker(str(stock.yahoo_symbol)).splits
+            except Exception:  # pragma: no cover - network can fail during collection.
+                continue
+            frame = pd.DataFrame({"date": pd.to_datetime(series.index).tz_localize(None).strftime("%Y-%m-%d"),
+                                  "ratio": series.to_numpy()})
+            frame.insert(0, "symbol", stock.symbol)
+            frame.to_csv(path, index=False)
+        frames.append(pd.read_csv(path))
+    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=["symbol", "date", "ratio"])
+
+
 def collect_prices() -> pd.DataFrame:
     ensure_dirs()
     rows: list[pd.DataFrame] = []
@@ -51,7 +72,22 @@ def collect_prices() -> pd.DataFrame:
         write_csv_guarded(empty, CSV_DIR / "prices_daily.csv")
         append_fetch_log("prices", "failed", 0, "no stock prices downloaded")
         return empty
-    frame = pd.concat(rows, ignore_index=True).drop_duplicates(subset=["symbol", "date"]).sort_values(["symbol", "date"]).reset_index(drop=True)
+    raw = pd.concat(rows, ignore_index=True).drop_duplicates(subset=["symbol", "date"]).sort_values(["symbol", "date"]).reset_index(drop=True)
+    raw_dir = RAW_DIR / "yahoo_prices"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    raw.to_csv(raw_dir / "prices_raw.csv", index=False)
+
+    # Flag >50% single-day moves in the raw download, then apply the documented decisions (price_cleaning.py).
+    flags = flag_jumps(raw)
+    result = clean_prices(raw, _load_splits(load_stocks()))
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    if not flags.empty:
+        flags.to_csv(REPORT_DIR / "price_quality_flags.csv", index=False)
+    result.decisions.to_csv(REPORT_DIR / "price_flag_decisions.csv", index=False)
+    result.dropped.to_csv(REPORT_DIR / "price_rows_dropped.csv", index=False)
+    result.adjustments.to_csv(REPORT_DIR / "price_split_adjustments.csv", index=False)
+
+    frame = result.prices
     frame["traded_value_cr"] = (frame["close"] * frame["volume"] / 1e7).round(3)
     frame["source"] = "Yahoo Finance via yfinance"
     frame["source_url"] = "https://finance.yahoo.com"
@@ -60,14 +96,6 @@ def collect_prices() -> pd.DataFrame:
 
     first_dates = frame.groupby("symbol")["date"].min().reset_index(name="first_price_date")
     first_dates.to_csv(CSV_DIR / "stock_first_price_date.csv", index=False)
-
-    quality = frame.copy()
-    quality["ret"] = quality.groupby("symbol")["close"].pct_change()
-    flags = quality[(quality["ret"].abs() > 0.5) | (quality["close"] <= 0) | (quality["volume"] < 0)]
-    if not flags.empty:
-        REPORT_DIR = Path(__file__).resolve().parents[3] / "reports"
-        REPORT_DIR.mkdir(parents=True, exist_ok=True)
-        flags.to_csv(REPORT_DIR / "price_quality_flags.csv", index=False)
 
     append_fetch_log("prices", "ok" if not failed else "partial", len(frame), ", ".join(failed)[:200])
     return frame
