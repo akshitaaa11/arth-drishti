@@ -26,6 +26,7 @@ dependencies = [
   "html5lib>=1.1",
   "lxml>=5.0.0",
   "pandera>=0.20.0",
+  "apscheduler>=3.10,<4",
 ]
 
 [project.optional-dependencies]
@@ -63,5 +64,5 @@ packages = ["bsp"]
 warn_unused_configs = true
 
 [[tool.mypy.overrides]]
-module = ["yfinance"]
+module = ["yfinance", "apscheduler", "apscheduler.*"]
 ignore_missing_imports = true
