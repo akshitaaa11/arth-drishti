@@ -356,7 +356,7 @@ Tasks:
 - [ ] `docker-compose.yml` with Postgres 15, Redis and MLflow. *Still open: Postgres and Redis start healthy and migrate cleanly (`reports/` and task log); the MLflow image (ghcr.io) could not be pulled in the cloud sandbox, so verify `docker compose up` on a laptop.*
 - [x] `.env.example`, `.gitignore` (`.env`, `data/raw/`, `mlruns/`, `*.pdf` under raw).
 - [x] `src/bsp/common/`: config loader (reads `config/*.yaml|json|csv` and env), DB session, structured logging, a `Provenance` dataclass.
-- [x] Database migrations (Alembic) for the tables in §9. *Verified on clean SQLite and Postgres 15; tables `index_constituents`, `fpi_flows`, `macro`, `predictions` and `sealed_ledger` from §9 are not created yet.*
+- [x] Database migrations (Alembic) for the tables in §9. *Five migrations create every §9 table plus `index_daily`; verified on clean SQLite and Postgres 15 and in CI.*
 - [x] GitHub Actions: ruff, mypy, pytest; a separate secret-scan workflow (gitleaks) that fails the build (FR-17). *CI green on PR #1; secret scan verified in `reports/secret_scan_check.md`.*
 - [x] Put the team's budget PDFs and documents in `data/source_pdfs/` and write `data/source_pdfs/INVENTORY.csv` listing each file: `filename, document_type (PRS analysis / speech / highlights / other), fiscal_year, pages`.
 - [x] Use the provided `config/sector_map.json`, `config/stocks.csv` and `config/budget_events.csv`.
@@ -400,7 +400,7 @@ Exit criteria:
 
 ### Phase 2 — Market, flow and macro ingestion
 
-> **Status: Phase 2 collectors run, with data gaps that need a laptop.** Prices (cleaned, with a documented decision for every >50% jump), indices, macro, FPI and sector baskets are in `data/csv/`; a blocked or failed source now keeps the previous CSV instead of overwriting it. Still missing: Nifty 500 point-in-time constituents, FPI before 2018-09, the 10-year G-sec yield, the repo rate and the Nifty Healthcare index. Each gap, and the exact file to download and where to put it, is in [`reports/data_gaps.md`](./reports/data_gaps.md).
+> **Status: Phase 2 collectors and database loads run, with data gaps that need a laptop.** Prices (cleaned, with a documented decision for every >50% jump), indices, macro, FPI and sector baskets are in `data/csv/` and load into Postgres/SQLite with `make load` (idempotent, verified by `scripts/verify_load.py`). A blocked or failed source keeps the previous CSV instead of overwriting it. Still missing: Nifty 500 point-in-time constituents (the table exists but is empty), FPI before 2018-09, the 10-year G-sec yield, the repo rate and the Nifty Healthcare index. Open infrastructure item: `data/csv/prices_daily.csv` (93 MB) should move to Git LFS, but the cloud sandbox cannot reach `lfs.github.com`; the steps to run by hand are in [`reports/data_gaps.md`](./reports/data_gaps.md), which also lists each data gap and the exact file to download and where to put it.
 
 **Goal:** collect daily prices, benchmarks, FPI flows, macro series and point-in-time index constituents as CSVs, then load them into Postgres.
 
@@ -413,7 +413,7 @@ Tasks:
 - [ ] `ingest/fpi.py`: NSDL fortnightly sector-wise FPI (24 sectors) from 2017 (D10). *Still open: FPI data starts 2018-09-15, not 2017; NSDL is blocked from the sandbox. Re-run `python -m bsp.ingest.fpi` on a laptop.*
 - [ ] `ingest/macro.py`: World Bank API and Yahoo series; manual loader for RBI DBIE downloads (D11). *Still open: no `g_sec_10y_yield` (FRED) and no `repo_rate` (needs `data/raw/rbi/repo_rate.csv` from RBI DBIE).*
 - [x] Every job is idempotent (re-running overwrites the CSV and upserts on natural keys) and writes to `fetch_log`. *`reports/idempotence_check.md`; constituents/FPI only trivially tested here because their sources are blocked.*
-- [ ] `make load` loads every CSV in `data/csv/` into Postgres. *Still open: `make load` currently loads budget CSVs (and `make features` loads the Phase 3 tables); prices, indices, macro, FPI and stocks CSVs are not loaded into the database yet.*
+- [x] `make load` loads every CSV in `data/csv/` into Postgres. *`make load` migrates, then loads budget lines, prices, indices, macro, FPI flows, Nifty 500 constituents and the Phase 3 tables as idempotent upserts on natural keys with a `fetch_log` row per table (`src/bsp/ingest/load.py`). Run twice on clean SQLite and clean Postgres: row counts and checksums match the CSVs (`scripts/verify_load.py`); the Postgres CI job repeats this. Stock and sector-basket CSVs have no section 9 table and are not loaded.*
 - [x] `quality/schemas.py` (pandera): no future dates, no duplicate symbol-days, flag single-day price jumps > 50%, positive prices. *Wired into the collectors and run on every CSV in `tests/test_quality_schemas.py`; >50% jumps are decided in `reports/price_flag_decisions.csv`.*
 - [x] APScheduler job definitions for daily prices and fortnightly FPI. *`src/bsp/ingest/scheduler.py`, tested in `tests/test_scheduler.py`.*
 - [x] Build **self-built sector baskets**: equal-weight index of mapped stocks, each stock entering only from its listing date. Keep official indices only as a cross-check. *`reports/sector_basket_report.csv`: all start 2004-12-02 but several are thin (defence has 2 stocks until 2017, railways 1 until 2018, housing 1 until 2007).*

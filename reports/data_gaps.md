@@ -61,6 +61,19 @@ Known limits of the method: symbol changes/mergers are not tracked; a company th
 
 Every single-day move above 50% in the raw Yahoo download has a documented decision in `reports/price_flag_decisions.csv` (36 flags: 18 rows dropped as data errors, 14 rows kept because the jump came from a dropped neighbour, 1 split adjustment, 3 kept as real/unverified). Rows removed are listed in `reports/price_rows_dropped.csv`. Three moves remain unexplained and need a check against NSE corporate-actions files: **NIITLTD 2023-06-08** (-76%), **TEXRAIL 2010-11-01** (-60%) and **TEXRAIL 2011-03-03** (+74%). They stay in the data and will distort those stocks' momentum features until resolved. Also, `data/csv/prices_daily.csv` is about 93 MB, close to GitHub's 100 MB file limit; move it to Git LFS or split it before it grows.
 
+### Git LFS for `data/csv/prices_daily.csv` (pending, needs network access)
+
+The file is 93 MB, close to GitHub's 100 MB limit. The CI workflows already check out with `lfs: true`. The `.gitattributes` entry and pointer commit exist only on a local, unpushed branch because the cloud environment's network policy blocks `lfs.github.com` (HTTP 403 on the LFS verify call). To finish on a laptop (or after adding `lfs.github.com` to the environment's allowed domains):
+
+```
+git lfs install
+git lfs track "data/csv/prices_daily.csv"          # writes .gitattributes
+git rm --cached data/csv/prices_daily.csv && git add .gitattributes data/csv/prices_daily.csv
+git commit -m "Track prices_daily.csv with Git LFS" && git push
+```
+
+The earlier history still contains the full file; do not rewrite pushed history unless you decide to run `git lfs migrate`.
+
 ### Sector baskets (Phase 2)
 
 All 15 baskets start on 2004-12-02, but several are thin at the start (`reports/sector_basket_report.csv`): defence has 2 stocks until 2017-08, railways 1 until 2018-07, housing 1 until 2007-07, power and rural 2 until 2005-10 and 2006-03. Correlations with official indices are reported where a reasonable index exists (0.69 to 0.94); agriculture, defence, education, fertilisers, railways, telecom and water have no clean official index in the downloaded set.
