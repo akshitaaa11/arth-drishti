@@ -165,7 +165,7 @@ def load_features_into_db(
                     es_chunk = es_records[i : i + chunk_size]
                     conn.execute(
                         text(
-                            "INSERT INTO event_study (entity, budget_id, window, car, t_stat, alpha, beta) "
+                            "INSERT INTO event_study (entity, budget_id, \"window\", car, t_stat, alpha, beta) "
                             "VALUES (:entity, :budget_id, :window, :car, :t_stat, :alpha, :beta)"
                         ),
                         es_chunk,

@@ -59,7 +59,7 @@ def upgrade() -> None:
         sa.Column("budget_id", sa.String(length=64), nullable=False),
         sa.Column("horizon", sa.String(length=32), nullable=False),
         sa.Column("excess_return", sa.Float(), nullable=True),
-        sa.Column("target_complete", sa.Boolean(), nullable=False, server_default=sa.text("1")),
+        sa.Column("target_complete", sa.Boolean(), nullable=False, server_default=sa.true()),
     )
     op.create_index(
         "ix_targets_entity_budget_horizon",
