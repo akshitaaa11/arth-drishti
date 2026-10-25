@@ -30,6 +30,12 @@ from bsp.quality.reconcile import reconcile_ministry_rows
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Source PDFs are gitignored; tests that parse them only run where the PDFs are present.
+requires_pdfs = pytest.mark.skipif(
+    not (ROOT / "data" / "source_pdfs" / "Union_Budget_Analysis_-_2022-23.pdf").exists(),
+    reason="source PDFs not available in this checkout",
+)
+
 
 def test_prs_parser_splits_value_columns_and_excludes_growth_percent() -> None:
     assert split_row("Defence  4,52,996 4,71,378 4,84,736 4,78,196 3%") == (
@@ -38,6 +44,7 @@ def test_prs_parser_splits_value_columns_and_excludes_growth_percent() -> None:
     )
 
 
+@requires_pdfs
 def test_prs_pdf_rows_include_actual_page_and_source_metadata() -> None:
     source = ROOT / "data" / "source_pdfs" / "Union_Budget_Analysis_-_2021-22_0.pdf"
     rows = parse_pdf(source)
@@ -49,6 +56,7 @@ def test_prs_pdf_rows_include_actual_page_and_source_metadata() -> None:
     assert all(row["source_url"] and row["fetched_at"] for row in ministry_rows)
 
 
+@requires_pdfs
 def test_prs_parser_omits_values_without_matching_header_columns() -> None:
     source = ROOT / "data" / "source_pdfs" / "Union_Budget_Analysis_-_2022-23.pdf"
     rows = parse_pdf(source)
@@ -90,6 +98,8 @@ def test_legacy_statement2_parser_reads_continuation_page_and_partial_rows() -> 
     )
 
     source = ROOT / "data" / "raw" / "budget_pdfs" / "expenditure_profile_2009-10.pdf"
+    if not source.exists():
+        pytest.skip("D4 source PDF not available in this checkout")
     rows = parse_expenditure_pdf(source)
     health_be = next(
         row

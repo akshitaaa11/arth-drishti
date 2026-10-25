@@ -167,11 +167,21 @@ def test_hand_checked_spot_check_stock():
     assert pd.notna(row_day0["t_stat"])
 
 
-def test_database_tables_populated():
+def test_database_tables_populated(tmp_path, monkeypatch):
     """Verify that all Phase 3 database tables are populated with correct row counts."""
+    from alembic import command
+    from alembic.config import Config
     from sqlalchemy import text
 
-    engine = create_engine()
+    from bsp.features.build import load_features_into_db
+
+    # Build a throwaway database from the migrations and the committed CSVs.
+    url = f"sqlite:///{(tmp_path / 'bsp.db').as_posix()}"
+    monkeypatch.setenv("DATABASE_URL", url)
+    command.upgrade(Config(str(ROOT / "alembic.ini")), "head")
+    load_features_into_db(database_url=url, project_root=ROOT)
+
+    engine = create_engine(database_url=url)
     with engine.connect() as conn:
         sec_count = conn.execute(text("SELECT COUNT(*) FROM features_sector_year")).scalar()
         stk_count = conn.execute(text("SELECT COUNT(*) FROM features_stock_year")).scalar()

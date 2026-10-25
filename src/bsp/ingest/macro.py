@@ -39,7 +39,8 @@ def _fred_csv(series: str) -> pd.DataFrame:
 
 
 def _world_bank(indicator: str) -> pd.DataFrame:
-    response = requests.get(f"https://api.worldbank.org/v2/country/IND/indicator/{indicator}", params={"format": "json", "per_page": 200}, headers=UA, timeout=60)
+    params: dict[str, str | int] = {"format": "json", "per_page": 200}
+    response = requests.get(f"https://api.worldbank.org/v2/country/IND/indicator/{indicator}", params=params, headers=UA, timeout=60)
     response.raise_for_status()
     rows = response.json()[1]
     frame = pd.DataFrame([{"date": f"{x['date']}-12-31", "value": x["value"]} for x in rows if x.get("value") is not None])

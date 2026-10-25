@@ -20,7 +20,6 @@ def validate_symbols(csv_path: Path = CONFIG_PATH, report_path: Path = REPORT_PA
         yahoo_symbol = str(getattr(row, "yahoo_symbol", "")).strip()
         try:
             ticker = yf.Ticker(yahoo_symbol)
-            info = ticker.fast_info
             # Use a tiny download to validate the symbol is reachable.
             history = ticker.history(period="5d", auto_adjust=True)
             status = "ok" if not history.empty else "failed"
