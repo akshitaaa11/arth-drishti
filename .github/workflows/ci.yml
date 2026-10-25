@@ -26,6 +26,7 @@ jobs:
 
   migrate-postgres:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     services:
       postgres:
         image: postgres:15-alpine
@@ -53,9 +54,11 @@ jobs:
           python -m pip install -e ".[dev]"
       - name: Migrate a clean Postgres database
         run: python -m alembic upgrade head
-      - name: Load budget and Phase 3 CSVs twice (idempotent)
+      - name: make load (first run) and verify rows match the CSVs
         run: |
-          python -m bsp.parsers.load
-          python -m bsp.parsers.load
-          python -m bsp.features.build --skip-build
-          python -m bsp.features.build --skip-build
+          make load
+          python scripts/verify_load.py
+      - name: make load (second run, must be idempotent) and verify again
+        run: |
+          make load
+          python scripts/verify_load.py
