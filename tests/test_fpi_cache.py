@@ -31,7 +31,7 @@ def sandbox(tmp_path, monkeypatch):
         monkeypatch.setattr(module, "CSV_DIR", csv_dir)
     monkeypatch.setattr(fpi, "RAW_DIR", raw_dir)
     monkeypatch.setattr(_common, "RAW_DIR", raw_dir)
-    monkeypatch.setattr(fpi, "_fortnight_ends", lambda first_year=2017: iter([date(2018, 9, 15), date(2018, 9, 30), date(2018, 10, 15)]))
+    monkeypatch.setattr(fpi, "_fortnight_ends", lambda start=None: iter([date(2018, 9, 15), date(2018, 9, 30), date(2018, 10, 15)]))
     return csv_dir, raw_dir / "nsdl_fpi"
 
 
@@ -92,7 +92,7 @@ def test_good_pages_are_merged_with_existing_rows_not_replacing_them(sandbox, mo
 def test_collector_stops_after_repeated_blocks(sandbox, monkeypatch) -> None:
     csv_dir, raw = sandbox
     calls: list[int] = []
-    monkeypatch.setattr(fpi, "_fortnight_ends", lambda first_year=2017: (date(2018, 1, 15) for _ in range(20)))
+    monkeypatch.setattr(fpi, "_fortnight_ends", lambda start=None: (date(2018, 1, 15) for _ in range(20)))
     fpi.collect_fpi(get=lambda *a, **k: calls.append(1) or FakeResponse(REJECTED), pause=0)
     assert len(calls) == fpi.MAX_CONSECUTIVE_BLOCKS  # no endless retrying
 

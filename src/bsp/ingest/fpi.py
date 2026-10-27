@@ -88,13 +88,20 @@ def parse_fpi_html(html: str, period_end: date) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def _fortnight_ends(first_year: int = 2017):
-    current = date(first_year, 1, 1)
+# First fortnight NSDL served us (2018-09-15). The 2017-01 to 2018-08 report pages are blocked ("Request Rejected") from
+# the cloud sandbox and the Codespace, so re-runs must not keep requesting them. If those pages ever become reachable
+# (check with ``python -m bsp.ingest.fpi --probe <period>``), move this start earlier; the collector merges into the
+# existing CSV and never shrinks it. Nothing before this date is estimated or filled.
+FPI_START = date(2018, 9, 15)
+
+
+def _fortnight_ends(start: date = FPI_START):
+    current = date(start.year, start.month, 1)
     while current <= date.today():
         fifteenth = date(current.year, current.month, 15)
         next_month = date(current.year + (current.month == 12), (current.month % 12) + 1, 1)
         for period_end in (fifteenth, next_month - timedelta(days=1)):
-            if period_end < date.today():
+            if start <= period_end < date.today():
                 yield period_end
         current = next_month
 
@@ -168,7 +175,7 @@ def _merge_with_existing(fresh: pd.DataFrame, path: Path) -> pd.DataFrame:
     return merged.sort_values(["period_end", "nsdl_sector"]).reset_index(drop=True)
 
 
-def collect_fpi(get=None, first_year: int = 2017, pause: float = 0.5) -> pd.DataFrame:
+def collect_fpi(get=None, start: date = FPI_START, pause: float = 0.5) -> pd.DataFrame:
     ensure_dirs()
     raw_dir = RAW_DIR / "nsdl_fpi"
     raw_dir.mkdir(parents=True, exist_ok=True)
@@ -178,7 +185,7 @@ def collect_fpi(get=None, first_year: int = 2017, pause: float = 0.5) -> pd.Data
     blocked: list[str] = []
     consecutive_blocks = 0
 
-    for period_end in _fortnight_ends(first_year):
+    for period_end in _fortnight_ends(start):
         if consecutive_blocks >= MAX_CONSECUTIVE_BLOCKS:
             blocked.append(period_end.isoformat())  # not attempted: the site is refusing us
             continue
