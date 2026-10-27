@@ -19,6 +19,8 @@ mlruns/
 .local/
 **/.ipynb_checkpoints/
 **/*.pdf
+# hand-made speech fixtures for tests/test_speech.py (invented text, built by make_fixtures.py) must be tracked
+!tests/fixtures/speeches/*.pdf
 
 data/raw/
 !data/raw/.gitkeep

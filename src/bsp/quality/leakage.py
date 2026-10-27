@@ -11,6 +11,7 @@ Enforces four rules:
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 
@@ -132,6 +133,46 @@ def validate_liquidity_floor(
         raise LeakageError(f"Found {len(violations)} liquidity-floor violations:\n{sample}")
 
 
+SPEECH_SOURCE_FEATURES = {"speech_emphasis": "emphasis", "speech_new_scheme_n": "new_scheme_n"}
+
+
+def validate_speech_features(
+    sector_features_long: pd.DataFrame,
+    speech_sentences: pd.DataFrame,
+    budget_events: pd.DataFrame,
+    tagger: Any,
+) -> None:
+    """Speech features (Phase 6) may only come from the budget's OWN speech, dated on or before the budget.
+
+    Checks: (1) the feature rows are not dated after the budget; (2) every speech belongs to a full budget of
+    config/budget_events.csv; (3) a non-missing speech feature exists only for a budget that has a speech; (4) recomputing
+    emphasis and new-scheme counts from that budget's own sentences reproduces the stored values, so a number built from
+    another year's speech (or from several speeches) is caught.
+    """
+    from bsp.nlp.speech_tagging import score_speeches
+
+    speech_rows = sector_features_long[sector_features_long["feature_name"].isin(
+        [*SPEECH_SOURCE_FEATURES, "speech_emphasis_rank", "talk_vs_money_divergence"])]
+    validate_feature_dates(speech_rows, budget_events)
+    full_ids = set(budget_events.loc[budget_events["budget_type"] == "full", "budget_id"].astype(str))
+    own = set(speech_sentences["budget_id"].astype(str))
+    violations = [f"Speech for {b} is not a full budget in budget_events.csv" for b in sorted(own - full_ids)]
+    stored = speech_rows[speech_rows["value"].notna()]
+    for budget_id in sorted(set(stored["budget_id"].astype(str)) - own):
+        violations.append(f"Speech features for {budget_id} exist but there is no speech for that budget")
+    expected = {(str(r["budget_id"]), str(r["sector_id"])): r for r in score_speeches(speech_sentences, tagger).to_dict("records")}
+    for row in stored[stored["feature_name"].isin(SPEECH_SOURCE_FEATURES)].to_dict("records"):
+        key = (str(row["budget_id"]), str(row["sector_id"]))
+        if key not in expected:
+            continue
+        want = float(expected[key][SPEECH_SOURCE_FEATURES[str(row["feature_name"])]])
+        if abs(want - float(row["value"])) > 1e-8:
+            violations.append(f"{row['feature_name']} for {key[1]} in {key[0]} is {row['value']}, but its own speech gives {want}")
+    if violations:
+        sample = "\n".join(violations[:5])
+        raise LeakageError(f"Found {len(violations)} speech-feature violations:\n{sample}")
+
+
 def validate_feature_store(project_root: Path | None = None) -> None:
     """Run all leakage checks against the built feature store."""
     root = project_root or get_project_root()
@@ -148,6 +189,11 @@ def validate_feature_store(project_root: Path | None = None) -> None:
     if sec_path.exists():
         df_sec = pd.read_csv(sec_path)
         validate_feature_dates(df_sec, b_events)
+        speech_path = root / "data" / "csv" / "speech_sentences.csv"
+        if speech_path.exists():
+            from bsp.nlp.speech_tagging import load_tagger
+
+            validate_speech_features(df_sec, pd.read_csv(speech_path), b_events, load_tagger(root))
 
     # Sector wide / panel
     panel_path = root / "data" / "csv" / "sector_budget_panel.csv"

@@ -410,13 +410,24 @@ def write_models_report(base: dict[str, ModelRun], sector: dict[str, ModelRun], 
 
 
 # ------------------------------------------------------------------------------------------------- driver
-def run(cfg: EvalConfig | None = None, use_mlflow: bool = True, report_dir: Path | None = None) -> tuple[dict[str, ModelRun], dict[str, StockRun]]:
+def run(cfg: EvalConfig | None = None, use_mlflow: bool = True, report_dir: Path | None = None,
+        with_speech: bool = False) -> tuple[dict[str, ModelRun], dict[str, StockRun]]:
+    """``with_speech`` adds the Phase 6 speech features to the sector models (same settings, no re-tuning) and writes
+    ``*_speech`` files next to the Phase 5 ones. It refuses to run until real speeches have been parsed."""
     cfg = cfg or load_config()
+    sfx = "_speech" if with_speech else ""
+    if with_speech:
+        scores = cfg.root / "data" / "csv" / "speech_sector_scores.csv"
+        if not scores.exists() or len(pd.read_csv(scores)) == 0:
+            raise SystemExit("BLOCKED: no speeches parsed. Put the speech PDFs in data/source_pdfs/speeches/ "
+                             "(names in reports/speech_pdfs_needed.csv), then run `make parse-speeches features`.")
     np.random.seed(cfg.seed)
     reports = report_dir or cfg.root / "reports"
     reports.mkdir(exist_ok=True)
     bundle = build_market_data_bundle(cfg.root)
-    panel = load_sector_panel(cfg)
+    from bsp.features.speech_features import SPEECH_FEATURES
+
+    panel = load_sector_panel(cfg, extra_features=tuple(SPEECH_FEATURES) if with_speech else ())
     calendar = budget_calendar(cfg.root, trading_days(cfg.root))
     windows = calendar[["budget_id", "start", "label_end"]]
     market_level = pd.DataFrame({BENCHMARK: (1.0 + bundle.market_returns.fillna(0.0)).cumprod()})
@@ -434,38 +445,40 @@ def run(cfg: EvalConfig | None = None, use_mlflow: bool = True, report_dir: Path
     from bsp.models.registry import final_fit_and_register
 
     slopes, registry = final_fit_and_register(cfg, panel, stock_panel, use_mlflow)
-    write_models_report(base, sector, sector_folds, stock, bench, cfg, reports / "models.md", slopes, stock_bench,
+    write_models_report(base, sector, sector_folds, stock, bench, cfg, reports / f"models{sfx}.md", slopes, stock_bench,
                         stock_control_investigation(stock, stock_panel, cfg.seed), stack_weights)
 
     rows = [{"model": r.name, "level": "sector", **{k: round(v, 8) for k, v in r.summary.items()}} for r in (*base.values(), *sector.values())]
     rows += [{"model": r.name, "level": "stock", **{k: round(v, 8) for k, v in r.summary.items()}} for r in stock.values()]
-    pd.DataFrame(rows).to_csv(reports / "models_summary.csv", index=False)
-    pd.concat([r.per_year.assign(model=r.name) for r in (*base.values(), *sector.values())]).round(8).to_csv(reports / "models_per_year.csv", index=False)
-    pd.concat([r.per_year.assign(model=r.name) for r in stock.values()]).round(8).to_csv(reports / "models_stock_per_year.csv", index=False)
+    pd.DataFrame(rows).to_csv(reports / f"models_summary{sfx}.csv", index=False)
+    pd.concat([r.per_year.assign(model=r.name) for r in (*base.values(), *sector.values())]).round(8).to_csv(reports / f"models_per_year{sfx}.csv", index=False)
+    pd.concat([r.per_year.assign(model=r.name) for r in stock.values()]).round(8).to_csv(reports / f"models_stock_per_year{sfx}.csv", index=False)
     for kind, runs_ in (("sector", sector), ("stock", stock)):  # one row per entity and budget: score, rank (1 = best), forecasts
         frame = pd.concat([r.predictions.assign(model=r.name) for r in runs_.values()])
         frame["rank"] = frame.groupby(["model", "budget_id"])["score"].rank(method="first", ascending=False).astype(int)
-        frame.round(8).to_csv(reports / f"models_predictions_{kind}.csv", index=False)
-    slopes.round(8).to_csv(reports / "models_bayes_slopes.csv", index=False)
-    stack_weights.to_csv(reports / "models_stack_weights.csv", index=False)
+        frame.round(8).to_csv(reports / f"models_predictions_{kind}{sfx}.csv", index=False)
+    slopes.round(8).to_csv(reports / f"models_bayes_slopes{sfx}.csv", index=False)
+    stack_weights.to_csv(reports / f"models_stack_weights{sfx}.csv", index=False)
 
     if use_mlflow:
         kind, uri = tracking.configure(cfg.root)
         print(f"MLflow store: {kind} ({uri})")
-        artifacts = [reports / "models_summary.csv", reports / "models_per_year.csv", reports / "models.md"]
+        artifacts = [reports / f"models_summary{sfx}.csv", reports / f"models_per_year{sfx}.csv", reports / f"models{sfx}.md"]
         for r in sector.values():
-            tracking.log_run(f"sector/{r.name}", {**r.params, "mlflow_store": kind}, r.per_year, r.summary, artifacts)
+            tracking.log_run(f"sector{sfx}/{r.name}", {**r.params, "mlflow_store": kind, "speech_features": with_speech}, r.per_year, r.summary, artifacts)
         for s in stock.values():
-            tracking.log_run(f"stock/{s.name}", {**s.params, "mlflow_store": kind}, s.per_year, s.summary, artifacts)
-        registry()
+            tracking.log_run(f"stock{sfx}/{s.name}", {**s.params, "mlflow_store": kind, "speech_features": with_speech}, s.per_year, s.summary, artifacts)
+        if not with_speech:
+            registry()
     return sector, stock
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--no-mlflow", action="store_true")
+    parser.add_argument("--with-speech", action="store_true", help="add the Phase 6 speech features (needs parsed speeches)")
     args = parser.parse_args()
-    sector, stock = run(use_mlflow=not args.no_mlflow)
+    sector, stock = run(use_mlflow=not args.no_mlflow, with_speech=args.with_speech)
     for r in sector.values():
         print(f"sector {r.name:<14} IC={_fmt(r.summary.get('ic', NAN))} Sharpe={_fmt(r.summary.get('bt_sharpe', NAN), 2)}")
     for s in stock.values():

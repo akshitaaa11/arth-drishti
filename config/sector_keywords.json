@@ -1,0 +1,324 @@
+{
+  "version": 1,
+  "notes": "Hand-written keyword lists for the keyword sector tagger (src/bsp/nlp/speech_tagging.py). The tagger also uses each sector's name and budget_lines from config/sector_map.json. Matching is on whole words after lower-casing and replacing punctuation with spaces; a plural s/es is accepted. A sentence can match several sectors. Keywords are a judgement call, not ground truth; edit this file to change the tagging and re-run `make features`. Deliberately left out as too generic: infrastructure, power (alone), technology, development, growth.",
+  "new_scheme_cues": [
+    "\\bnew (scheme|programme|program|mission|initiative|yojana|fund|policy|institution)s?\\b",
+    "\\blaunch(ed|es|ing)?\\b",
+    "\\bset(ting)? up\\b",
+    "\\bestablish(ed|es|ing|ment)?\\b",
+    "\\bpropose(s|d)?\\b",
+    "\\bannounce(s|d)?\\b",
+    "\\bintroduc(e|es|ed|ing)\\b"
+  ],
+  "sectors": {
+    "defence": {
+      "keywords": [
+        "defence",
+        "defense",
+        "armed forces",
+        "military",
+        "aerospace",
+        "army",
+        "navy",
+        "air force",
+        "ordnance",
+        "drdo",
+        "defence corridor",
+        "hindustan aeronautics",
+        "bharat electronics",
+        "bharat dynamics",
+        "mazagon dock",
+        "cochin shipyard",
+        "garden reach",
+        "bemll",
+        "warship",
+        "fighter aircraft"
+      ]
+    },
+    "roads": {
+      "keywords": [
+        "highway",
+        "national highway",
+        "road",
+        "expressway",
+        "road transport",
+        "pmgsy",
+        "pradhan mantri gram sadak",
+        "bharatmala",
+        "toll",
+        "nhai",
+        "construction of roads",
+        "bridge",
+        "tunnel",
+        "cement"
+      ]
+    },
+    "railways": {
+      "keywords": [
+        "railway",
+        "rail",
+        "train",
+        "dedicated freight corridor",
+        "bullet train",
+        "high speed rail",
+        "irctc",
+        "rvnl",
+        "kavach",
+        "vande bharat",
+        "station redevelopment",
+        "locomotive",
+        "wagon",
+        "metro",
+        "metro rail"
+      ]
+    },
+    "housing": {
+      "keywords": [
+        "housing",
+        "affordable housing",
+        "real estate",
+        "pmay",
+        "pradhan mantri awas yojana",
+        "awas",
+        "urban development",
+        "smart city",
+        "amrut",
+        "urban affairs",
+        "rera",
+        "home loan",
+        "slum",
+        "urban infrastructure"
+      ]
+    },
+    "healthcare": {
+      "keywords": [
+        "health",
+        "healthcare",
+        "hospital",
+        "medical",
+        "medicine",
+        "pharma",
+        "pharmaceutical",
+        "drug",
+        "ayushman bharat",
+        "national health mission",
+        "vaccine",
+        "vaccination",
+        "nursing",
+        "aiims",
+        "biopharma",
+        "jan aushadhi",
+        "health insurance",
+        "public health"
+      ]
+    },
+    "agriculture": {
+      "keywords": [
+        "agriculture",
+        "agricultural",
+        "farmer",
+        "farm",
+        "kisan",
+        "pm kisan",
+        "crop",
+        "pmfby",
+        "fasal bima",
+        "horticulture",
+        "fisheries",
+        "animal husbandry",
+        "dairy",
+        "livestock",
+        "agri",
+        "tractor",
+        "soil health",
+        "minimum support price",
+        "msp",
+        "irrigation"
+      ]
+    },
+    "fertilisers": {
+      "keywords": [
+        "fertiliser",
+        "fertilizer",
+        "urea",
+        "nutrient based subsidy",
+        "potash",
+        "phosphate",
+        "nano urea",
+        "chemicals and fertilisers"
+      ]
+    },
+    "fmcg": {
+      "keywords": [
+        "food processing",
+        "food security",
+        "food subsidy",
+        "public distribution",
+        "ration",
+        "packaged food",
+        "consumer goods",
+        "fmcg",
+        "edible oil",
+        "sugar",
+        "tea",
+        "coffee",
+        "spices",
+        "anna yojana",
+        "foodgrain",
+        "consumer affairs"
+      ]
+    },
+    "telecom": {
+      "keywords": [
+        "telecom",
+        "telecommunication",
+        "communications",
+        "broadband",
+        "bharatnet",
+        "optical fibre",
+        "5g",
+        "4g",
+        "spectrum",
+        "mobile phone",
+        "mobile tower",
+        "bsnl",
+        "mtnl",
+        "digital infrastructure",
+        "internet connectivity",
+        "india post",
+        "post office"
+      ]
+    },
+    "rural": {
+      "keywords": [
+        "rural",
+        "village",
+        "gram",
+        "mgnrega",
+        "mgnregs",
+        "mnrega",
+        "nrega",
+        "rural development",
+        "rural employment",
+        "self help group",
+        "shg",
+        "nrlm",
+        "microfinance",
+        "vb g ram g"
+      ]
+    },
+    "water": {
+      "keywords": [
+        "water",
+        "drinking water",
+        "jal jeevan",
+        "jal shakti",
+        "ganga",
+        "namami gange",
+        "sanitation",
+        "swachh bharat",
+        "sewerage",
+        "water supply",
+        "water conservation",
+        "atal bhujal",
+        "tap water",
+        "desalination"
+      ]
+    },
+    "education": {
+      "keywords": [
+        "education",
+        "educational",
+        "school",
+        "university",
+        "college",
+        "student",
+        "teacher",
+        "skill development",
+        "skilling",
+        "literacy",
+        "samagra shiksha",
+        "mid day meal",
+        "pm poshan",
+        "scholarship",
+        "iit",
+        "iim",
+        "national education policy",
+        "higher education",
+        "vocational"
+      ]
+    },
+    "power": {
+      "keywords": [
+        "electricity",
+        "power plant",
+        "power generation",
+        "power sector",
+        "power transmission",
+        "renewable",
+        "solar",
+        "wind energy",
+        "thermal power",
+        "hydro power",
+        "hydropower",
+        "nuclear energy",
+        "green hydrogen",
+        "ministry of power",
+        "rdss",
+        "pm surya ghar",
+        "discom",
+        "energy",
+        "electrification",
+        "rooftop solar"
+      ]
+    },
+    "it_control": {
+      "keywords": [
+        "information technology",
+        "software",
+        "it services",
+        "it sector",
+        "digital india",
+        "artificial intelligence",
+        "semiconductor",
+        "electronics",
+        "meity",
+        "data centre",
+        "data center",
+        "cyber",
+        "digital public infrastructure",
+        "e governance",
+        "information and communication technology",
+        "ict",
+        "technology park",
+        "bpo",
+        "outsourcing",
+        "cloud"
+      ]
+    },
+    "psu_banks": {
+      "keywords": [
+        "bank",
+        "banking",
+        "public sector bank",
+        "psb",
+        "financial sector",
+        "credit",
+        "credit guarantee",
+        "financial services",
+        "recapitalisation",
+        "recapitalization",
+        "npa",
+        "non performing",
+        "loan",
+        "mudra",
+        "jan dhan",
+        "financial inclusion",
+        "reserve bank",
+        "stand up india",
+        "sbi",
+        "state bank"
+      ]
+    }
+  }
+}

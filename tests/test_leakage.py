@@ -128,3 +128,70 @@ def test_a_row_without_any_liquidity_number_is_a_violation() -> None:
 def test_a_stock_exactly_at_the_threshold_is_allowed() -> None:
     validate_liquidity_floor(_liquidity_rows("EDGE", "FY2020-21", 5.0))  # the rule is >= 5 crore
     validate_liquidity_floor(_liquidity_rows("FINE", "FY2020-21", 123.4))
+
+
+# ---------------------------------------------------------------- Phase 6: speech features
+def _speech_world() -> tuple[pd.DataFrame, pd.DataFrame, object, pd.DataFrame]:
+    from bsp.nlp.speech_tagging import load_tagger
+
+    events = pd.DataFrame([
+        {"budget_id": "FY2020-21", "fiscal_year": "2020-21", "presented_on": "2020-02-01", "budget_type": "full"},
+        {"budget_id": "FY2021-22", "fiscal_year": "2021-22", "presented_on": "2021-02-01", "budget_type": "full"}])
+    sentences = pd.DataFrame({"budget_id": ["FY2020-21"] * 2 + ["FY2021-22"] * 2,
+                              "text": ["Railways get a record outlay.", "Farmers get support.",
+                                       "Railways are modernised.", "Schools reopen."]})
+    tagger = load_tagger(ROOT)
+    from bsp.nlp.speech_tagging import score_speeches
+
+    scores = score_speeches(sentences, tagger)
+    rows = [{"sector_id": r["sector_id"], "budget_id": r["budget_id"], "feature_name": "speech_emphasis", "value": r["emphasis"],
+             "as_of_date": events.set_index("budget_id").loc[r["budget_id"], "presented_on"]} for r in scores.to_dict("records")]
+    return pd.DataFrame(rows), sentences, tagger, events
+
+
+def test_speech_features_from_their_own_speech_pass() -> None:
+    from bsp.quality.leakage import validate_speech_features
+
+    features, sentences, tagger, events = _speech_world()
+    validate_speech_features(features, sentences, events, tagger)
+
+
+def test_leakage_detection_catches_a_speech_feature_dated_after_the_budget() -> None:
+    from bsp.quality.leakage import validate_speech_features
+
+    features, sentences, tagger, events = _speech_world()
+    features.loc[features.index[0], "as_of_date"] = "2099-01-01"
+    with pytest.raises(LeakageError, match="look-ahead"):
+        validate_speech_features(features, sentences, events, tagger)
+
+
+def test_leakage_detection_catches_a_speech_feature_built_from_another_years_speech() -> None:
+    from bsp.quality.leakage import validate_speech_features
+
+    features, sentences, tagger, events = _speech_world()
+    mask = (features["budget_id"] == "FY2020-21") & (features["sector_id"] == "railways")
+    other = features[(features["budget_id"] == "FY2021-22") & (features["sector_id"] == "railways")]["value"].iloc[0]
+    features.loc[mask, "value"] = other + 0.25  # FY2020-21 carrying a number that its own speech does not give
+    with pytest.raises(LeakageError, match="its own speech gives"):
+        validate_speech_features(features, sentences, events, tagger)
+
+
+def test_leakage_detection_catches_speech_features_for_a_budget_with_no_speech() -> None:
+    from bsp.quality.leakage import validate_speech_features
+
+    features, sentences, tagger, events = _speech_world()
+    events = pd.concat([events, pd.DataFrame([{"budget_id": "FY2022-23", "fiscal_year": "2022-23", "presented_on": "2022-02-01",
+                                                "budget_type": "full"}])])
+    ghost = pd.DataFrame([{"sector_id": "railways", "budget_id": "FY2022-23", "feature_name": "speech_emphasis", "value": 0.3,
+                           "as_of_date": "2022-02-01"}])
+    with pytest.raises(LeakageError, match="no speech for that budget"):
+        validate_speech_features(pd.concat([features, ghost]), sentences, events, tagger)
+
+
+def test_leakage_detection_catches_a_speech_attached_to_an_interim_budget() -> None:
+    from bsp.quality.leakage import validate_speech_features
+
+    features, sentences, tagger, events = _speech_world()
+    events.loc[events["budget_id"] == "FY2021-22", "budget_type"] = "interim"
+    with pytest.raises(LeakageError, match="not a full budget"):
+        validate_speech_features(features, sentences, events, tagger)

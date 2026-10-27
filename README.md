@@ -287,7 +287,7 @@ Checks passed: 395 of 395 department sums match PRS; 520 of 520 values printed i
 | D12 | Company fundamentals | Screener.in export, annual reports, NSE shareholding | Annual / quarterly | Manual + Script | `fundamentals.csv` | 5 |
 | D13 | Order wins | NSE/BSE corporate announcements, PIB, MoD releases | Event-level | Script (NLP) | `order_wins.csv` | 5 |
 | D14 | Government procurement | GeM, CPPP | Event-level | Script (best-effort) | `procurement_awards.csv` | 12 |
-| D15 | Budget speech + highlights text | indiabudget.gov.in | Per budget | Download PDFs | `speech_sentences.csv` | 6 |
+| D15 | Budget speech + highlights text | indiabudget.gov.in | Per budget | Download PDFs (team-supplied, `data/source_pdfs/speeches/`) | `speech_sentences.csv` | 6 |
 | D16 | Budget-week news | GDELT 2.0 API, Google News RSS | Daily, ±30 days around each budget | Script | `budget_news.csv` | 6 |
 | D17 | Live quotes | Broker WebSocket (Upstox / Angel One) | Tick-level | Script (needs trading account) | not stored as CSV; recorded replay in `data/raw/live/` | 12 |
 
@@ -311,7 +311,7 @@ Checks passed: 395 of 395 department sums match PRS; 520 of 520 values printed i
 | `macro.csv` | `series, date, value, unit` |
 | `fundamentals.csv` | `symbol, period_end, sales_cr, ebitda_cr, net_profit_cr, debt_cr, market_cap_cr, promoter_pledge_pct, order_book_cr` |
 | `order_wins.csv` | `symbol, announced_on, order_value_cr, client, is_government, text` |
-| `speech_sentences.csv` | `budget_id, sentence_no, page, text` |
+| `speech_sentences.csv` | `budget_id, sentence_no, page, text` plus `source_file, source_sha256, extractor, source` |
 | `budget_news.csv` | `budget_id, published_at, outlet, title, url` |
 
 ---
@@ -489,13 +489,15 @@ Exit criteria:
 
 **Goal:** the NLP and execution features that the ablation needs.
 
+> **Status: Phase 6 is partly built; the speech part is code-complete but has no data.** Built and tested on hand-made fixtures: the speech PDF parser, keyword sector tagging, the four talk-vs-money features in the feature store, their leakage checks and a guarded `--with-speech` hook for the Phase 5 models. **Blocked until the team supplies the 22 speech PDFs** (`reports/speech_pdfs_needed.csv`): every real speech feature, the Phase 5 re-run and the exit criteria. **Not built:** the news collector and expectation score (hosts blocked), the speech-vs-news half of F4, and the CGA parser (dropped for scope). See `reports/data_gaps.md`.
+
 Tasks:
-- [ ] Speech and highlights corpus (D15): finish the scraper for 2004 → 2026, store text with year and page.
-- [ ] **F6 "talk vs money":** tag every speech sentence to a sector (zero-shot or FinBERT), score emphasis and sentiment, detect new schemes; divergence = high talk, low money (or the reverse).
-- [ ] Budget-week news (D16) from GDELT 2.0 and Google News RSS; build a pre-budget expectation score.
-- [ ] **F4 Budget Surprise Index:** surprise two ways — new BE vs last RE, and speech emphasis vs pre-budget news consensus.
-- [ ] CGA monthly accounts (D6) parser for the monthly execution line in the Promise-vs-Reality tracker.
-- [ ] Add the new features to the feature store (point-in-time) and re-run Phase 5 models.
+- [ ] Speech corpus (D15): parser for budget-speech PDFs into `speech_sentences.csv` (text, year via `budget_id`, page, provenance). *Parser built and tested, corpus empty: `parsers/speech.py`, `make parse-speeches`; reads `data/source_pdfs/speeches/<fiscal_year>.pdf` (22 full budgets, names in `reports/speech_pdfs_needed.csv`); tested on hand-made fixtures. **No speech PDFs are in the repository, so the CSV is header-only until the team supplies them** (indiabudget.gov.in is blocked in the sandbox). The highlights documents and the scraper are not built.*
+- [ ] **F6 "talk vs money":** tag every speech sentence to a sector, score emphasis, detect new schemes; divergence = high talk, low money (or the reverse). *Built with a **deviation**: keyword tagging (`nlp/speech_tagging.py`, `config/sector_keywords.json` plus the names and budget lines in `config/sector_map.json`) instead of zero-shot/FinBERT, because the model host (huggingface.co) is blocked; **no sentiment score**; new-scheme detection is an announcement-cue heuristic with no hand-label check. Features `speech_emphasis`, `speech_new_scheme_n`, `speech_emphasis_rank`, `talk_vs_money_divergence` (emphasis rank minus allocation-surprise rank, over n) are in the feature store, point in time and missing for budgets without a speech. A zero-shot/FinBERT tagger can replace `tag_sentence` without changing the files. Not yet exercised on real speeches.*
+- [ ] Budget-week news (D16) from GDELT 2.0 and Google News RSS; build a pre-budget expectation score. *Not built: api.gdeltproject.org and news.google.com are blocked in the sandbox (and, by decision, out of scope for now).*
+- [ ] **F4 Budget Surprise Index:** surprise two ways — new BE vs last RE, and speech emphasis vs pre-budget news consensus. *Only the first half exists (`alloc_vs_prev_re_pct`, Phase 3). The speech-vs-news half is not built: it needs the news collector (D16), which is not built.*
+- [ ] CGA monthly accounts (D6) parser for the monthly execution line in the Promise-vs-Reality tracker. *Not built: dropped for scope (and cga.nic.in is blocked in the sandbox).*
+- [ ] Add the new features to the feature store (point-in-time) and re-run Phase 5 models. *Speech features are in the feature store (point in time, leakage-tested, see `tests/test_leakage.py`). **The Phase 5 re-run is BLOCKED** until real speeches exist: `python -m bsp.models.run_models --with-speech` refuses to run on an empty speech table and, when it can run, uses the Phase 5 settings unchanged (no re-tuning) and writes `reports/models_speech.md` beside `reports/models.md`. The Phase 5 models and results are unchanged. The FY2024-25 and FY2025-26 hold-out is untouched.*
 
 Exit criteria:
 - NLP features exist for every budget year with text; leakage test still passes.

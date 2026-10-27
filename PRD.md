@@ -110,7 +110,7 @@ The original zip had real budget numbers for only 10 ministries over 9 years, an
 | D12 | Company fundamentals: sales, EBITDA, debt, order book, promoter pledge | Annual reports, Screener.in export, NSE shareholding pattern | Annual / quarterly | Stock-level quality and risk | To build |
 | D13 | Order wins and contract announcements | BSE/NSE corporate announcements ("order received"), PIB, Ministry of Defence press releases | Event-level | `OrderInflow_c`: rupees won vs market cap | To build (NLP extraction) |
 | D14 | Government procurement | [GeM](https://gem.gov.in) public dashboards; [CPPP](https://eprocure.gov.in) award-of-contract results | Event-level | `GovRevDep_c`, tender win rate | To build (best-effort; coverage partial) |
-| D15 | Budget speech and highlights text | indiabudget.gov.in (the team's scraper already downloads 2004–2024) | Per budget | NLP: sector mention intensity, sentiment, new-scheme detection | Partly done |
+| D15 | Budget speech and highlights text | indiabudget.gov.in (team-supplied PDFs; the host is blocked in the build sandbox) | Per budget | NLP: sector mention intensity, new-scheme detection (keyword tagging; no sentiment yet) | Parser built; PDFs to supply |
 | D16 | Budget-week news | GDELT 2.0 API, Google News RSS | Daily | Pre-budget expectation, "priced in" signal | To build |
 | D17 | Live quotes | Broker developer API over WebSocket: Upstox API or Angel One SmartAPI (Dhan and Zerodha Kite Connect are alternatives). Needs a trading account; check current pricing and terms | Tick-level, market hours | Budget-Day live ticker, live sector moves vs forecast, Copilot's live-price tool | To build |
 
