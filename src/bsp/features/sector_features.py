@@ -25,6 +25,7 @@ import pandas as pd
 
 from bsp.common.config import get_project_root
 from bsp.features.baskets import MarketDataBundle, build_market_data_bundle
+from bsp.features.fpi_window import expected_periods
 
 
 def load_macro_series(project_root: Path | None = None) -> pd.DataFrame:
@@ -241,31 +242,26 @@ def build_sector_features(
             features["volatility_30d"] = None
             features["volatility_90d"] = None
 
-        # 9. FPI Flows
+        # 9. FPI Flows: only from the exact reports of the lookback window (features/fpi_window.py). A missing report
+        # leaves the feature missing; it is never filled with 0 or with an older report.
+        features["fpi_net_equity_1f_cr"] = None
+        features["fpi_net_equity_1m_cr"] = None
+        features["fpi_equity_aum_cr"] = None
         nsdl_sec = sec_fpi_map.get(sec_id, "")
         if nsdl_sec and not df_fpi.empty:
-            fpi_past = df_fpi[(df_fpi["nsdl_sector"] == nsdl_sec) & (df_fpi["period_end"] <= p_date)].sort_values(
-                "period_end"
-            )
-            if not fpi_past.empty:
-                features["fpi_net_equity_1f_cr"] = float(fpi_past.iloc[-1].get("equity_net_cr", 0.0) or 0.0)
-                # Last month = sum of last 2 fortnights
-                features["fpi_net_equity_1m_cr"] = float(
-                    fpi_past.tail(2)["equity_net_cr"].dropna().astype(float).sum()
-                )
-                features["fpi_equity_aum_cr"] = (
-                    float(fpi_past.iloc[-1]["equity_aum_cr"])
-                    if pd.notna(fpi_past.iloc[-1].get("equity_aum_cr"))
-                    else None
-                )
-            else:
-                features["fpi_net_equity_1f_cr"] = None
-                features["fpi_net_equity_1m_cr"] = None
-                features["fpi_equity_aum_cr"] = None
-        else:
-            features["fpi_net_equity_1f_cr"] = None
-            features["fpi_net_equity_1m_cr"] = None
-            features["fpi_equity_aum_cr"] = None
+            earlier_end, latest_end = expected_periods(p_date)
+            by_period = {
+                str(r["period_end"]): r
+                for r in df_fpi[df_fpi["nsdl_sector"] == nsdl_sec].drop_duplicates("period_end").to_dict("records")
+            }
+            latest, earlier = by_period.get(latest_end), by_period.get(earlier_end)
+            if latest is not None:
+                net_latest = latest.get("equity_net_cr")
+                features["fpi_net_equity_1f_cr"] = float(net_latest) if pd.notna(net_latest) else None
+                aum = latest.get("equity_aum_cr")
+                features["fpi_equity_aum_cr"] = float(aum) if pd.notna(aum) else None
+                if earlier is not None and pd.notna(net_latest) and pd.notna(earlier.get("equity_net_cr")):
+                    features["fpi_net_equity_1m_cr"] = float(net_latest) + float(earlier["equity_net_cr"])
 
         # 10. Macro Controls
         # USD/INR
