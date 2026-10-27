@@ -66,7 +66,7 @@ train:
 	@echo "Placeholder for Phase 4/7 training."
 
 backtest:
-	@echo "Placeholder for Phase 8 backtest."
+	@MLFLOW_DISABLE_AGENT_HINT=1 $(PY) -m bsp.evaluation.run_baselines
 
 holdout:
 	@echo "Placeholder for hold-out evaluation."

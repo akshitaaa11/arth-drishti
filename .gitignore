@@ -24,3 +24,4 @@ data/raw/
 !data/raw/.gitkeep
 !data/source_pdfs/
 !data/source_pdfs/INVENTORY.csv
+mlflow.db
