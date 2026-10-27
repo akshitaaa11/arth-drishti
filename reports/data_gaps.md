@@ -40,7 +40,7 @@ Checked 2026-10-25 from the cloud sandbox, whose network allowlist blocks NSDL, 
 
 | Gap | Effect | Status / what to do by hand |
 | --- | --- | --- |
-| NSDL FPI before 2018-09-15 | `fpi_sector_fortnightly.csv` still starts at `period_end` 2018-09-15 (2,922 rows). The 2017-01 to 2018-08 fortnights failed earlier because `html5lib` was missing; it is now a dependency. NSDL is blocked here, so the re-run could not fetch them. | On a laptop: `pip install -e ".[dev]"` then `python -m bsp.ingest.fpi`. Raw pages are cached in `data/raw/nsdl_fpi/`. |
+| NSDL FPI before 2018-09-15 (and 120 later fortnights) | `fpi_sector_fortnightly.csv` has 75 of the 235 fortnights since 2017-01: all 40 fortnights before 2018-09-15 and 120 between 2018-09 and 2026-06 are missing (by year: 2019: 2, 2020: 10, 2021: 16, 2022: 18, 2023: 22, 2024: 18, 2025: 18, 2026: 15). The collector used to cache NSDL's "Request Rejected" page (it comes back as HTTP 200) as if it were a report, so re-runs never asked again. | Fixed in `ingest/fpi.py`: such a page is detected, never cached, logged in `fetch_log` as `blocked`, previously poisoned cache files are deleted on the next run, and the CSV is merged, never shrunk. On the laptop/Codespace run `python -m bsp.ingest.fpi` again (it stops after 5 consecutive blocks instead of hammering the site; wait and re-run if it reports `blocked`). |
 | 10-year G-sec yield (FRED `IRLTLT01INM156N`) | No `g_sec_10y_yield` series in `macro.csv`. FRED returns 404 for that series URL earlier and is blocked here now. | On a laptop run `python -m bsp.ingest.macro`. If FRED still 404s, download the series from RBI DBIE and add it as a manual file (needs a loader; not built). |
 | Repo rate | No `repo_rate` series. `data/raw/rbi/repo_rate.csv` does not exist. `policy_discount_rate` (World Bank/FRED, annual-frequency source) is the only policy-rate proxy. | Download the policy repo-rate history from RBI DBIE and save it as `data/raw/rbi/repo_rate.csv` with columns `date,value`; then run `python -m bsp.ingest.macro`. |
 | Nifty Healthcare index | Yahoo returns 404 "Quote not found" for `^CNXHEALTH` (retried 2026-10-25). No official index cross-check for Healthcare. | Optional: put a niftyindices.com download in `data/raw/indices/` with columns `index_name,date,close` (the manual loader is in `ingest/benchmarks.py`). Otherwise: no official index cross-check for Healthcare. |
@@ -60,6 +60,21 @@ Known limits of the method: symbol changes/mergers are not tracked; a company th
 ### Price data decisions (Phase 2)
 
 Every single-day move above 50% in the raw Yahoo download has a documented decision in `reports/price_flag_decisions.csv` (36 flags: 18 rows dropped as data errors, 14 rows kept because the jump came from a dropped neighbour, 1 split adjustment, 3 kept as real/unverified). Rows removed are listed in `reports/price_rows_dropped.csv`. Three moves remain unexplained and need a check against NSE corporate-actions files: **NIITLTD 2023-06-08** (-76%), **TEXRAIL 2010-11-01** (-60%) and **TEXRAIL 2011-03-03** (+74%). They stay in the data and will distort those stocks' momentum features until resolved. Also, `data/csv/prices_daily.csv` is about 93 MB, close to GitHub's 100 MB file limit; move it to Git LFS or split it before it grows.
+
+### FPI URL pattern for 2017-01 to 2018-08: not established
+
+The question was whether those 40 reports use a different file name. Evidence in the repository does not show it:
+every one of the 2,922 loaded rows (2018-09-15 to 2026-06-30) has a `source_url` identical to what `fpi_url()` builds
+(`.../FIIInvestSector_<Month><day><year>.html`, for example `September152018`), and the PRD's example for July 2024 has the
+same shape. The first Codespace run (`data/csv/fetch_log.csv`, 2026-10-24 14:53) lists 163 failed fortnights, each
+"parse: Import html5lib failed", which `pandas.read_html` raises when a page contains no table, i.e. when the response
+was not a report. Those failures are not confined to the early years (120 of the 195 fortnights after 2018-09 failed
+too), which points to intermittent blocking and the poisoned cache rather than a different name. I therefore did **not**
+change the URL builder. To settle it with real evidence after re-running the collector, run
+`python -m bsp.ingest.fpi --probe 2017-01-15`: it prints the HTTP status and whether the response is a report or an error
+page, and saves it under `data/raw/nsdl_fpi/probe/`. If it is not a report, open NSDL's fortnightly-report archive in a
+browser, copy the link of one 2017 report and run `python -m bsp.ingest.fpi --probe <that full URL>`; send me the output
+and the link and I will adapt the builder. No FPI value has been typed in or estimated.
 
 ### Git LFS for `data/csv/prices_daily.csv` (pending, needs network access)
 
