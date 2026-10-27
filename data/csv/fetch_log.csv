@@ -53,3 +53,6 @@ macro,2026-10-25T09:01:44+00:00,partial,20542,"cpi_index_2015(HTTPSConnectionPoo
 macro,2026-10-25T09:01:46+00:00,partial,20542,"cpi_index_2015(HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Max retries exceeded with url: /graph/fredgraph.csv?id=INDCPIALLMINMEI (Caused by ProxyError('Unable to connect to proxy', OSE"
 fpi,2026-10-25T09:02:40+00:00,empty,0,"2017-01-15, 2017-01-31, 2017-02-15, 2017-02-28, 2017-03-15, 2017-03-31, 2017-04-15, 2017-04-30, 2017-05-15, 2017-05-31, 2017-06-15, 2017-06-30, 2017-07-15, 2017-07-31, 2017-08-15, 2017-08-31, 2017-09-"
 fpi,2026-10-25T09:03:29+00:00,empty,0,"2017-01-15, 2017-01-31, 2017-02-15, 2017-02-28, 2017-03-15, 2017-03-31, 2017-04-15, 2017-04-30, 2017-05-15, 2017-05-31, 2017-06-15, 2017-06-30, 2017-07-15, 2017-07-31, 2017-08-15, 2017-08-31, 2017-09-"
+constituents,2026-10-27T17:03:02+00:00,ok,532,
+constituents,2026-10-27T17:48:20+00:00,ok,532,
+macro,2026-10-27T17:51:54+00:00,partial,20858,"g_sec_10y_yield from manual file /workspaces/arth-drishti/data/raw/fred/INDIRLTLT01STM.csv (download failed: HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): R); cpi_index_2015(HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): Read"
