@@ -548,13 +548,17 @@ Exit criteria:
 
 **Goal:** a single, honest look at FY2024-25 and FY2025-26.
 
+> **Status: Phase 9 is prepared and rehearsed; the one-time run has NOT been made.** The plan is pre-registered in `config/holdout_plan.json` (all models and baselines reported, one primary rule P1 and four secondary rules S1-S4 applied mechanically, no model promoted on the result) and frozen with the code, config and data hashes in `config/holdout_freeze.json`. `python -m bsp.evaluation.holdout --mode rehearsal` ran the identical machinery on the last two already-unlocked budgets (FY2022-23, FY2023-24; `reports/holdout_rehearsal.md`, **not** the hold-out result): every fold reproduces the saved Phase 5 predictions (largest score difference 5e-9) and every prediction has three reasons and an interval. `--mode holdout` refuses to run (and prints no metric) unless the config flag is unlocked and unspent, no hold-out result exists, the freeze manifest still matches, the tree is clean, HEAD carries the run tag, the freeze tag is an ancestor and nothing but `config/evaluation.json` changed since the freeze tag. Notes for reading the result: FY2024-25's window is about six months (the next budget came on 2025-02-01), FY2025-26's twelve; two budgets cannot support a significance test; speech features are absent. The FY2024-25 and FY2025-26 hold-out and the live year have not been touched.
+>
+> **To run it (after this PR is merged):** (1) tag the merge commit `holdout-freeze-v1` and push the tag; (2) commit `"holdout_unlocked": true` in `config/evaluation.json`, tag that commit `holdout-run-v1`, push; (3) `make holdout` (one run, writes `reports/holdout.*`); (4) commit the results together with `"holdout_unlocked": false, "holdout_spent": true` and the run tag in `config/evaluation.json`, which locks the hold-out for good.
+
 Tasks:
-- [ ] Freeze feature definitions, model configs and seeds; tag the commit.
-- [ ] Unlock the hold-out flag and run once. No re-tuning afterwards.
-- [ ] Record results in `reports/holdout.md`, including any null result and its explanation.
+- [x] Freeze feature definitions, model configs and seeds; tag the commit. *Manifest `config/holdout_freeze.json` and plan `config/holdout_plan.json` are committed; the tag `holdout-freeze-v1` is created on the merge commit (step 1 above).*
+- [ ] Unlock the hold-out flag and run once. No re-tuning afterwards. *Pending the go-ahead.*
+- [ ] Record results in `reports/holdout.md`, including any null result and its explanation. *Written by the run.*
 
 Exit criteria:
-- Hold-out results exist from exactly one tagged run.
+- [ ] Hold-out results exist from exactly one tagged run.
 
 ---
 

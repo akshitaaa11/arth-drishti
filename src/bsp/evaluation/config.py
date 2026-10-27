@@ -26,6 +26,8 @@ class EvalConfig:
     seed: int
     ridge_alpha_grid: tuple[float, ...]
     interval_level: float
+    holdout_spent: bool = False  # True after the one-time Phase 9 run: the hold-out stays locked for good
+    holdout_run_tag: str | None = None
     root: Path = field(default_factory=get_project_root)
 
     @property
@@ -47,6 +49,8 @@ def load_config(project_root: Path | None = None, **overrides: object) -> EvalCo
     root = project_root or get_project_root()
     raw = json.loads((root / "config" / "evaluation.json").read_text(encoding="utf-8"))
     raw.update(overrides)
+    if bool(raw.get("holdout_unlocked")) and bool(raw.get("holdout_spent")):
+        raise ValueError("config/evaluation.json: the hold-out cannot be unlocked after it has been spent")
     return EvalConfig(
         holdout_fiscal_years=tuple(raw["holdout_fiscal_years"]),
         live_fiscal_years=tuple(raw["live_fiscal_years"]),
@@ -59,5 +63,7 @@ def load_config(project_root: Path | None = None, **overrides: object) -> EvalCo
         seed=int(raw["seed"]),
         ridge_alpha_grid=tuple(float(a) for a in raw["ridge_alpha_grid"]),
         interval_level=float(raw["interval_level"]),
+        holdout_spent=bool(raw.get("holdout_spent", False)),
+        holdout_run_tag=raw.get("holdout_run_tag"),
         root=root,
     )

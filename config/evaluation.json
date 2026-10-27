@@ -21,5 +21,7 @@
     1000.0,
     10000.0
   ],
-  "interval_level": 0.8
+  "interval_level": 0.8,
+  "holdout_spent": false,
+  "holdout_run_tag": null
 }
