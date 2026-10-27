@@ -127,3 +127,12 @@ Phase 1 itself did not cover market, index, macro or FPI collection; see the Pha
 - **Company fundamentals (D12) and order wins (D13):** no point-in-time source is reachable from the sandbox, and Yahoo's fundamentals are a current snapshot, so they cannot be used for past budgets without look-ahead. To build them, download quarterly results and order announcements per company (BSE/NSE filings) into `data/raw/`, store them with their announcement dates, and use only items announced before each budget. Until then Tier 2 uses price-based features plus Tier-1 output.
 - **LSTM / temporal CNN (Could):** not built.
 - Stock-level results (Tier 2 and the stock baselines) carry the survivorship bias described above and cover 9 test years (FY2015-16 onward), because Tier 2 needs three years of out-of-sample Tier-1 output to train on.
+
+### Phase 6: speeches built, everything else not built
+
+- **Speech PDFs are missing (action for the team).** `data/csv/speech_sentences.csv` is header-only because no budget-speech PDF is in the repository and indiabudget.gov.in is blocked in the sandbox. Put one PDF per full budget in `data/source_pdfs/speeches/` named `<fiscal_year>.pdf` (22 files, listed in `reports/speech_pdfs_needed.csv`), then run `make parse-speeches features`. Until then the four speech features are missing for every budget, the Phase 5 re-run with speech features is BLOCKED, and the Phase 6 exit criterion "NLP features exist for every budget year with text" cannot be checked on real text.
+- **Deviation from the README:** sentences are tagged to sectors by keywords (`config/sector_keywords.json` plus names and budget lines in `config/sector_map.json`), not by zero-shot or FinBERT, because huggingface.co is blocked. There is no sentiment score. The keyword lists are a hand-written judgement call and the new-scheme cue is a heuristic; neither has been checked against hand labels.
+- **Budget-week news (D16) and the pre-budget expectation score:** not built (api.gdeltproject.org and news.google.com blocked; out of scope for now). Hence also the speech-vs-news half of F4.
+- **CGA monthly accounts parser (D6):** not built (dropped for scope; cga.nic.in is blocked).
+- **Highlights documents:** the parser reads speeches only.
+

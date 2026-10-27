@@ -64,7 +64,7 @@ def control_sectors(root: Path) -> frozenset[str]:
     return frozenset(s["sector_id"] for s in sector_map["sectors"] if s.get("is_control"))
 
 
-def load_sector_panel(cfg: EvalConfig, include_locked: bool = False) -> Panel:
+def load_sector_panel(cfg: EvalConfig, include_locked: bool = False, extra_features: tuple[str, ...] = ()) -> Panel:
     """Sector panel. Locked hold-out / live budgets are removed; ``include_locked=True`` raises until unlocked."""
     root = cfg.root
     csv = root / "data" / "csv"
@@ -86,7 +86,8 @@ def load_sector_panel(cfg: EvalConfig, include_locked: bool = False) -> Panel:
     frame["target_complete"] = frame["target_complete"].fillna(False).astype(bool)
     frame["is_control"] = frame["entity"].isin(control_sectors(root))
     frame = frame.sort_values(["presented_on", "entity"]).reset_index(drop=True)
-    return Panel(kind="sector", frame=frame, features=[c for c in SECTOR_FEATURES if c in frame.columns])
+    features = [c for c in (*SECTOR_FEATURES, *extra_features) if c in frame.columns]
+    return Panel(kind="sector", frame=frame, features=features)
 
 
 STOCK_FEATURES = [

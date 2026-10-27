@@ -13,6 +13,8 @@ Features:
   - Macro controls (macro_usd_inr, macro_usd_inr_1y_pct, macro_brent_crude_usd,
                     macro_brent_crude_1y_pct, macro_policy_rate, macro_cpi_inflation, macro_gdp_growth)
   - Regime flags (regime_is_interim, regime_is_election_year, regime_is_covid_era, regime_high_vix)
+  - Speech features: speech_emphasis, speech_new_scheme_n, speech_emphasis_rank, talk_vs_money_divergence
+    (features/speech_features.py; missing for budgets without a speech)
 """
 
 from __future__ import annotations
@@ -26,6 +28,7 @@ import pandas as pd
 from bsp.common.config import get_project_root
 from bsp.features.baskets import MarketDataBundle, build_market_data_bundle
 from bsp.features.fpi_window import expected_periods
+from bsp.features.speech_features import add_speech_features, load_speech_scores
 
 
 def load_macro_series(project_root: Path | None = None) -> pd.DataFrame:
@@ -358,17 +361,14 @@ def build_sector_features(
         }
         wide_records.append(wide_row)
 
-        # Add to long records
-        for fname, fval in features.items():
-            long_records.append(
-                {
-                    "sector_id": sec_id,
-                    "budget_id": b_id,
-                    "feature_name": fname,
-                    "value": fval,
-                    "as_of_date": as_of_date,
-                }
-            )
+    # 12. Speech features (talk vs money): need every sector of a budget, so they are filled after the loop.
+    add_speech_features(wide_records, load_speech_scores(root))
+    meta = {"sector_id", "sector_name", "budget_id", "fiscal_year", "presented_on", "as_of_date"}
+    for wide_row in wide_records:
+        for fname, fval in wide_row.items():
+            if fname not in meta:
+                long_records.append({"sector_id": wide_row["sector_id"], "budget_id": wide_row["budget_id"],
+                                     "feature_name": fname, "value": fval, "as_of_date": wide_row["as_of_date"]})
 
     df_long = pd.DataFrame(long_records)
     df_wide = pd.DataFrame(wide_records)

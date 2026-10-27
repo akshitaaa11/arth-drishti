@@ -9,7 +9,7 @@ endif
 # Use the virtualenv interpreter when it exists, otherwise the active Python (e.g. CI).
 PY := $(if $(wildcard $(VENV_PY)),$(VENV_PY),$(PYTHON))
 
-.PHONY: setup db-migrate parse-pdfs download-budget-pdfs reconcile-budgets collect load data features train backtest holdout test api web console live retrain lint typecheck
+.PHONY: setup db-migrate parse-pdfs parse-speeches download-budget-pdfs reconcile-budgets collect load data features train backtest holdout test api web console live retrain lint typecheck
 
 setup:
 	@echo "[1/4] Creating virtualenv if needed"
@@ -38,6 +38,9 @@ parse-pdfs:
 	@$(PY) scripts/build_statement3.py
 	@$(PY) scripts/build_budget_csvs.py
 	@$(PY) scripts/build_statement3.py
+
+parse-speeches:
+	@$(PY) -m bsp.parsers.speech
 
 download-budget-pdfs:
 	@$(PY) scripts/collect/download_budget_pdfs.py

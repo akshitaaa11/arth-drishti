@@ -25,6 +25,7 @@ from bsp.features.baskets import build_market_data_bundle
 from bsp.features.sector_features import build_and_save_sector_features
 from bsp.features.stock_features import build_and_save_stock_features
 from bsp.features.targets import build_and_save_targets
+from bsp.nlp.speech_tagging import build_and_save_speech_scores
 from bsp.quality.leakage import validate_feature_store
 
 
@@ -33,6 +34,9 @@ def build_all_features(project_root: Path | None = None) -> None:
     root = project_root or get_project_root()
     print("[1/5] Building market data bundle and sector baskets...")
     bundle = build_market_data_bundle(root)
+
+    print("[1b] Scoring budget speeches (keyword tagging)...")
+    build_and_save_speech_scores(root)
 
     print("[2/5] Building sector-year features...")
     build_and_save_sector_features(bundle, root)
