@@ -1,0 +1,25 @@
+{
+  "holdout_fiscal_years": [
+    "2024-25",
+    "2025-26"
+  ],
+  "live_fiscal_years": [
+    "2026-27"
+  ],
+  "holdout_unlocked": false,
+  "first_test_fiscal_year": "2012-13",
+  "min_train_budgets": 3,
+  "top_k_sectors": 3,
+  "top_k_stocks": 15,
+  "round_trip_cost": 0.002,
+  "seed": 42,
+  "ridge_alpha_grid": [
+    0.1,
+    1.0,
+    10.0,
+    100.0,
+    1000.0,
+    10000.0
+  ],
+  "interval_level": 0.8
+}

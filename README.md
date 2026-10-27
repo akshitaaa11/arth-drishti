@@ -451,12 +451,14 @@ Exit criteria:
 
 **Goal:** the evaluation machinery and the bars every model must clear, before any "real" model exists.
 
+> **Status: Phase 4 is built at sector level only; its exit criteria pass.** `make backtest` rebuilds `reports/baselines.md` (and the CSVs beside it) with fixed seeds: two runs give byte-identical files, and every run is logged to MLflow. **Null result:** no baseline reaches the README target of mean IC > 0.10 (best: last year's winners, 0.065), and neither the budget-surprise baseline nor ridge beats the equal-weight Sharpe. IT Services is the control sector and is reported separately (no leakage alarm). Stock-level evaluation is deferred until the Nifty 500 point-in-time history is complete (`reports/data_gaps.md`). The FY2024-25 and FY2025-26 hold-out has not been touched.
+
 Tasks:
-- [ ] `evaluation/walk_forward.py`: expanding window; train on budgets ≤ t−1, predict t, for every t from FY2012-13; hyperparameter tuning hook runs **inside** each fold. Lock FY2024-25 and FY2025-26 as hold-out (raise an error if accessed before Phase 9 is unlocked by a config flag).
-- [ ] `models/baselines.py`: equal-weight all sectors; last year's winners (momentum); "biggest allocation increase wins"; ridge regression.
-- [ ] `evaluation/metrics.py`: Spearman rank IC, top-3 hit rate, MAE, directional accuracy; Precision@5 and NDCG@10; interval coverage and width.
-- [ ] `evaluation/backtest.py`: top-k sector and stock portfolios, 0.2% round-trip costs; CAGR, Sharpe, maximum drawdown, turnover. **(FR-11, Must)**
-- [ ] MLflow logging for every run (params, per-year metrics, artifacts).
+- [x] `evaluation/walk_forward.py`: expanding window; train on budgets ≤ t−1, predict t, for every t from FY2012-13; hyperparameter tuning hook runs **inside** each fold. Lock FY2024-25 and FY2025-26 as hold-out (raise an error if accessed before Phase 9 is unlocked by a config flag). *Sector level. Expanding window over the 12 full budgets FY2012-13 to FY2023-24; a training row needs fiscal year < t, `label_end <= day 0` of t and `target_complete`; the ridge tuning hook sees training rows only. The hold-out is locked by fiscal year in `config/evaluation.json` (FY2024-25-I is locked with FY2024-25) and raises `HoldoutLockedError`; tests cover the lock, the unlock path and "never trains on year t or later".*
+- [x] `models/baselines.py`: equal-weight all sectors; last year's winners (momentum); "biggest allocation increase wins"; ridge regression. *Sector baselines: equal weight, last year's winners (12m momentum), biggest allocation increase (`alloc_vs_prev_re_pct`), ridge.*
+- [x] `evaluation/metrics.py`: Spearman rank IC, top-3 hit rate, MAE, directional accuracy; Precision@5 and NDCG@10; interval coverage and width. *Each metric is unit-tested against hand-computed values.*
+- [x] `evaluation/backtest.py`: top-k sector and stock portfolios, 0.2% round-trip costs; CAGR, Sharpe, maximum drawdown, turnover. **(FR-11, Must)** *Sector portfolios only: stock portfolios wait for the complete Nifty 500 history. Top-3 of the 14 budget-sensitive sectors, 0.2% round trip, benchmark charged identically; window returns reproduce the published 12m targets (tested). IT Services (control) is reported separately.*
+- [x] MLflow logging for every run (params, per-year metrics, artifacts). *`bsp/evaluation/tracking.py` uses the MLflow server if it answers a health check, else a local file store under `mlruns/` (git-ignored); the run prints which one it used.*
 
 Exit criteria:
 - Baseline results per year, logged to MLflow and written to `reports/baselines.md`.
