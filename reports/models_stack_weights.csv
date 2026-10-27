@@ -1,0 +1,13 @@
+budget_id,weight_first,n_past_folds,first,second
+FY2012-13,0.5,0,lgbm_ranker,bayes_hier
+FY2013-14,0.5,1,lgbm_ranker,bayes_hier
+FY2014-15,0.5,2,lgbm_ranker,bayes_hier
+FY2015-16,0.0,3,lgbm_ranker,bayes_hier
+FY2016-17,1.0,4,lgbm_ranker,bayes_hier
+FY2017-18,1.0,5,lgbm_ranker,bayes_hier
+FY2018-19,1.0,6,lgbm_ranker,bayes_hier
+FY2019-20,0.75,7,lgbm_ranker,bayes_hier
+FY2020-21,0.5,8,lgbm_ranker,bayes_hier
+FY2021-22,0.5,9,lgbm_ranker,bayes_hier
+FY2022-23,0.5,10,lgbm_ranker,bayes_hier
+FY2023-24,0.5,11,lgbm_ranker,bayes_hier

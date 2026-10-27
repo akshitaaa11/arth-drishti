@@ -30,7 +30,11 @@ dependencies = [
   "psycopg2-binary>=2.9",
   "scikit-learn>=1.4",
   "scipy>=1.12",
-  "mlflow-skinny>=2.12",
+  "mlflow>=3.0",
+  "lightgbm>=4.3",
+  "optuna>=3.6",
+  "pymc>=5.10",
+  "arviz>=0.18",
 ]
 
 [project.optional-dependencies]
@@ -68,5 +72,5 @@ packages = ["bsp"]
 warn_unused_configs = true
 
 [[tool.mypy.overrides]]
-module = ["yfinance", "apscheduler", "apscheduler.*", "sklearn", "sklearn.*", "scipy", "scipy.*", "mlflow", "mlflow.*"]
+module = ["pymc", "pymc.*", "arviz", "arviz.*", "lightgbm", "lightgbm.*", "optuna", "optuna.*", "yfinance", "apscheduler", "apscheduler.*", "sklearn", "sklearn.*", "scipy", "scipy.*", "mlflow", "mlflow.*"]
 ignore_missing_imports = true

@@ -93,9 +93,19 @@ def evaluate(name: str, make_model: Callable[..., Model], tune: Any, cfg: EvalCo
              windows: pd.DataFrame, bundle: MarketDataBundle, bench: BacktestResult) -> ModelRun:
     folds = walk_forward(panel, make_model, cfg, tune)
     predictions = stack_predictions(folds)
+    selects_all = bool(make_model(**folds[0].params).selects_all)
+    params = {"level": "sector", "model": name, "top_k": cfg.top_k_sectors, "round_trip_cost": cfg.round_trip_cost,
+              "seed": cfg.seed, "n_folds": len(folds), "first_test": folds[0].budget_id, "last_test": folds[-1].budget_id,
+              "holdout_locked": not cfg.holdout_unlocked, "control_excluded_from_headline": True,
+              "tuned_alphas": [f.params.get("alpha") for f in folds]}
+    return evaluate_predictions(name, predictions, selects_all, params, cfg, windows, bundle, bench)
+
+
+def evaluate_predictions(name: str, predictions: pd.DataFrame, selects_all: bool, params: dict[str, Any], cfg: EvalConfig,
+                         windows: pd.DataFrame, bundle: MarketDataBundle, bench: BacktestResult) -> ModelRun:
+    """Score out-of-sample sector predictions (all 15 sectors): metrics on the 14 budget-sensitive ones, backtest, control."""
     headline = predictions[~predictions["is_control"]]
     per_year = pd.DataFrame([{"budget_id": b, **_cross_section_metrics(g)} for b, g in headline.groupby("budget_id")])
-    selects_all = bool(make_model(**folds[0].params).selects_all)
     selections = top_k_selection(headline, cfg.top_k_sectors, selects_all)
     levels = (1.0 + bundle.sector_returns.fillna(0.0)).cumprod()
     backtest = run_backtest(selections, windows[windows["budget_id"].isin(selections)], levels, cfg.round_trip_cost)
@@ -107,10 +117,6 @@ def evaluate(name: str, make_model: Callable[..., Model], tune: Any, cfg: EvalCo
     summary["ic_positive_share"] = (float((per_year["ic"].dropna() > 0).mean())
                                     if per_year["ic"].notna().any() else float("nan"))
     summary.update({f"bt_{key}": value for key, value in backtest.summary.items()})
-    params = {"level": "sector", "model": name, "top_k": cfg.top_k_sectors, "round_trip_cost": cfg.round_trip_cost,
-              "seed": cfg.seed, "n_folds": len(folds), "first_test": folds[0].budget_id, "last_test": folds[-1].budget_id,
-              "holdout_locked": not cfg.holdout_unlocked, "control_excluded_from_headline": True,
-              "tuned_alphas": [f.params.get("alpha") for f in folds]}
     return ModelRun(name, predictions, per_year, summary, backtest, _control_rows(predictions), params)
 
 

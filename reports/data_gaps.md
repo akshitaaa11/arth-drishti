@@ -121,3 +121,9 @@ Sector-year features that depend on gaps above are sparse: scheme push (15% of r
 ## Out of Phase 1
 
 Phase 1 itself did not cover market, index, macro or FPI collection; see the Phase 2 section above.
+
+### Phase 5: what is missing for Tier 2 (not built)
+
+- **Company fundamentals (D12) and order wins (D13):** no point-in-time source is reachable from the sandbox, and Yahoo's fundamentals are a current snapshot, so they cannot be used for past budgets without look-ahead. To build them, download quarterly results and order announcements per company (BSE/NSE filings) into `data/raw/`, store them with their announcement dates, and use only items announced before each budget. Until then Tier 2 uses price-based features plus Tier-1 output.
+- **LSTM / temporal CNN (Could):** not built.
+- Stock-level results (Tier 2 and the stock baselines) carry the survivorship bias described above and cover 9 test years (FY2015-16 onward), because Tier 2 needs three years of out-of-sample Tier-1 output to train on.

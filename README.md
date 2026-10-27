@@ -449,7 +449,7 @@ Exit criteria:
 
 **Goal:** the evaluation machinery and the bars every model must clear, before any "real" model exists.
 
-> **Status: Phase 4 is built at sector level only; its exit criteria pass.** `make backtest` rebuilds `reports/baselines.md` (and the CSVs beside it) with fixed seeds: two runs give byte-identical files, and every run is logged to MLflow. **Null result:** no baseline reaches the README target of mean IC > 0.10 (best: last year's winners, 0.065), and neither the budget-surprise baseline nor ridge beats the equal-weight Sharpe. IT Services is the control sector and is reported separately (no leakage alarm). Stock-level evaluation is not built, because the stock universe uses listing-date plus liquidity filters only and survivorship bias is not removed (see `reports/data_gaps.md`). The FY2024-25 and FY2025-26 hold-out has not been touched.
+> **Status: Phase 4 is built at sector level only; its exit criteria pass.** `make backtest` rebuilds `reports/baselines.md` (and the CSVs beside it) with fixed seeds: two runs give byte-identical files, and every run is logged to MLflow. **Result after the price-data fixes (PR #7):** the ridge baseline's mean IC is 0.185, above the README bar of 0.10, but it was 0.058 before four Railways training rows were removed, so treat it as fragile; the other baselines stay below the bar (last year's winners 0.062, budget-surprise -0.015), and none of them beats the equal-weight Sharpe by more than the noise of 12 test years (see `reports/baselines.md`). IT Services is the control sector and is reported separately (no leakage alarm). Stock-level evaluation is not built, because the stock universe uses listing-date plus liquidity filters only and survivorship bias is not removed (see `reports/data_gaps.md`). The FY2024-25 and FY2025-26 hold-out has not been touched.
 
 Tasks:
 - [x] `evaluation/walk_forward.py`: expanding window; train on budgets ≤ t−1, predict t, for every t from FY2012-13; hyperparameter tuning hook runs **inside** each fold. Lock FY2024-25 and FY2025-26 as hold-out (raise an error if accessed before Phase 9 is unlocked by a config flag). *Sector level. Expanding window over the 12 full budgets FY2012-13 to FY2023-24; a training row needs fiscal year < t, `label_end <= day 0` of t and `target_complete`; the ridge tuning hook sees training rows only. The hold-out is locked by fiscal year in `config/evaluation.json` (FY2024-25-I is locked with FY2024-25) and raises `HoldoutLockedError`; tests cover the lock, the unlock path and "never trains on year t or later".*
@@ -468,18 +468,20 @@ Exit criteria:
 
 **Goal:** the sector ranker and the stock ranker.
 
+> **Status: Phase 5 is built and runs end to end; the models do not beat the baselines (null result).** `make train` rebuilds `reports/models.md` and the CSVs beside it: two runs give byte-identical files, every run is logged to MLflow and the final fits are registered (`arth_drishti_sector_lgbm_ranker`, `arth_drishti_sector_bayes_hier`, `arth_drishti_stock_ranker`; one new version per run, with seed, training budgets, input-file SHA-256 and git commit). Sector level (12 test years): LightGBM ranker IC 0.054, Bayesian hierarchical 0.050, equal blend 0.065, learned stack 0.015; none clears the 0.10 bar and none beats the best baseline (ridge, 0.185, fragile; see Phase 4). Stock level (9 test years from FY2015-16, survivorship bias not removed): the Tier-2 ranker's pooled IC is 0.050 against ridge's 0.160, and its top-15 Sharpe (1.16) is within noise of equal weight (1.07) and below ridge (1.47). The control sector (IT Services) raises no sector-level alarm; two stock-level baselines (ridge, sector-then-momentum) did, and the investigation in `reports/models.md` found no date or label leak and no significance once each year counts once. **Not built:** company fundamentals (D12), the order-win extractor (D13) and the LSTM, see the unchecked tasks. The FY2024-25 and FY2025-26 hold-out has not been touched.
+
 Tasks:
-- [ ] **Tier 1:** LightGBM/XGBoost with LambdaRank objective, shallow trees, Optuna tuning inside the walk-forward loop. Output per sector: expected excess return, rank, P(beat Nifty 500). **(FR-8, Must)**
-- [ ] **Tier 1:** Bayesian hierarchical regression in PyMC, sector-specific slopes on surprise, partially pooled; produces credible intervals.
-- [ ] Data for Tier 2: company fundamentals (D12: sales, EBITDA, debt, order book, promoter pledge) and the order-win extractor (D13 / F8: order value, client, government flag → `OrderInflow / MarketCap`).
-- [ ] **Tier 2:** LightGBM ranker within each sector on stock features + Tier-1 output; liquidity filter of average daily traded value ≥ ₹5 cr. **(FR-9, Must)**
-- [ ] *(Could)* LSTM or temporal CNN on 250-day pre-budget price paths, used as an embedding into the ranker. Keep it only if the ablation shows a gain.
-- [ ] Stacked ensemble of the above.
-- [ ] Model registry in MLflow: every model version kept so old predictions can be reproduced. **(FR-14, Should)**
+- [x] **Tier 1:** LightGBM with the LambdaRank objective, shallow trees (depth <= 3), Optuna tuning inside every walk-forward fold (15 seeded trials, inner expanding walk-forward on training rows only). Output per sector: expected excess return, rank, P(beat Nifty 500). **(FR-8, Must)** *`models/ranker.py`; LightGBM only (XGBoost not used). `reports/models_predictions_sector.csv` has `score`, `rank`, `expected`, `p_beat`, `lo`, `hi` for every sector and test budget. P(beat) is a normal approximation from out-of-fold residuals, scored with the Brier score.*
+- [x] **Tier 1:** Bayesian hierarchical regression in PyMC, sector-specific slopes on surprise, partially pooled; produces credible intervals. *`models/bayes.py`; non-centred, 2 chains x 500 draws; R-hat, ESS and divergences per fold in `reports/models.md` (max R-hat 1.012, no divergences). Sector slopes in `reports/models_bayes_slopes.csv`: every 80% interval includes 0.*
+- [ ] Data for Tier 2: company fundamentals (D12: sales, EBITDA, debt, order book, promoter pledge) and the order-win extractor (D13 / F8: order value, client, government flag → `OrderInflow / MarketCap`). *Not built: no point-in-time source is reachable from the sandbox (Yahoo's fundamentals are a current snapshot, which would be look-ahead for 2012-2023). Nothing was typed in or estimated.*
+- [x] **Tier 2:** LightGBM ranker within each sector on stock features + Tier-1 output; liquidity filter of average daily traded value ≥ ₹5 cr. **(FR-9, Must)** *One LambdaRank model with query groups budget x sector; features are the 11 price-based stock features plus the sector's out-of-sample Tier-1 blend output. Without fundamentals and order wins this is a price-feature ranker only. The liquidity filter is the universe rule.*
+- [ ] *(Could)* LSTM or temporal CNN on 250-day pre-budget price paths, used as an embedding into the ranker. Keep it only if the ablation shows a gain. *Not built: no deep-learning library in the project; the ablation is Phase 8.*
+- [x] Stacked ensemble of the above. *`tier1_stack`: a weight between the two Tier-1 models learned per test budget from earlier, resolved out-of-sample folds only; the pre-specified equal blend `tier1_blend` feeds Tier 2. The stack covers the two Tier-1 models, not Tier 2.*
+- [x] Model registry in MLflow: every model version kept so old predictions can be reproduced. **(FR-14, Should)** *`models/registry.py`: final fits on all unlocked, resolved rows are registered with their inputs' hashes; reloading a registered version was checked.*
 
 Exit criteria:
-- Per-year walk-forward results for every model vs every baseline in `reports/models.md`.
-- IT Services (control) shows no strong budget effect; if it does, investigate for leakage before moving on.
+- [x] Per-year walk-forward results for every model vs every baseline in `reports/models.md` (sector and stock tables, per-year IC and returns, `reports/models_per_year.csv`, `reports/models_stock_per_year.csv`).
+- [x] IT Services (control) shows no strong budget effect; if it does, investigate for leakage before moving on. *No sector-level alarm. Two stock-level baselines tripped the pooled alarm; both were investigated (dates, label scramble, per-year test) and are explained in `reports/models.md`.*
 
 ---
 
@@ -659,7 +661,7 @@ Exit criteria:
 | `make load` | Load all CSVs into Postgres, then run quality checks |
 | `make data` | `parse-pdfs` + `collect` + `load` |
 | `make features` | Build point-in-time features, targets and event study |
-| `make train` | Walk-forward training of baselines and models, logged to MLflow |
+| `make train` | Phase 5: Tier-1 and Tier-2 models, walk-forward, `reports/models.md`, MLflow runs and registry |
 | `make backtest` | Portfolio backtests, ablations, reports |
 | `make holdout` | One-time hold-out evaluation (requires unlock flag) |
 | `make test` | Unit tests, leakage test, API tests |
