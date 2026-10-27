@@ -15,7 +15,6 @@ from pathlib import Path
 import pandas as pd
 
 from bsp.ingest.benchmarks import collect_benchmarks
-from bsp.ingest.constituents import collect_constituents
 from bsp.ingest.fpi import collect_fpi
 from bsp.ingest.macro import collect_macro
 from bsp.ingest.prices import collect_prices
@@ -25,7 +24,6 @@ CSV = ROOT / "data" / "csv"
 JOBS = {
     "prices": (collect_prices, ["prices_daily.csv", "stock_first_price_date.csv"]),
     "benchmarks": (collect_benchmarks, ["index_daily.csv"]),
-    "constituents": (collect_constituents, ["nifty500_constituents.csv"]),
     "macro": (collect_macro, ["macro.csv"]),
     "fpi": (collect_fpi, ["fpi_sector_fortnightly.csv", "fpi_sector_fortnightly_long.csv"]),
 }
@@ -62,9 +60,8 @@ def main() -> int:
         "",
         "Notes:",
         "- Only row counts are compared; `fetched_at` timestamps legitimately change on every run.",
-        "- `constituents` (no source files yet) and `fpi` (NSDL returns HTTP 403 from the cloud sandbox) did not "
-        "download anything here, so their PASS only shows that a blocked or empty run leaves the existing CSV "
-        "untouched. Re-run this script on a laptop for a real test of those two.",
+        "- `fpi` (NSDL returns HTTP 403 from the cloud sandbox) did not download anything here, so its PASS only "
+        "shows that a blocked run leaves the existing CSV untouched. Re-run this script on a laptop for a real test.",
         "- `prices`, `benchmarks` and `macro` hit Yahoo Finance / the World Bank where reachable; macro series "
         "from FRED are blocked here and keep their previous rows.",
         "",

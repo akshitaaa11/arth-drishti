@@ -4,7 +4,8 @@ Enforces four rules:
   1. No look-ahead: every feature's as_of_date must be <= budget presentation date (or < prediction date).
   2. No same-year actuals: budget year t may only use historical Actuals from <= t-2.
   3. No unlisted stocks: a stock cannot appear in a budget year before its listing/first price date.
-  4. No out-of-universe stocks: where Nifty 500 history covers a budget day, only members on that day appear.
+  4. No illiquid stocks: every stock-year row carries a 60-day average traded value of at least 5 crore, the liquidity
+     half of the universe rule in features/universe.py (the listing half is rule 3).
 """
 
 from __future__ import annotations
@@ -14,7 +15,7 @@ from pathlib import Path
 import pandas as pd
 
 from bsp.common.config import get_project_root
-from bsp.features.universe import Universe
+from bsp.features.universe import MIN_AVG_TRADED_VALUE_CR
 
 
 class LeakageError(Exception):
@@ -102,33 +103,33 @@ def validate_point_in_time_universe(
         raise LeakageError(f"Found {len(violations)} point-in-time universe violations:\n{sample}")
 
 
-def validate_index_membership(
+LIQUIDITY_FEATURE = "avg_traded_value_60d_cr"
+
+
+def validate_liquidity_floor(
     stock_features_df: pd.DataFrame,
-    universe: Universe,
-    budget_events: pd.DataFrame,
+    threshold_cr: float = MIN_AVG_TRADED_VALUE_CR,
     symbol_col: str = "symbol",
     budget_col: str = "budget_id",
 ) -> None:
-    """Ensure no stock appears for a budget day on which it was not a Nifty 500 member.
+    """Every stock-year (long format) must have a liquidity row at or above the floor; a row with none is a violation.
 
-    Budgets outside the constituent history's coverage cannot be checked and are skipped.
+    The liquidity number is computed from the 60 trading days before the budget date, so checking it here also
+    checks that the universe rule was applied.
     """
-    b_map = dict(zip(budget_events["budget_id"], budget_events["presented_on"]))
-    violations = []
     pairs = stock_features_df[[symbol_col, budget_col]].drop_duplicates()
-    members_cache: dict[str, set[str] | None] = {}
+    liquidity = stock_features_df[stock_features_df["feature_name"] == LIQUIDITY_FEATURE]
+    values = {(str(s), str(b)): v for s, b, v in zip(liquidity[symbol_col], liquidity[budget_col], liquidity["value"])}
+    violations = []
     for sym, b_id in zip(pairs[symbol_col].astype(str), pairs[budget_col].astype(str)):
-        p_date = b_map.get(b_id)
-        if not p_date:
-            continue
-        if p_date not in members_cache:
-            members_cache[p_date] = universe.members(p_date)
-        members = members_cache[p_date]
-        if members is not None and sym not in members:
-            violations.append(f"Stock {sym} appears in {b_id} (budget date {p_date}) but was not a Nifty 500 member")
+        value = values.get((sym, b_id))
+        if value is None or pd.isna(value):
+            violations.append(f"Stock {sym} in {b_id} has no {LIQUIDITY_FEATURE}")
+        elif value < threshold_cr:
+            violations.append(f"Stock {sym} in {b_id} has {LIQUIDITY_FEATURE}={value:.3f} below {threshold_cr}")
     if violations:
         sample = "\n".join(violations[:5])
-        raise LeakageError(f"Found {len(violations)} out-of-universe violations:\n{sample}")
+        raise LeakageError(f"Found {len(violations)} liquidity-floor violations:\n{sample}")
 
 
 def validate_feature_store(project_root: Path | None = None) -> None:
@@ -162,6 +163,4 @@ def validate_feature_store(project_root: Path | None = None) -> None:
         df_stk = pd.read_csv(stk_path)
         validate_feature_dates(df_stk, b_events)
         validate_point_in_time_universe(df_stk, first_price_dates, b_events)
-        validate_index_membership(
-            df_stk, Universe.from_csv(root / "data" / "csv" / "nifty500_constituents.csv"), b_events
-        )
+        validate_liquidity_floor(df_stk)

@@ -21,7 +21,6 @@ CHECKS = {
     "index_daily": ("index_daily.csv", "close", "close", None),
     "macro": ("macro.csv", "value", "value", None),
     "fpi_flows": ("fpi_sector_fortnightly.csv", "equity_net_cr", "equity_cr", None),
-    "index_constituents": ("nifty500_constituents.csv", None, None, "index_name = 'Nifty 500'"),
     "features_sector_year": ("features_sector_year.csv", "value", "value", None),
     "features_stock_year": ("features_stock_year.csv", "value", "value", None),
     "targets": ("targets.csv", "excess_return", "excess_return", None),
