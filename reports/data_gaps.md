@@ -46,16 +46,31 @@ Checked 2026-10-25 from the cloud sandbox, whose network allowlist blocks NSDL, 
 | Nifty Healthcare index | Yahoo returns 404 "Quote not found" for `^CNXHEALTH` (retried 2026-10-25). No official index cross-check for Healthcare. | Optional: put a niftyindices.com download in `data/raw/indices/` with columns `index_name,date,close` (the manual loader is in `ingest/benchmarks.py`). Otherwise: no official index cross-check for Healthcare. |
 | Point-in-time Nifty 500 constituents | `nifty500_constituents.csv` is header-only (columns `symbol, effective_from, effective_to, source, source_url, fetched_at`). niftyindices.com and NSE are blocked from the sandbox, so neither the current list nor any index-change press release could be downloaded. History cannot be rebuilt back to any year yet. Until the file is populated the universe filter drops nothing (0 stock-year rows dropped; see `reports/universe_filter.csv`) and only the listing-date check applies. | See "Nifty 500 history: how to finish" below. |
 
-### Nifty 500 history: how to finish (by hand, on a laptop)
+### Nifty 500 history: how to finish (on a laptop / Codespace)
 
-`scripts/collect/nifty500_history.py` is written and unit-tested on hand-made fixtures (`tests/test_nifty500_history.py`) but has **never run against real niftyindices/NSE files**, so the press-release layout it assumes is unverified.
+`scripts/collect/nifty500_history.py` now reads the seven real NSE Indices press releases in
+`tests/fixtures/nifty500_press_releases/` (2015-12-14, 2017-03-31, 2019-06-28, 2021-04-29, 2022-08-08, 2025-09-23,
+2025-12-31) and gives the exact symbols and effective dates asserted in `tests/test_nifty500_history.py`; only the
+"Nifty 500" sub-section of each release counts (sections for Nifty Smallcap 250, "Nifty500 Equal Weight" notes and
+similar are ignored). It still has not run against the live current list, which only a networked machine can download.
 
-1. Download the current list from `https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv` (the script does this itself on a laptop; otherwise save it as `data/raw/nifty500_constituents/ind_nifty500list_<YYYY-MM-DD>.csv`).
-2. Collect the niftyindices.com / NSE index-change press releases ("Changes in Nifty indices", semi-annual and ad hoc). Save each as `data/raw/nifty500_constituents/press_releases/<YYYY-MM-DD>.pdf`, where the date is the day the change takes effect, and/or list `effective_date,url` in `config/nifty500_press_releases.csv` so the script downloads them.
-3. Run `python scripts/collect/nifty500_history.py`. Releases it cannot parse, and company names it cannot map to a symbol, are listed in `reports/nifty500_history_report.csv`; map names by hand in `config/nifty500_name_aliases.csv` (`company_name,symbol`).
-4. Run `python -m bsp.ingest.constituents` and `make features`. Coverage starts the day before the oldest release you supply; budgets before that date are **not** filtered (earlier years are never filled). State the first covered year here once known.
+1. `python scripts/collect/nifty500_history.py` downloads the releases listed in `config/nifty500_press_releases.csv`
+   (effective date, URL) into `data/raw/nifty500_constituents/press_releases/` and the current list from
+   `https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv`. It prints excluded/included counts per release and exits
+   non-zero, writing nothing, if a listed release yields no Nifty 500 changes or cannot be read.
+2. Problems that are not parser errors go to `reports/nifty500_history_report.csv`: a symbol included in a release that is not a
+   member afterwards, or excluded but already a member. A company whose symbol changed since a release was printed is mapped by
+   hand in `config/nifty500_symbol_aliases.csv` (`old_symbol,current_symbol`).
+3. `python -m bsp.ingest.constituents`, then `make features`. Coverage starts the day before the oldest release (2015-12-13);
+   budgets before that are not filtered and no earlier year is filled.
 
-Known limits of the method: symbol changes/mergers are not tracked; a company that is both included and excluded in one release is reported, not resolved.
+**Coverage caveat (important).** Only seven releases are listed, while NSE Indices also publishes the semi-annual review and
+ad hoc replacements that are not in the list. Between two listed releases the history is therefore not known to be complete:
+a company that joined or left in an unlisted review is shown as a member for the whole span (if it is in today's list) or as
+never a member (if it is not). Until every Nifty 500 change since 2015-12 is listed, treat `universe_filter.csv` and the
+stock-year rows it drops as provisional, and check `reports/nifty500_history_report.csv` after each run: an "included but not
+a member afterwards" line usually means a release is missing in between. Add the missing release URLs to
+`config/nifty500_press_releases.csv` and re-run.
 
 ### Price data decisions (Phase 2)
 
