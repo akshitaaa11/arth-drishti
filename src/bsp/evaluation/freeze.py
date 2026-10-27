@@ -22,7 +22,7 @@ MANIFEST = "config/holdout_freeze.json"
 EVALUATION_SETTING_KEYS = ["holdout_fiscal_years", "live_fiscal_years", "first_test_fiscal_year", "min_train_budgets", "top_k_sectors",
                            "top_k_stocks", "round_trip_cost", "seed", "ridge_alpha_grid", "interval_level"]
 DATA_FILES = ["features_sector_year_wide.csv", "features_stock_year_wide.csv", "targets.csv", "prices_daily.csv", "index_daily.csv",
-              "macro.csv", "fpi_sector_fortnightly.csv", "sector_baskets_daily.csv", "stock_first_price_date.csv"]
+              "macro.csv", "fpi_sector_fortnightly.csv", "stock_first_price_date.csv"]  # sector_baskets_daily.csv is an output of the price data (rewritten by tests), not an input
 REFERENCE_FILES = ["reports/baselines_predictions_sector.csv", "reports/models_predictions_sector.csv", "reports/models_predictions_stock.csv",
                    "reports/predictions_detail.csv"]
 LIBRARIES = ["numpy", "pandas", "scikit-learn", "scipy", "lightgbm", "pymc", "pytensor", "optuna", "shap", "mapie", "mlflow"]

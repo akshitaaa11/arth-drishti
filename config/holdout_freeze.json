@@ -21,7 +21,6 @@
     "data/csv/index_daily.csv": "38e74c0ef71998ac01f4f41f5de876975141b9999afd39afac642f810b7dc811",
     "data/csv/macro.csv": "5298e47610b934b337645cc240d6cb5a7212cfba84dc60aa8ccd2582022b764a",
     "data/csv/prices_daily.csv": "9454ce2a4feb1107044cf332658fab2b309453588e48ad460ba2a93c2c8ceabd",
-    "data/csv/sector_baskets_daily.csv": "061ead5a3af5b02dcaac3bf77e9964ed9b96fce059131b489a1f71162288b377",
     "data/csv/stock_first_price_date.csv": "9eda6c1e90809288b01bf2d9cfa156c7377dd677334b8ab35969a3d4acead9b0",
     "data/csv/targets.csv": "5777763b2fa05b40719c47f78158808490f917a39141813d8f949036b8dd071f"
   },
@@ -82,7 +81,7 @@
     "src/bsp/evaluation/backtest.py": "bf906d6e7ba6096ceb56956dc130cf7dccb5a0420d2a4c20b6f6e92a52c61cea",
     "src/bsp/evaluation/config.py": "b2c0d7ad01fa393b473c2d505999195a6c8cdc7d751469a48768adf9ab0228c5",
     "src/bsp/evaluation/data.py": "faab84f3a013f7cfaf0dd2ea5c5c3fa043b8784116a9f13748cf76097b3d83ab",
-    "src/bsp/evaluation/freeze.py": "c27391695033ee6e7943bace6d0d0a6fcef7c0570c4f9092aebb96d4d1c38cb8",
+    "src/bsp/evaluation/freeze.py": "eda2298598655f46465c99998c3aa3aef2f9555928a9da15db395c86b5d9fd5f",
     "src/bsp/evaluation/holdout.py": "55f179b31f28f12844b8fe16fded8589157d11cdcc76e8ed9de5b661e2644e02",
     "src/bsp/evaluation/metrics.py": "242696a55af1c71758ee55b5106831068a5fcaafe2ea34101a246ba84961c6b1",
     "src/bsp/evaluation/run_baselines.py": "cf73d81b8d27a815f0bb92c728815a21d937d2c317f363c260dd2bbe82a84a66",
