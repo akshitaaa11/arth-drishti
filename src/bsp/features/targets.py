@@ -12,6 +12,7 @@ Unresolved targets (e.g. FY2026-27 forward 12-month return) have target_complete
 from __future__ import annotations
 
 from pathlib import Path
+from typing import cast
 
 import pandas as pd
 
@@ -85,12 +86,21 @@ def compute_targets_for_bundle(
 
         # Entities: 15 sectors
         for sec_id in bundle.sector_returns.columns:
+            first_active = bundle.sector_first_active_idx.get(sec_id)
+            # A basket with no stock yet on the buy day has no return to measure: every horizon is missing (never
+            # filled with a flat 0%) and the row is not complete, so it cannot enter training.
+            basket_exists = first_active is not None and start_idx >= first_active
             sec_cum = (1.0 + bundle.sector_returns[sec_id].fillna(0.0)).cumprod()
             mkt_cum = (1.0 + bundle.market_returns.fillna(0.0)).cumprod()
 
             for h in HORIZONS:
                 excess_ret: float | None = None
                 complete = True
+
+                if not basket_exists:
+                    records.append({"entity": sec_id, "entity_type": "sector", "budget_id": b_id, "horizon": h,
+                                    "excess_return": None, "target_complete": False})
+                    continue
 
                 if h == "12m":
                     if next_budget_day0_idx is not None and next_budget_day0_idx > start_idx:
@@ -162,7 +172,7 @@ def compute_targets_for_bundle(
                     if next_budget_day0_idx is not None and next_budget_day0_idx > start_idx:
                         p_end = prices_s.iloc[next_budget_day0_idx]
                         if pd.notna(p_end) and p_end > 0:
-                            r_stk = float((p_end / p_start) - 1.0)
+                            r_stk = cast(float, bundle.window_return(sym, start_idx, next_budget_day0_idx))  # divides out sourced return exclusions
                             r_mkt = float((mkt_cum.iloc[next_budget_day0_idx] / mkt_cum.iloc[start_idx]) - 1.0)
                             excess_ret = r_stk - r_mkt
                             complete = True
@@ -174,7 +184,7 @@ def compute_targets_for_bundle(
                     if march_idx is not None and march_idx >= start_idx:
                         p_end = prices_s.iloc[march_idx]
                         if pd.notna(p_end) and p_end > 0:
-                            r_stk = float((p_end / p_start) - 1.0)
+                            r_stk = cast(float, bundle.window_return(sym, start_idx, march_idx))  # divides out sourced return exclusions
                             r_mkt = float((mkt_cum.iloc[march_idx] / mkt_cum.iloc[start_idx]) - 1.0)
                             excess_ret = r_stk - r_mkt
                             complete = True
@@ -186,7 +196,7 @@ def compute_targets_for_bundle(
                     if d5_idx is not None:
                         p_end = prices_s.iloc[d5_idx]
                         if pd.notna(p_end) and p_end > 0:
-                            r_stk = float((p_end / p_start) - 1.0)
+                            r_stk = cast(float, bundle.window_return(sym, start_idx, d5_idx))  # divides out sourced return exclusions
                             r_mkt = float((mkt_cum.iloc[d5_idx] / mkt_cum.iloc[start_idx]) - 1.0)
                             excess_ret = r_stk - r_mkt
                             complete = True
@@ -198,7 +208,7 @@ def compute_targets_for_bundle(
                     if d30_idx is not None:
                         p_end = prices_s.iloc[d30_idx]
                         if pd.notna(p_end) and p_end > 0:
-                            r_stk = float((p_end / p_start) - 1.0)
+                            r_stk = cast(float, bundle.window_return(sym, start_idx, d30_idx))  # divides out sourced return exclusions
                             r_mkt = float((mkt_cum.iloc[d30_idx] / mkt_cum.iloc[start_idx]) - 1.0)
                             excess_ret = r_stk - r_mkt
                             complete = True

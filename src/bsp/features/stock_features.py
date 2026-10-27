@@ -17,7 +17,7 @@ its average daily traded value over the prior 60 trading days is at least 5 cror
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import pandas as pd
@@ -123,34 +123,22 @@ def build_stock_features(
 
             features: dict[str, float | None] = {}
 
-            # 1. Momentum: 1m (21d), 3m (63d), 6m (126d), 12m (252d)
-            if curr_idx >= 5:
-                p_1m = prices_s.iloc[max(0, curr_idx - 21)]
-                features["momentum_1m"] = float((p_curr / p_1m) - 1.0) if pd.notna(p_1m) and p_1m > 0 else None
-            else:
-                features["momentum_1m"] = None
-
-            if curr_idx >= 15:
-                p_3m = prices_s.iloc[max(0, curr_idx - 63)]
-                features["momentum_3m"] = float((p_curr / p_3m) - 1.0) if pd.notna(p_3m) and p_3m > 0 else None
-            else:
-                features["momentum_3m"] = None
-
-            if curr_idx >= 30:
-                p_6m = prices_s.iloc[max(0, curr_idx - 126)]
-                features["momentum_6m"] = float((p_curr / p_6m) - 1.0) if pd.notna(p_6m) and p_6m > 0 else None
-            else:
-                features["momentum_6m"] = None
+            # 1. Momentum: 1m (21d), 3m (63d), 6m (126d), 12m (252d). window_return divides out any sourced
+            #    return exclusion (a demerger ex-date) inside the window; otherwise it is p_curr / p_start - 1.
+            features["momentum_1m"] = bundle.window_return(sym, max(0, curr_idx - 21), curr_idx) if curr_idx >= 5 else None
+            features["momentum_3m"] = bundle.window_return(sym, max(0, curr_idx - 63), curr_idx) if curr_idx >= 15 else None
+            features["momentum_6m"] = bundle.window_return(sym, max(0, curr_idx - 126), curr_idx) if curr_idx >= 30 else None
 
             if curr_idx >= 60:
                 p_12m = prices_s.iloc[max(0, curr_idx - 252)]
                 if pd.notna(p_12m) and p_12m > 0:
-                    features["momentum_12m"] = float((p_curr / p_12m) - 1.0)
+                    features["momentum_12m"] = bundle.window_return(sym, max(0, curr_idx - 252), curr_idx)
                 else:
                     # Fall back to return since earliest available valid price
                     valid_sub = prices_s.iloc[:curr_idx].dropna()
                     features["momentum_12m"] = (
-                        float((p_curr / valid_sub.iloc[0]) - 1.0) if len(valid_sub) >= 60 else None
+                        bundle.window_return(sym, cast(int, prices_s.index.get_loc(valid_sub.index[0])), curr_idx)
+                        if len(valid_sub) >= 60 else None
                     )
             else:
                 features["momentum_12m"] = None

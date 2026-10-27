@@ -1,0 +1,2 @@
+symbol,date,verification,source_url,note
+NIITLTD,2023-06-08,"secondary source, not verified on the exchange",https://www.businesstoday.in/amp/markets/stocks/story/niit-shares-to-turn-ex-date-for-demerger-today-key-details-384676-2023-06-08; https://www.niit.com/india/?p=8162,"Demerger ex-date (corporate learning business into NIIT Learning Systems, 1:1, record date 2023-06-08). The price fell about 76% that day because of the demerger, not because of trading. The day's return is treated as missing in the feature pipeline; no adjustment factor is applied to prices."

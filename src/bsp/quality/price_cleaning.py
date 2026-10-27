@@ -5,6 +5,10 @@ documented decision; the decisions are applied here, in the pipeline, never by e
 this order on each symbol, using only the downloaded prices and the downloaded split history
 (``data/raw/yahoo_actions/<symbol>_actions.csv``):
 
+0. ``before_listing``: rows before a sourced listing date (``config/listing_date_overrides.csv``, see
+   ``price_corrections.py``) are dropped: the series starts before the company existed. A sourced return
+   exclusion (``config/return_exclusions.csv``) is not applied here; prices stay as downloaded and the feature
+   pipeline treats that day's return as missing.
 1. ``placeholder``: ``volume == 0`` and open == high == low == close. A run of such rows at the *start* of a
    series (before the first real trade) is padding, not trading, and is dropped; so is a placeholder that is
    itself flagged or sits directly before a flagged row.
@@ -27,6 +31,8 @@ from typing import cast
 
 import numpy as np
 import pandas as pd
+
+from bsp.quality.price_corrections import ListingOverride, ReturnExclusion
 
 FLAG_THRESHOLD = 0.5
 CLOSE_TOLERANCE = 0.005
@@ -85,8 +91,15 @@ def _splits_for(splits: pd.DataFrame, symbol: str) -> pd.DataFrame:
     return sub.dropna(subset=["ratio"])
 
 
-def clean_prices(prices: pd.DataFrame, splits: pd.DataFrame | None = None) -> CleaningResult:
+def clean_prices(
+    prices: pd.DataFrame,
+    splits: pd.DataFrame | None = None,
+    listing_overrides: dict[str, ListingOverride] | None = None,
+    return_exclusions: list[ReturnExclusion] | None = None,
+) -> CleaningResult:
     """Apply the documented rules to ``prices`` (columns incl. symbol, date, OHLC, adj_close, volume)."""
+    listing_overrides = listing_overrides or {}
+    return_exclusions = return_exclusions or []
     frame = prices.assign(date=prices["date"].astype(str)).sort_values(["symbol", "date"]).reset_index(drop=True)
     original_flags = flag_jumps(frame)
     dropped: list[dict[str, object]] = []
@@ -96,6 +109,13 @@ def clean_prices(prices: pd.DataFrame, splits: pd.DataFrame | None = None) -> Cl
 
     for symbol, group in frame.groupby("symbol", sort=True):
         g = group.reset_index(drop=True)
+        override = listing_overrides.get(str(symbol))
+        if override is not None:  # Rule 0: rows before the sourced listing date are not this company's prices
+            before = g["date"] < override.listing_date
+            for _, row in g[before].iterrows():
+                dropped.append({"symbol": symbol, "date": row["date"], "rule": "before_listing", "close": row["close"],
+                                "volume": row["volume"]})
+            g = g[~before].reset_index(drop=True)
         g_flagged = set(flag_jumps(g)["date"])
 
         # Rule 1: leading placeholder padding, and placeholders that are flagged / precede a flagged row.
@@ -158,12 +178,21 @@ def clean_prices(prices: pd.DataFrame, splits: pd.DataFrame | None = None) -> Cl
     dropped_df = pd.DataFrame(dropped, columns=["symbol", "date", "rule", "close", "volume"])
     adjust_df = pd.DataFrame(adjustments, columns=["symbol", "date", "split_date", "split_ratio",
                                                    "observed_jump", "scale_applied"])
-    decisions_df = _decide(original_flags, cleaned, dropped_df, adjust_df)
+    decisions_df = _decide(original_flags, cleaned, dropped_df, adjust_df, listing_overrides, return_exclusions)
     return CleaningResult(cleaned, decisions_df, dropped_df, adjust_df)
 
 
-def _decide(flags: pd.DataFrame, cleaned: pd.DataFrame, dropped: pd.DataFrame, adjust: pd.DataFrame) -> pd.DataFrame:
+def _decide(
+    flags: pd.DataFrame,
+    cleaned: pd.DataFrame,
+    dropped: pd.DataFrame,
+    adjust: pd.DataFrame,
+    listing_overrides: dict[str, ListingOverride] | None = None,
+    return_exclusions: list[ReturnExclusion] | None = None,
+) -> pd.DataFrame:
     """One documented decision per original flag."""
+    listing_overrides = listing_overrides or {}
+    exclusions = {(e.symbol, e.date): e for e in (return_exclusions or [])}
     out: list[dict[str, object]] = []
     dropped_idx = {(r.symbol, r.date): r for r in dropped.itertuples()}
     adjust_idx = {(r.symbol, r.date): r for r in adjust.itertuples()}
@@ -172,7 +201,24 @@ def _decide(flags: pd.DataFrame, cleaned: pd.DataFrame, dropped: pd.DataFrame, a
         key = (row.symbol, row.date)
         jump = round(cast(float, row.ret) * 100, 2) if pd.notna(row.ret) else None
         base = {"symbol": row.symbol, "date": row.date, "jump_pct": jump}
-        if key in dropped_idx:
+        override = listing_overrides.get(str(row.symbol))
+        if key in dropped_idx and str(dropped_idx[key].rule) == "before_listing" and override is not None:
+            cause, decision = "data error", "drop"
+            evidence = (f"row is before the listing date {override.listing_date}: the Yahoo series starts earlier than the "
+                        f"company existed, so this is not a trading price of {row.symbol}. {override.verification}: "
+                        f"{override.source_url}")
+        elif override is not None and row.date == override.listing_date:
+            cause, decision = "data error", "drop"
+            evidence = (f"the {jump}% move on the listing day is measured against rows before the listing date "
+                        f"{override.listing_date}, which are dropped (the listing-day row itself is the first real price "
+                        f"and is kept). {override.verification}: {override.source_url}")
+        elif key in exclusions:
+            ex = exclusions[key]
+            cause, decision = "split", "adjust"
+            evidence = (f"corporate-action break (demerger ex-date): the {jump}% move is not a trading return. The day's "
+                        "return is treated as missing in the feature pipeline (config/return_exclusions.csv); prices "
+                        f"are not rescaled and no adjustment factor is invented. {ex.verification}: {ex.source_url}")
+        elif key in dropped_idx:
             d = dropped_idx[key]
             cause, decision, evidence = {
                 "placeholder": ("data error", "drop",
@@ -220,11 +266,13 @@ def main() -> None:
     """
     import glob
 
+    from bsp.quality.price_corrections import load_listing_overrides, load_return_exclusions
+
     root = Path(__file__).resolve().parents[3]
     raw = pd.read_csv(root / "data" / "raw" / "yahoo_prices" / "prices_raw.csv")
     files = sorted(glob.glob(str(root / "data" / "raw" / "yahoo_actions" / "*_splits.csv")))
     splits = pd.concat([pd.read_csv(f) for f in files], ignore_index=True) if files else None
-    result = clean_prices(raw, splits)
+    result = clean_prices(raw, splits, load_listing_overrides(root), load_return_exclusions(root))
     write_reports(result, root / "reports")
     counts = result.decisions.groupby(["likely_cause", "decision"]).size().to_dict()
     print(f"{len(result.decisions)} flags decided: {counts}")
