@@ -104,7 +104,7 @@ The original zip had real budget numbers for only 10 ministries over 9 years, an
 | D6 | Monthly fiscal execution | Controller General of Accounts [monthly accounts](https://cga.gov.in/Page/Monthly-Accounts-Review.aspx) | Monthly | "Is the money being spent?" tracker; mid-year signal | To build |
 | D7 | Daily stock prices, about 120 stocks | Yahoo Finance via `yfinance` | Daily, 2005 to today | Sector baskets, momentum, volatility, targets | Script ready |
 | D8 | Benchmarks and official sector indices | Yahoo Finance; [niftyindices.com](https://www.niftyindices.com) for indices missing on Yahoo (e.g. [Nifty India Defence](https://www.niftyindices.com/Factsheet/Factsheet_NiftyIndiaDefence.pdf)) | Daily | Benchmark, cross-check of the self-built baskets | Script ready / manual CSV |
-| D9 | Historical Nifty 500 constituents | niftyindices.com archives | Semi-annual | Removes survivorship bias | To build |
+| D9 | Stock universe rule (replaces the Nifty 500 constituent history, dropped 2026-10-27) | Derived from D7 prices: listed on budget day and 60-day average traded value of at least ₹5 cr | Per budget | Reduces, does not remove, survivorship bias (see risks) | Built |
 | D10 | FPI flows by sector | [NSDL fortnightly sector-wise FPI](https://www.fpi.nsdl.co.in/web/StaticReports/Fortnightly_Sector_wise_FII_Investment_Data/FIIInvestSector_July312024.html) (24 sectors, ₹ cr) | Fortnightly, 2017 to today | Smart-money flow before and after budget | Script ready |
 | D11 | Macro: repo rate, CPI, 10-year G-sec, USD/INR, crude | [RBI DBIE](https://data.rbi.org.in), MoSPI, World Bank API, Yahoo | Monthly / annual | Regime and macro controls | Script ready (World Bank, Yahoo); RBI manual |
 | D12 | Company fundamentals: sales, EBITDA, debt, order book, promoter pledge | Annual reports, Screener.in export, NSE shareholding pattern | Annual / quarterly | Stock-level quality and risk | To build |
@@ -140,7 +140,7 @@ There are seven modules. **Must** items are the minimum for a passing final demo
 | FR-3 | Budget parser | The parser reads a new budget PDF (PRS analysis or Expenditure Budget) and outputs ministry, scheme and subsidy tables at BE/RE/Actuals stages. | Must |
 | FR-4 | Budget parser | Parsed totals must reconcile: the sum of ministries plus "Other" equals Total Expenditure within 0.5%. Otherwise the run fails loudly. | Must |
 | FR-5 | Budget parser | An LLM fallback extracts tables the regex parser misses, and its output must pass FR-4 before it is accepted. | Should |
-| FR-6 | Feature store | Point-in-time features for each sector-year and stock-year. Only information public on budget day may be used: no actuals, no future constituents. | Must |
+| FR-6 | Feature store | Point-in-time features for each sector-year and stock-year. Only information public on budget day may be used: no actuals, no stocks listed after the budget, and no stock below the liquidity floor measured on the 60 trading days before the budget. | Must |
 | FR-7 | Event study | Market-model CAR with t-stats for every sector and stock around every budget, for windows \[-5,-1\], 0, \[0,+5\], \[0,+30\] and \[0,+90\]. | Must |
 | FR-8 | Tier-1 model | Ranks the 15 sectors for the coming year. Output: expected excess return, 10th–90th percentile interval, and probability of beating the Nifty 500. | Must |
 | FR-9 | Tier-2 model | Ranks stocks within each sector using Tier-1 output plus stock features. Liquidity filter: average daily traded value ≥ ₹5 cr. | Must |
@@ -300,7 +300,7 @@ CAR_{s}[\tau_1,\tau_2] = \sum_{\tau=\tau_1}^{\tau_2} \left( r_{s,\tau} - \hat{\a
 
 1. **Expanding-window walk-forward.** Train on budgets up to year t−1 and predict year t, for every t from FY2012-13 onward. Report each year separately, not just the average.
 2. **Non-overlapping targets.** Each target runs budget-to-budget, so there is no overlap between adjacent years. Rows with `target_complete = False` are excluded from training.
-3. **Point-in-time features only.** No Actuals for the same year, and no stocks listed after the budget. Use the historical Nifty 500 constituents (D9).
+3. **Point-in-time features only.** No Actuals for the same year, no stocks listed after the budget, and only stocks whose average daily traded value over the prior 60 trading days is at least ₹5 crore (D9). Index membership on budget day is not checked, and the stock list is today's symbols, so survivorship bias is reduced but not removed.
 4. **Hyperparameters tuned inside each fold.** Never tune on the test year.
 5. **Final hold-out.** FY2024-25 and FY2025-26 stay untouched until the end. FY2026-27 is the sealed live year (F1).
 
@@ -396,7 +396,8 @@ The biggest risk is the small sample: about 20 budgets cannot prove a trading ed
 | Risk | Impact | Mitigation |
 | --- | --- | --- |
 | Small sample, noisy target | Overfitting; unstable rankings | Pooled hierarchical models, few features, walk-forward, ablations, report per-year results |
-| Look-ahead and survivorship bias | Inflated backtest | Point-in-time constituents (D9), listing-date filter, leakage unit test, sealed live forecasts (F1) |
+| Look-ahead bias | Inflated backtest | Listing-date and liquidity universe rule (D9), leakage unit test, sealed live forecasts (F1) |
+| Survivorship bias (not fully removed) | Inflated stock-level results | The stock list is today's symbols, so delisted names are missing, and index membership on budget day is not checked; the liquidity rule limits but does not remove it, and it is stated in the data-gaps report |
 | Older budget PDFs are scanned or inconsistent | Missing history before FY2017-18 | Use the Expenditure Budget statements (D4); OCR fallback; reconciliation check (FR-4) |
 | Ministry renames and restructuring (e.g. HRD → Education, Jal Shakti from 2019) | Broken time series | Alias table in `build_budget_panels.py`; document each mapping |
 | Yahoo symbol changes, delistings | Missing prices | Fetch log, manual fixes, NSE bhavcopy fallback |

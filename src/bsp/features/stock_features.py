@@ -8,8 +8,10 @@ Features:
   - beta_90d (short-horizon beta on [-90, -1])
   - size_traded_val (log1p of average daily traded value in crore)
 
-Strict point-in-time universe filter: stocks must be listed on or before budget day and, where the
-constituent history covers that budget day, be Nifty 500 members on it (see features/universe.py).
+  - avg_traded_value_60d_cr (the liquidity number the universe rule uses; the 60 trading days before the budget date)
+
+Universe (features/universe.py): a stock gets a row for a budget only if it is listed on or before the budget date AND
+its average daily traded value over the prior 60 trading days is at least 5 crore. Index membership is not checked.
 """
 
 from __future__ import annotations
@@ -23,7 +25,13 @@ import pandas as pd
 from bsp.common.config import get_project_root
 from bsp.events.study import fit_market_model
 from bsp.features.baskets import MarketDataBundle, build_market_data_bundle
-from bsp.features.universe import Universe
+from bsp.features.universe import (
+    ILLIQUID,
+    NOT_LISTED,
+    average_traded_value_cr,
+    classify,
+    prior_window,
+)
 
 
 def build_stock_features(
@@ -53,7 +61,6 @@ def build_stock_features(
 
     long_records: list[dict[str, Any]] = []
     wide_records: list[dict[str, Any]] = []
-    universe = Universe.from_csv(root / "data" / "csv" / "nifty500_constituents.csv")
     universe_report: list[dict[str, Any]] = []
 
     for _, b_row in df_events.iterrows():
@@ -79,26 +86,32 @@ def build_stock_features(
         s90_end = max(0, curr_idx)
         mkt_90 = mkt_returns[s90_start:s90_end] if s90_end > s90_start else np.array([])
 
-        members = universe.members(p_date)
-        report_row: dict[str, Any] = {"budget_id": b_id, "presented_on": p_date, "universe_covered": members is not None,
-                      "dropped_not_listed": 0, "dropped_not_in_nifty500": 0, "kept": 0}
+        report_row: dict[str, Any] = {"budget_id": b_id, "presented_on": p_date, "candidates": 0,
+                                      "dropped_not_listed": 0, "dropped_liquidity": 0, "dropped_no_price": 0,
+                                      "short_history_kept": 0, "kept": 0}
         universe_report.append(report_row)
 
         for sym in bundle.stock_prices.columns:
-            first_d = bundle.first_price_dates.get(sym)
-            if first_d and first_d > p_date:
-                # Stock was NOT listed on or before budget day -> skip
-                report_row["dropped_not_listed"] += 1
+            report_row["candidates"] += 1
+            traded = (bundle.stock_traded_val[sym] if sym in bundle.stock_traded_val.columns
+                      else pd.Series(np.nan, index=bundle.stock_prices.index))
+            liquidity = average_traded_value_cr(traded, trading_days, p_date)
+            verdict = classify(bundle.first_price_dates.get(sym), p_date, liquidity)
+            if verdict == NOT_LISTED:
+                report_row["dropped_not_listed"] += 1  # first trading day is after the budget date
                 continue
-            if members is not None and sym not in members:
-                # Listed, but not a Nifty 500 member on budget day -> outside the point-in-time universe
-                report_row["dropped_not_in_nifty500"] += 1
+            if verdict == ILLIQUID:
+                report_row["dropped_liquidity"] += 1  # average traded value over the prior 60 days is below 5 crore
                 continue
 
             prices_s = bundle.stock_prices[sym]
             p_curr = prices_s.iloc[curr_idx]
             if pd.isna(p_curr) or p_curr <= 0:
+                report_row["dropped_no_price"] += 1  # listed and liquid, but no valid close on the as-of day
                 continue
+            first_d = bundle.first_price_dates.get(sym)
+            if first_d is not None and first_d > trading_days[prior_window(trading_days, p_date)[0]]:
+                report_row["short_history_kept"] += 1  # listed inside the 60-day window: its average uses fewer days
 
             sec_id = bundle.stock_sector_map.get(sym, "unknown")
             ret_s = bundle.stock_returns[sym]
@@ -141,6 +154,7 @@ def build_stock_features(
             t90 = traded_val_s.iloc[max(0, curr_idx - 90) : curr_idx + 1].dropna()
             liq_90 = float(t90.mean()) if len(t90) >= 15 else None
             features["liquidity_90d"] = liq_90
+            features["avg_traded_value_60d_cr"] = liquidity.average_cr
             features["size_traded_val"] = float(np.log1p(liq_90)) if liq_90 is not None and liq_90 >= 0 else None
 
             # 4. Beta vs Nifty 500

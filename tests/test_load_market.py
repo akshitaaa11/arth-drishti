@@ -32,12 +32,6 @@ def _write(csv_dir: Path, close: float = 10.0, extra_price_row: bool = True) -> 
     pd.DataFrame([{"period_end": "2020-01-15", "nsdl_sector": "Metals", "equity_net_cr": -5.0, "debt_net_cr": 0.0,
                    "equity_aum_cr": 99.0, "source_url": "u", "source": "t", "fetched_at": STAMP}]
                  ).to_csv(csv_dir / "fpi_sector_fortnightly.csv", index=False)
-    pd.DataFrame([
-        {"symbol": "AAA", "effective_from": "2019-12-31", "effective_to": "2020-06-30", "source": "t",
-         "source_url": "u", "fetched_at": STAMP},
-        {"symbol": "AAA", "effective_from": "2020-07-01", "effective_to": None, "source": "t",
-         "source_url": "u", "fetched_at": STAMP},
-    ]).to_csv(csv_dir / "nifty500_constituents.csv", index=False)
 
 
 @pytest.fixture()
@@ -60,13 +54,12 @@ def test_load_is_idempotent_and_matches_csv(db) -> None:
     _write(csv_dir)
     first = load_market_csvs(url, csv_dir)
     second = load_market_csvs(url, csv_dir)
-    assert first == second == {"prices_daily": 2, "index_daily": 1, "macro": 1, "fpi_flows": 1, "index_constituents": 2}
+    assert first == second == {"prices_daily": 2, "index_daily": 1, "macro": 1, "fpi_flows": 1}
     assert _count(url, "SELECT COUNT(*) FROM prices_daily") == 2
-    assert _count(url, "SELECT COUNT(*) FROM index_constituents WHERE index_name = 'Nifty 500'") == 2
     assert _count(url, "SELECT equity_cr FROM fpi_flows") == -5.0
     assert _count(url, "SELECT value FROM macro") is None  # blank CSV cell stays NULL
     # one fetch_log row per table per run, all successful
-    assert _count(url, "SELECT COUNT(*) FROM fetch_log WHERE job LIKE 'load%' AND status = 'success'") == 10
+    assert _count(url, "SELECT COUNT(*) FROM fetch_log WHERE job LIKE 'load%' AND status = 'success'") == 8
 
 
 def test_changed_values_are_updated_and_removed_rows_deleted(db) -> None:
@@ -93,8 +86,20 @@ def test_migrations_create_every_readme_section9_table(db) -> None:
 
     url, _ = db
     tables = set(inspect(create_engine(database_url=url)).get_table_names())
-    section9 = {"budget_events", "budget_lines", "sector_line_map", "stocks", "prices_daily", "index_constituents",
+    section9 = {"budget_events", "budget_lines", "sector_line_map", "stocks", "prices_daily",
                 "fpi_flows", "macro", "features_sector_year", "features_stock_year", "targets", "event_study",
                 "predictions", "sealed_ledger", "fetch_log"}
     assert section9 <= tables
+    assert "index_constituents" not in tables  # dropped by migration 005 when the Nifty 500 constituent work was removed
     assert "index_daily" in tables
+
+
+def test_migration_005_can_be_downgraded_and_upgraded_again(db) -> None:
+    from sqlalchemy import inspect
+
+    url, _ = db
+    config = Config(str(ROOT / "alembic.ini"))
+    command.downgrade(config, "-1")
+    assert "index_constituents" in set(inspect(create_engine(database_url=url)).get_table_names())
+    command.upgrade(config, "head")
+    assert "index_constituents" not in set(inspect(create_engine(database_url=url)).get_table_names())

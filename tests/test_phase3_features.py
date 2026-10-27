@@ -62,19 +62,21 @@ def test_sector_year_features_count_and_columns(bundle):
 
 
 
-def _symbols_with_a_universe_budget(bundle) -> set[str]:
-    """Stocks listed on some budget day and, where the constituents history covers that day, Nifty 500 members on it."""
-    from bsp.features.universe import Universe
-
-    universe = Universe.from_csv(ROOT / "data" / "csv" / "nifty500_constituents.csv")
-    stocks = pd.read_csv(ROOT / "config" / "stocks.csv")["symbol"]
+def _expected_symbols_under_the_universe_rule(bundle) -> set[str]:
+    """Symbols that pass the rule on at least one budget, computed here directly from the traded-value table:
+    first trading day on/before the budget date AND mean traded value of the 60 trading days before it >= 5 crore,
+    and a valid close on the last trading day on or before the budget date (a feature row needs a price)."""
     events = pd.read_csv(ROOT / "config" / "budget_events.csv").drop_duplicates("budget_id")
+    traded = bundle.stock_traded_val
     kept: set[str] = set()
     for presented_on in events["presented_on"].astype(str):
-        members = universe.members(presented_on)  # None = history does not cover this budget
-        for symbol in stocks:
+        prior = traded[traded.index < presented_on].tail(60)  # strictly before the budget date
+        as_of_close = bundle.stock_prices[bundle.stock_prices.index <= presented_on].iloc[-1]
+        for symbol in traded.columns:
             first = bundle.first_price_dates.get(symbol)
-            if (first is None or first <= presented_on) and (members is None or symbol in members):
+            listed = first is None or first <= presented_on
+            average = prior[symbol].dropna().mean() if prior[symbol].notna().any() else float("nan")
+            if listed and average >= 5.0 and as_of_close[symbol] > 0:
                 kept.add(symbol)
     return kept
 
@@ -85,15 +87,22 @@ def test_stock_year_features_count_and_columns(bundle):
 
     # Full budget stock-years: ~2,072 rows (~2,000); total across 26 budgets: ~2,470
     assert 1800 <= len(df_wide) <= 2600
-    # The point-in-time Nifty 500 universe filter can remove a stock from every budget, so the symbol count is
-    # derived from stocks.csv + the constituents history instead of being hard-coded.
-    expected = _symbols_with_a_universe_budget(bundle)
+    # Universe rule (features/universe.py): listed on/before the budget date and 60-day average traded value >= 5 crore.
+    # The expected symbol count is derived from that rule, not hard-coded.
+    expected = _expected_symbols_under_the_universe_rule(bundle)
+    stocks = pd.read_csv(ROOT / "config" / "stocks.csv")
+    assert 0 < len(expected) <= len(stocks)
+    assert set(df_wide["symbol"]) <= set(stocks["symbol"])
     assert set(df_wide["symbol"]) == expected
-    assert 0 < len(expected) <= len(pd.read_csv(ROOT / "config" / "stocks.csv"))
-    # rows kept per budget match the universe-filter report the build produced
+    assert (df_wide["avg_traded_value_60d_cr"] >= 5.0).all()
+
+    # per-budget accounting in the universe report: every candidate is dropped (not listed / illiquid / no price) or kept
     rows_per_budget = df_wide.groupby("budget_id").size().to_dict()
     for row in df_wide.attrs["universe_report"]:
         assert row["kept"] == rows_per_budget.get(row["budget_id"], 0), row["budget_id"]
+        assert row["candidates"] == len(stocks)
+        assert row["candidates"] == (row["dropped_not_listed"] + row["dropped_liquidity"]
+                                     + row["dropped_no_price"] + row["kept"]), row["budget_id"]
 
     assert "momentum_1m" in df_wide.columns
     assert "momentum_12m" in df_wide.columns

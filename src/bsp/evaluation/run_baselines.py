@@ -168,8 +168,9 @@ def write_report(runs: list[ModelRun], bench: BacktestResult, cfg: EvalConfig, p
            "- Limitations: 12 test years, so every statistic is noisy; sector baskets are equal-weight baskets of today's "
            "stock list (survivorship, small/mid-cap tilt), so every basket tends to beat the cap-weighted Nifty 500 and the "
            "fair bar for a model is the **equal-weight** row; baskets are thin in early years (defence has 2 stocks until "
-           "2017, railways 1 until 2018; `reports/sector_basket_report.csv`). Stock-level evaluation is deferred until the "
-           "Nifty 500 point-in-time history is complete (`reports/data_gaps.md`).", ""]
+           "2017, railways 1 until 2018; `reports/sector_basket_report.csv`). Stock-level evaluation is not built, "
+           "because the stock universe uses listing-date plus liquidity filters only and survivorship bias is not removed "
+           "(see `reports/data_gaps.md`).", ""]
 
     out += ["## Results across the 12 test years (14 budget-sensitive sectors)", ""]
     header = ["Model", "Mean IC", "IC>0 years", "Top-3 hit", "Precision@5", "NDCG@10", "MAE", "Directional",

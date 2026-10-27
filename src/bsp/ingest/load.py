@@ -23,7 +23,6 @@ from bsp.common.db import create_engine
 
 CSV_DIR = get_project_root() / "data" / "csv"
 CHUNK = 2000
-CONSTITUENT_INDEX = "Nifty 500"
 
 
 def _clean(frame: pd.DataFrame, date_cols: tuple[str, ...], ts_cols: tuple[str, ...]) -> list[dict[str, Any]]:
@@ -56,25 +55,12 @@ def _fpi(csv_dir: Path) -> pd.DataFrame:
     return frame[["nsdl_sector", "period_end", "equity_cr", "debt_cr", "aum_cr", "source", "source_url", "fetched_at"]]
 
 
-def _constituents(csv_dir: Path) -> pd.DataFrame:
-    frame = pd.read_csv(csv_dir / "nifty500_constituents.csv")
-    frame.insert(0, "index_name", CONSTITUENT_INDEX)
-    return frame[["index_name", "symbol", "effective_from", "effective_to", "source", "source_url", "fetched_at"]]
-
-
 # table -> (CSV reader, natural key, date columns, timestamp columns, scope filter for deletes)
 SPECS: dict[str, tuple[Callable[[Path], pd.DataFrame], tuple[str, ...], tuple[str, ...], tuple[str, ...], dict[str, Any]]] = {
     "prices_daily": (_prices, ("symbol", "date"), ("date",), ("fetched_at",), {}),
     "index_daily": (_indices, ("index_name", "date"), ("date",), ("fetched_at",), {}),
     "macro": (_macro, ("series", "date"), ("date",), ("fetched_at",), {}),
     "fpi_flows": (_fpi, ("nsdl_sector", "period_end"), ("period_end",), ("fetched_at",), {}),
-    "index_constituents": (
-        _constituents,
-        ("index_name", "symbol", "effective_from"),
-        ("effective_from", "effective_to"),
-        ("fetched_at",),
-        {"index_name": CONSTITUENT_INDEX},
-    ),
 }
 
 

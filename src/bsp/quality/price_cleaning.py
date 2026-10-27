@@ -18,13 +18,15 @@ this order on each symbol, using only the downloaded prices and the downloaded s
 4. ``split_discontinuity``: a split listed in the downloaded split history within 3 trading days of the
    flag, whose ratio matches the observed jump within 10%. Prices before the date are rescaled by the
    split ratio so the series is continuous (volume inversely).
-5. Anything else is kept (``real_or_unverified``) and listed for manual review: persistent level shifts
-   with normal volume that no downloaded source explains (e.g. a demerger or capital reduction).
+5. Anything else is kept with cause ``unexplained`` and decision ``keep`` ("unexplained, kept" in the evidence): a
+   persistent level shift with normal volume that no downloaded source explains (e.g. a demerger or capital
+   reduction). It stays in the data and is listed for manual review against NSE corporate actions.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import cast
 
 import numpy as np
@@ -234,10 +236,10 @@ def _decide(
             evidence = (f"downloaded split history lists a {a.split_ratio:g}:1 split on {a.split_date}; observed "
                         f"close ratio {a.observed_jump:.3f}; earlier prices rescaled by {a.scale_applied:.4f}")
         elif key in residual:
-            cause, decision = "real", "keep"
-            evidence = ("no data defect found (volume non-zero, close inside high-low range, not a one-day "
-                        "outlier) and no downloaded split explains it; treated as real or an unverified "
-                        "corporate action - confirm against NSE corporate actions (manual review)")
+            cause, decision = "unexplained", "keep"
+            evidence = ("unexplained, kept: no data defect found (volume non-zero, close inside high-low range, not a "
+                        "one-day outlier) and no downloaded split explains it; it may be a real corporate action "
+                        "(demerger, capital reduction) - confirm against NSE corporate actions (manual review)")
         else:
             earlier = dropped[(dropped["symbol"] == row.symbol) & (dropped["date"] < row.date)]
             via = f" ({earlier.iloc[-1]['rule']} on {earlier.iloc[-1]['date']})" if len(earlier) else ""
@@ -246,3 +248,35 @@ def _decide(
                         "cleaning, this row follows its real predecessor and the jump no longer exists")
         out.append({**base, "likely_cause": cause, "decision": decision, "evidence": evidence})
     return pd.DataFrame(out, columns=["symbol", "date", "jump_pct", "likely_cause", "decision", "evidence"])
+
+
+def write_reports(result: CleaningResult, reports_dir: Path) -> None:
+    """Write the decision, dropped-row and split-adjustment reports for one cleaning run."""
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    result.decisions.to_csv(reports_dir / "price_flag_decisions.csv", index=False)
+    result.dropped.to_csv(reports_dir / "price_rows_dropped.csv", index=False)
+    result.adjustments.to_csv(reports_dir / "price_split_adjustments.csv", index=False)
+
+
+def main() -> None:
+    """Rebuild the three decision reports from the saved raw download, without any network access.
+
+    Reads ``data/raw/yahoo_prices/prices_raw.csv`` and ``data/raw/yahoo_actions/*_splits.csv`` (both written by
+    ``bsp.ingest.prices``) and applies the same rules the price job applies; ``prices_daily.csv`` is not touched.
+    """
+    import glob
+
+    from bsp.quality.price_corrections import load_listing_overrides, load_return_exclusions
+
+    root = Path(__file__).resolve().parents[3]
+    raw = pd.read_csv(root / "data" / "raw" / "yahoo_prices" / "prices_raw.csv")
+    files = sorted(glob.glob(str(root / "data" / "raw" / "yahoo_actions" / "*_splits.csv")))
+    splits = pd.concat([pd.read_csv(f) for f in files], ignore_index=True) if files else None
+    result = clean_prices(raw, splits, load_listing_overrides(root), load_return_exclusions(root))
+    write_reports(result, root / "reports")
+    counts = result.decisions.groupby(["likely_cause", "decision"]).size().to_dict()
+    print(f"{len(result.decisions)} flags decided: {counts}")
+
+
+if __name__ == "__main__":
+    main()

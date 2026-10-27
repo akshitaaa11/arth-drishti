@@ -52,5 +52,5 @@ def test_unexplained_persistent_shift_is_kept_for_manual_review() -> None:
     result = clean_prices(prices)
     assert result.dropped.empty
     row = result.decisions.iloc[0]
-    assert (row["decision"], row["likely_cause"]) == ("keep", "real")
-    assert "manual review" in row["evidence"]
+    assert (row["decision"], row["likely_cause"]) == ("keep", "unexplained")
+    assert row["evidence"].startswith("unexplained, kept") and "manual review" in row["evidence"]

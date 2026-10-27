@@ -1,6 +1,7 @@
 """Sector evaluation panel: features + 12m targets + the date each label resolves, with the hold-out locked.
 
-Sector level only: stock-level evaluation waits for a complete point-in-time Nifty 500 history (reports/data_gaps.md).
+Sector level only: stock-level evaluation is not built, because the stock universe uses listing-date plus liquidity
+filters only and survivorship bias is not removed (see reports/data_gaps.md).
 A panel row is one sector at one budget. ``label_end`` is the trading day on which the
 12m target is fully known (the next budget's day 0), which the walk-forward uses to keep a training label from
 ever being used before it exists.

@@ -48,7 +48,6 @@ reconcile-budgets:
 collect:
 	@$(PY) -m bsp.ingest.prices
 	@$(PY) -m bsp.ingest.benchmarks
-	@$(PY) -m bsp.ingest.constituents
 	@$(PY) -m bsp.ingest.macro
 	@$(PY) -m bsp.ingest.fpi
 

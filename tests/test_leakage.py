@@ -2,7 +2,8 @@
 
 Exit criteria:
 - Leakage test passes on real feature store.
-- Leakage test fails when deliberately leaked features are injected.
+- Leakage test fails when deliberately leaked features are injected: a future as_of_date, a same-year Actual,
+  a stock that is not yet listed, and a stock below the liquidity floor.
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ from bsp.quality.leakage import (
     LeakageError,
     validate_feature_dates,
     validate_feature_store,
+    validate_liquidity_floor,
     validate_no_same_year_actuals,
     validate_point_in_time_universe,
 )
@@ -72,8 +74,8 @@ def test_leakage_detection_catches_same_year_actuals() -> None:
     assert "used Actual as current baseline instead of RE" in str(exc_info.value)
 
 
-def test_leakage_detection_catches_unlisted_stock() -> None:
-    """Injecting an unlisted stock into a prior budget must raise LeakageError."""
+def test_leakage_detection_catches_a_not_yet_listed_stock() -> None:
+    """Injecting a stock into a budget that came before its listing must raise LeakageError."""
     budget_events = pd.DataFrame(
         [
             {"budget_id": "FY2015-16", "fiscal_year": "2015-16", "presented_on": "2015-02-28"},
@@ -98,3 +100,31 @@ def test_leakage_detection_catches_unlisted_stock() -> None:
         validate_point_in_time_universe(leaked_stock_features, first_price_dates, budget_events)
     assert "point-in-time universe violations" in str(exc_info.value)
     assert "ADANIGREEN appears in FY2015-16" in str(exc_info.value)
+
+
+def _liquidity_rows(symbol: str, budget_id: str, value: float | None) -> pd.DataFrame:
+    rows = [{"symbol": symbol, "budget_id": budget_id, "feature_name": "momentum_1m", "value": 0.1,
+             "as_of_date": "2020-01-31"}]
+    if value is not None:
+        rows.append({"symbol": symbol, "budget_id": budget_id, "feature_name": "avg_traded_value_60d_cr",
+                     "value": value, "as_of_date": "2020-01-31"})
+    return pd.DataFrame(rows)
+
+
+def test_leakage_detection_catches_a_stock_below_the_liquidity_threshold() -> None:
+    with pytest.raises(LeakageError) as exc_info:
+        validate_liquidity_floor(_liquidity_rows("ILLIQ", "FY2020-21", 4.99))
+    assert "liquidity-floor violations" in str(exc_info.value)
+    assert "ILLIQ in FY2020-21" in str(exc_info.value) and "below 5.0" in str(exc_info.value)
+
+
+def test_a_row_without_any_liquidity_number_is_a_violation() -> None:
+    with pytest.raises(LeakageError, match="has no avg_traded_value_60d_cr"):
+        validate_liquidity_floor(_liquidity_rows("NOLIQ", "FY2020-21", None))
+    with pytest.raises(LeakageError):
+        validate_liquidity_floor(_liquidity_rows("NANLIQ", "FY2020-21", float("nan")))
+
+
+def test_a_stock_exactly_at_the_threshold_is_allowed() -> None:
+    validate_liquidity_floor(_liquidity_rows("EDGE", "FY2020-21", 5.0))  # the rule is >= 5 crore
+    validate_liquidity_floor(_liquidity_rows("FINE", "FY2020-21", 123.4))

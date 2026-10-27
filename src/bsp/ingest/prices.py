@@ -13,7 +13,7 @@ from bsp.ingest._common import (
     load_stocks,
     write_csv_guarded,
 )
-from bsp.quality.price_cleaning import clean_prices, flag_jumps
+from bsp.quality.price_cleaning import clean_prices, flag_jumps, write_reports
 from bsp.quality.price_corrections import (
     ListingOverride,
     load_listing_overrides,
@@ -111,9 +111,7 @@ def collect_prices() -> pd.DataFrame:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     if not flags.empty:
         flags.to_csv(REPORT_DIR / "price_quality_flags.csv", index=False)
-    result.decisions.to_csv(REPORT_DIR / "price_flag_decisions.csv", index=False)
-    result.dropped.to_csv(REPORT_DIR / "price_rows_dropped.csv", index=False)
-    result.adjustments.to_csv(REPORT_DIR / "price_split_adjustments.csv", index=False)
+    write_reports(result, REPORT_DIR)
 
     frame = result.prices
     validate_prices(frame)  # raises (and leaves the previous CSV untouched) on future dates, duplicates, non-positive prices

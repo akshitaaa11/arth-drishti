@@ -7,7 +7,6 @@ from __future__ import annotations
 import argparse
 
 from bsp.ingest.benchmarks import collect_benchmarks
-from bsp.ingest.constituents import collect_constituents
 from bsp.ingest.fpi import collect_fpi
 from bsp.ingest.macro import collect_macro
 from bsp.ingest.prices import collect_prices
@@ -15,7 +14,6 @@ from bsp.ingest.prices import collect_prices
 COMMANDS = {
     "prices": collect_prices,
     "indices": collect_benchmarks,
-    "constituents": collect_constituents,
     "macro": collect_macro,
     "fpi": collect_fpi,
 }
