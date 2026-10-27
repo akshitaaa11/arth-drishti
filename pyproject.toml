@@ -36,6 +36,7 @@ dependencies = [
   "pymc>=5.10",
   "arviz>=0.18",
   "shap>=0.45",
+  "matplotlib>=3.8",
   "mapie>=1.0",
 ]
 
@@ -74,5 +75,5 @@ packages = ["bsp"]
 warn_unused_configs = true
 
 [[tool.mypy.overrides]]
-module = ["shap", "shap.*", "mapie", "mapie.*", "pymc", "pymc.*", "arviz", "arviz.*", "lightgbm", "lightgbm.*", "optuna", "optuna.*", "yfinance", "apscheduler", "apscheduler.*", "sklearn", "sklearn.*", "scipy", "scipy.*", "mlflow", "mlflow.*"]
+module = ["matplotlib", "matplotlib.*", "shap", "shap.*", "mapie", "mapie.*", "pymc", "pymc.*", "arviz", "arviz.*", "lightgbm", "lightgbm.*", "optuna", "optuna.*", "yfinance", "apscheduler", "apscheduler.*", "sklearn", "sklearn.*", "scipy", "scipy.*", "mlflow", "mlflow.*"]
 ignore_missing_imports = true
