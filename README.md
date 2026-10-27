@@ -80,7 +80,7 @@ A null result (the models do not beat the baselines) is a valid outcome. It must
 
 These rules apply to every human contributor and every AI coding agent. A change that breaks one of them is wrong even if the tests pass.
 
-1. **No look-ahead.** A feature for budget year *t* may only use information public on that budget day. No same-year Actuals, no stocks listed after the budget, no future index constituents. The leakage test (`tests/test_leakage.py`) must fail if any feature date ≥ its prediction date.
+1. **No look-ahead.** A feature for budget year *t* may only use information public on that budget day. No same-year Actuals, no stocks listed after the budget, and no stock that fails the liquidity rule measured before the budget (average daily traded value over the prior 60 trading days of at least ₹5 cr). The leakage test (`tests/test_leakage.py`) must fail if any feature date ≥ its prediction date, if a same-year Actual is used, if a stock is not yet listed, or if a stock is below the liquidity threshold. **The universe rule does not check index membership on budget day, and the 116 stocks are today's symbols (delisted names are missing), so survivorship bias is reduced but NOT removed** (`reports/data_gaps.md`).
 2. **No synthetic data.** Train and evaluate only on real data. Fixtures for unit tests may be small and hand-made, but must live under `tests/fixtures/` and never reach the feature store.
 3. **Every number is traceable.** Every stored value carries `source_doc`, `source_page` (where applicable), `source_url` and `fetched_at` (FR-2).
 4. **Budget totals must reconcile.** Sum of ministries + "Other" = Total Expenditure within 0.5%, or the parse **fails loudly** (FR-4). Never silently patch.
@@ -149,7 +149,7 @@ arth-drishti/
 │
 ├── src/bsp/                      # main Python package
 │   ├── common/                   # db, logging, provenance, config loader
-│   ├── ingest/                   # prices, benchmarks, fpi, macro, constituents, news
+│   ├── ingest/                   # prices, benchmarks, fpi, macro, news
 │   ├── parsers/                  # prs, expenditure_budget, cga, speech, llm_fallback
 │   ├── quality/                  # pandera schemas, reconciliation checks
 │   ├── features/                 # point-in-time feature builders
@@ -260,7 +260,7 @@ Full detail is in PRD §4. **Today the team has only budget PDFs and documents.*
 | --- | --- |
 | Budget tables from your 7 PRS PDFs + PRS 2025-26: ministries, schemes, subsidies, fiscal (`budget_*.csv`) | Budgets FY2005-06 to FY2016-17 (same Statement 3 method, newest year first) |
 | Department-level expenditure with capex split, 10 budgets 2017-18 to 2026-27 (`budget_departments.csv`) | Prices, indices, macro, FPI: **scripts ready in `scripts/collect_market_data.py`, run on a laptop** |
-| **Sector panel: 15 sectors x 10 budgets = 150 rows**, with surprise, credibility, capex share (`sector_budget_panel.csv`) | Nifty 500 history, fundamentals, order wins, speeches, news, CGA monthly (Phases 2, 5, 6) |
+| **Sector panel: 15 sectors x 10 budgets = 150 rows**, with surprise, credibility, capex share (`sector_budget_panel.csv`) | Fundamentals, order wins, speeches, news, CGA monthly (Phases 2, 5, 6) |
 
 Checks passed: 395 of 395 department sums match PRS; 520 of 520 values printed in two editions identical; 25 of 25 random values found on their PDF page; the 2020-21 example file reproduced for all 10 sectors.
 
@@ -281,7 +281,7 @@ Checks passed: 395 of 395 department sums match PRS; 520 of 520 values printed i
 | D6 | Monthly fiscal execution | CGA monthly accounts | Monthly | Download PDFs / Manual | `cga_monthly.csv` | 6 |
 | D7 | Daily stock prices (116 stocks) | Yahoo Finance via `yfinance`; NSE bhavcopy fallback | 2005 → today | Script | `prices_daily.csv` | 2 |
 | D8 | Nifty 500 + official sector indices | Yahoo Finance; niftyindices.com | 2005 → today | Script + Manual | `index_daily.csv` | 2 |
-| D9 | Historical Nifty 500 constituents | niftyindices.com archives, NSE circulars | Semi-annual | Manual + Script | `nifty500_constituents.csv` | 2 |
+| D9 | Stock universe rule (replaces the dropped Nifty 500 constituent history) | Derived from the D7 prices: listed on budget day and 60-day average traded value ≥ ₹5 cr | Per budget | Script | `reports/universe_filter.csv` | 3 |
 | D10 | FPI flows by sector | NSDL fortnightly reports | 2017 → today | Script | `fpi_sector_fortnightly.csv` | 2 |
 | D11 | Macro: repo, CPI, 10y G-sec, USD/INR, crude, India VIX | RBI DBIE, MoSPI, World Bank API, Yahoo | Monthly / daily | Script + Manual (RBI) | `macro.csv` | 2 |
 | D12 | Company fundamentals | Screener.in export, annual reports, NSE shareholding | Annual / quarterly | Manual + Script | `fundamentals.csv` | 5 |
@@ -307,7 +307,6 @@ Checks passed: 395 of 395 department sums match PRS; 520 of 520 values printed i
 | `cga_monthly.csv` | `fiscal_year, month, ministry, actual_to_date_cr, pct_of_be` |
 | `prices_daily.csv` | `symbol, date, open, high, low, close, adj_close, volume` |
 | `index_daily.csv` | `index_name, date, close` |
-| `nifty500_constituents.csv` | `symbol, effective_from, effective_to` |
 | `fpi_sector_fortnightly.csv` | `period_end, nsdl_sector, equity_net_cr, debt_net_cr, equity_aum_cr` |
 | `macro.csv` | `series, date, value, unit` |
 | `fundamentals.csv` | `symbol, period_end, sales_cr, ebitda_cr, net_profit_cr, debt_cr, market_cap_cr, promoter_pledge_pct, order_book_cr` |
@@ -328,7 +327,6 @@ Every table that stores sourced values includes provenance columns: `source_doc`
 | `sector_line_map` | `sector_id`, `canonical_name`, `weight`, `notes` |
 | `stocks` | `symbol`, `sector_id`, `listing_date`, `delisting_date`, `yahoo_symbol` |
 | `prices_daily` | `symbol`, `date`, `open`, `high`, `low`, `close`, `adj_close`, `volume`, `traded_value_cr` |
-| `index_constituents` | `index_name`, `symbol`, `effective_from`, `effective_to` |
 | `fpi_flows` | `nsdl_sector`, `period_end`, `equity_cr`, `debt_cr`, `aum_cr` |
 | `macro` | `series`, `date`, `value` |
 | `features_sector_year` | `sector_id`, `budget_id`, `feature_name`, `value`, `as_of_date` |
@@ -356,7 +354,7 @@ Tasks:
 - [ ] `docker-compose.yml` with Postgres 15, Redis and MLflow. *Still open: Postgres and Redis start healthy and migrate cleanly (`reports/` and task log); the MLflow image (ghcr.io) could not be pulled in the cloud sandbox, so verify `docker compose up` on a laptop.*
 - [x] `.env.example`, `.gitignore` (`.env`, `data/raw/`, `mlruns/`, `*.pdf` under raw).
 - [x] `src/bsp/common/`: config loader (reads `config/*.yaml|json|csv` and env), DB session, structured logging, a `Provenance` dataclass.
-- [x] Database migrations (Alembic) for the tables in §9. *Five migrations create every §9 table plus `index_daily`; verified on clean SQLite and Postgres 15 and in CI.*
+- [x] Database migrations (Alembic) for the tables in §9. *Five migrations create every §9 table except `index_constituents` (created in 004, dropped in 005 when the Nifty 500 constituent work was removed; 001-004 are unchanged) plus `index_daily`; verified on clean SQLite and Postgres 15 and in CI.*
 - [x] GitHub Actions: ruff, mypy, pytest; a separate secret-scan workflow (gitleaks) that fails the build (FR-17). *CI green on PR #1; secret scan verified in `reports/secret_scan_check.md`.*
 - [x] Put the team's budget PDFs and documents in `data/source_pdfs/` and write `data/source_pdfs/INVENTORY.csv` listing each file: `filename, document_type (PRS analysis / speech / highlights / other), fiscal_year, pages`.
 - [x] Use the provided `config/sector_map.json`, `config/stocks.csv` and `config/budget_events.csv`.
@@ -400,20 +398,20 @@ Exit criteria:
 
 ### Phase 2 — Market, flow and macro ingestion
 
-> **Status: Phase 2 collectors and database loads run, with data gaps that need a laptop.** Prices (cleaned, with a documented decision for every >50% jump), indices, macro, FPI and sector baskets are in `data/csv/` and load into Postgres/SQLite with `make load` (idempotent, verified by `scripts/verify_load.py`). A blocked or failed source keeps the previous CSV instead of overwriting it. Still missing: Nifty 500 point-in-time constituents (the table exists but is empty), FPI before 2018-09, the 10-year G-sec yield, the repo rate and the Nifty Healthcare index. Open infrastructure item: `data/csv/prices_daily.csv` (93 MB) should move to Git LFS, but the cloud sandbox cannot reach `lfs.github.com`; the steps to run by hand are in [`reports/data_gaps.md`](./reports/data_gaps.md), which also lists each data gap and the exact file to download and where to put it.
+> **Status: Phase 2 collectors and database loads run; three data gaps remain.** Prices (cleaned, with a documented decision for every >50% jump, three of them "unexplained, kept"), indices, macro, FPI and sector baskets are in `data/csv/` and load into Postgres/SQLite with `make load` (idempotent, verified by `scripts/verify_load.py`). A blocked or failed source keeps the previous CSV instead of overwriting it. Gaps (details and what to do in [`reports/data_gaps.md`](./reports/data_gaps.md)): FPI for 2017-01 to 2018-08 is missing because NSDL blocked the sandbox and the Codespace; the policy repo rate was not collected (no official table found; each MPC resolution on rbi.org.in states it); the 10-year G-sec yield only starts in 2011-12 (`INDIRLTLT01STM`, OECD via FRED); no Nifty Healthcare index cross-check. The Nifty 500 constituent history was dropped in favour of a listing-date plus liquidity universe rule; the Nifty 500 **index** prices stay as the benchmark. Open infrastructure item: `data/csv/prices_daily.csv` (93 MB) should move to Git LFS, which needs network access the sandbox lacks (steps in the gaps report).
 
-**Goal:** collect daily prices, benchmarks, FPI flows, macro series and point-in-time index constituents as CSVs, then load them into Postgres.
+**Goal:** collect daily prices, benchmarks, FPI flows and macro series as CSVs, then load them into Postgres.
 
 All collectors live in `scripts/collect/`, write raw downloads to `data/raw/<source>/` and clean CSVs to `data/csv/` (schemas in §8), and are run with `make collect` **on a laptop** (these sites usually block cloud servers).
 
 Tasks:
 - [ ] `ingest/prices.py`: yfinance daily OHLCV for the 116 stocks from Jan 2005 → `prices_daily.csv`; fill `listing_date` in `stocks.csv` from the first trading day; NSE bhavcopy fallback for missing or renamed symbols (D7). **(FR-1, Must)** *Still open: NSE bhavcopy fallback is not built. Prices, flag decisions (`reports/price_flag_decisions.csv`) and `listing_date` for the 59 stocks that listed after 2004 are done; the other 57 were already trading when the download window opens.*
 - [x] `ingest/benchmarks.py`: Nifty 500 and official sector indices; manual CSV loader for indices missing on Yahoo, e.g. Nifty India Defence (D8). *Manual loader reads `data/raw/indices/*.csv`; no Nifty Healthcare or Nifty India Defence file supplied yet (see `reports/data_gaps.md`).*
-- [ ] `ingest/constituents.py`: historical Nifty 500 constituents from niftyindices.com archives into `index_constituents` (D9). *Still open: needs the niftyindices.com list and index-change press releases, which the cloud sandbox cannot download; `scripts/collect/nifty500_history.py` is written and unit-tested on fixtures only.*
-- [ ] `ingest/fpi.py`: NSDL fortnightly sector-wise FPI (24 sectors) from 2017 (D10). *Still open: FPI data starts 2018-09-15, not 2017; NSDL is blocked from the sandbox. Re-run `python -m bsp.ingest.fpi` on a laptop.*
-- [ ] `ingest/macro.py`: World Bank API and Yahoo series; manual loader for RBI DBIE downloads (D11). *Still open: no `g_sec_10y_yield` (FRED) and no `repo_rate` (needs `data/raw/rbi/repo_rate.csv` from RBI DBIE).*
-- [x] Every job is idempotent (re-running overwrites the CSV and upserts on natural keys) and writes to `fetch_log`. *`reports/idempotence_check.md`; constituents/FPI only trivially tested here because their sources are blocked.*
-- [x] `make load` loads every CSV in `data/csv/` into Postgres. *`make load` migrates, then loads budget lines, prices, indices, macro, FPI flows, Nifty 500 constituents and the Phase 3 tables as idempotent upserts on natural keys with a `fetch_log` row per table (`src/bsp/ingest/load.py`). Run twice on clean SQLite and clean Postgres: row counts and checksums match the CSVs (`scripts/verify_load.py`); the Postgres CI job repeats this. Stock and sector-basket CSVs have no section 9 table and are not loaded.*
+- ~~`ingest/constituents.py`: historical Nifty 500 constituents (D9)~~ *Removed by decision (2026-10-27): the point-in-time constituent history needed every index change since 2015 and only seven were available. The universe is now the listing-date plus liquidity rule in ground rule 1 (`features/universe.py`); the Nifty 500 index prices stay as the benchmark.*
+- [ ] `ingest/fpi.py`: NSDL fortnightly sector-wise FPI (24 sectors) from 2017 (D10). *Still open: 2017-01 to 2018-08 (and 120 later fortnights) are missing because NSDL blocked the sandbox and the Codespace; re-run `python -m bsp.ingest.fpi` from a network NSDL accepts.*
+- [x] `ingest/macro.py`: World Bank API and Yahoo series; manual loader for RBI DBIE downloads (D11). *Also FRED, including the 10-year G-sec yield from `INDIRLTLT01STM` (starts 2011-12, manual-file fallback, tested). The policy repo rate is not collected (no official table found; each MPC resolution on rbi.org.in states it); `data/raw/rbi/repo_rate.csv` would be loaded if built by hand from the resolutions.*
+- [x] Every job is idempotent (re-running overwrites the CSV and upserts on natural keys) and writes to `fetch_log`. *`reports/idempotence_check.md`; FPI is only trivially tested here because NSDL is blocked.*
+- [x] `make load` loads every CSV in `data/csv/` into Postgres. *`make load` migrates, then loads budget lines, prices, indices, macro, FPI flows and the Phase 3 tables as idempotent upserts on natural keys with a `fetch_log` row per table (`src/bsp/ingest/load.py`). Run twice on clean SQLite and clean Postgres: row counts and checksums match the CSVs (`scripts/verify_load.py`); the Postgres CI job repeats this. Stock and sector-basket CSVs have no section 9 table and are not loaded.*
 - [x] `quality/schemas.py` (pandera): no future dates, no duplicate symbol-days, flag single-day price jumps > 50%, positive prices. *Wired into the collectors and run on every CSV in `tests/test_quality_schemas.py`; >50% jumps are decided in `reports/price_flag_decisions.csv`.*
 - [x] APScheduler job definitions for daily prices and fortnightly FPI. *`src/bsp/ingest/scheduler.py`, tested in `tests/test_scheduler.py`.*
 - [x] Build **self-built sector baskets**: equal-weight index of mapped stocks, each stock entering only from its listing date. Keep official indices only as a cross-check. *`reports/sector_basket_report.csv`: all start 2004-12-02 but several are thin (defence has 2 stocks until 2017, railways 1 until 2018, housing 1 until 2007).*
@@ -430,15 +428,15 @@ Exit criteria:
 
 **Goal:** point-in-time features, non-overlapping targets and the event-study tables.
 
-> **Status: Phase 3 is built and tested; its inputs still have gaps.** 330 sector-year and 2,463 stock-year rows, 11,416 targets (133 incomplete, FY2026-27) and 14,210 event-study rows; the leakage test passes and fails when a leak is injected; the Defence/HAL hand-check matches. Features that depend on Phase 1/2 gaps are sparse (scheme push, fiscal stance, FPI), and the stock universe is not yet filtered to Nifty 500 members. See [`reports/data_gaps.md`](./reports/data_gaps.md).
+> **Status: Phase 3 is built and tested; its inputs still have gaps.** 330 sector-year and 1,882 stock-year rows (115 of the 116 symbols; universe rule below), 11,416 targets (133 incomplete, FY2026-27) and 14,210 event-study rows; the leakage test passes and fails when a leak is injected (future date, same-year Actual, not-yet-listed stock, below-liquidity stock); the Defence/HAL hand-check matches. Features that depend on Phase 1/2 gaps are sparse (scheme push, fiscal stance, FPI). The stock universe is the listing-date plus liquidity rule from ground rule 1; **survivorship bias is reduced but not removed** (today's 116 symbols, no delisted names, no index-membership check), see [`reports/data_gaps.md`](./reports/data_gaps.md) and `reports/universe_filter.csv`.
 
 Tasks:
 - [x] Build `features/` and `events/` from scratch (there is no existing dataset script), with unit tests for every feature function.
 - [x] **Sector-year features** (each with `as_of_date` ≤ budget day): allocation level and growth, `alloc_vs_prev_re_pct` (surprise), execution credibility (3-year), capex ratio, scheme-level push, fiscal-stance features (deficit, subsidies), pre-budget momentum (1/3/6/12 months), volatility, FPI flow before the budget, macro controls, regime flags (interim, election year, COVID, high VIX). **(FR-6, Must; F2, F10)** *Coverage is limited by upstream gaps: scheme push 15%, fiscal-stance 41%, FPI 21% of rows.*
-- [ ] **Stock-year features:** momentum, volatility, liquidity (average daily traded value), beta, size; stocks must be listed and in the point-in-time universe on budget day. *Still open: the point-in-time Nifty 500 universe is not available yet (constituents file is empty), so only the listing-date filter applies; the filter itself is built and unit-tested (`reports/universe_filter.csv`).*
+- [x] **Stock-year features:** momentum, volatility, liquidity (average daily traded value), beta, size; a stock gets a row only if it is listed on or before the budget date and its average daily traded value over the prior 60 trading days is at least ₹5 cr (`features/universe.py`; counts per budget in `reports/universe_filter.csv`). *Index membership is not checked, and delisted stocks are missing (survivorship bias remains).*
 - [x] **Targets:** forward 12-month excess return over Nifty 500 (day after budget → next budget, non-overlapping); secondary horizons to 31 March, +5 and +30 days. Set `target_complete = False` for unresolved rows (FY2026-27 until Feb 2027).
 - [x] **Event study:** market model on days −250 to −31; CAR and t-stats for windows [−5,−1], 0, [0,+5], [0,+30], [0,+90] for every sector and stock around every budget. **(FR-7, Must)** *Hand-check in `reports/event_study_spotcheck.md` (Defence and HAL, FY2021-22) matches; it also caught and fixed a one-day error in the estimation window.*
-- [x] `tests/test_leakage.py`: fails if any feature's `as_of_date` ≥ its prediction date, if any same-year Actual is used, or if any stock outside the point-in-time universe appears. *Includes an out-of-universe check.*
+- [x] `tests/test_leakage.py`: fails if any feature's `as_of_date` ≥ its prediction date, if any same-year Actual is used, if a stock that is not yet listed appears, or if a stock below the liquidity threshold appears. *Each case has an injected-leak test.*
 
 Exit criteria:
 - ~300 sector-year rows and ~2,000 stock-year rows built.
@@ -451,13 +449,13 @@ Exit criteria:
 
 **Goal:** the evaluation machinery and the bars every model must clear, before any "real" model exists.
 
-> **Status: Phase 4 is built at sector level only; its exit criteria pass.** `make backtest` rebuilds `reports/baselines.md` (and the CSVs beside it) with fixed seeds: two runs give byte-identical files, and every run is logged to MLflow. **Null result:** no baseline reaches the README target of mean IC > 0.10 (best: last year's winners, 0.065), and neither the budget-surprise baseline nor ridge beats the equal-weight Sharpe. IT Services is the control sector and is reported separately (no leakage alarm). Stock-level evaluation is deferred until the Nifty 500 point-in-time history is complete (`reports/data_gaps.md`). The FY2024-25 and FY2025-26 hold-out has not been touched.
+> **Status: Phase 4 is built at sector level only; its exit criteria pass.** `make backtest` rebuilds `reports/baselines.md` (and the CSVs beside it) with fixed seeds: two runs give byte-identical files, and every run is logged to MLflow. **Null result:** no baseline reaches the README target of mean IC > 0.10 (best: last year's winners, 0.065), and neither the budget-surprise baseline nor ridge beats the equal-weight Sharpe. IT Services is the control sector and is reported separately (no leakage alarm). Stock-level evaluation is not built, because the stock universe uses listing-date plus liquidity filters only and survivorship bias is not removed (see `reports/data_gaps.md`). The FY2024-25 and FY2025-26 hold-out has not been touched.
 
 Tasks:
 - [x] `evaluation/walk_forward.py`: expanding window; train on budgets ≤ t−1, predict t, for every t from FY2012-13; hyperparameter tuning hook runs **inside** each fold. Lock FY2024-25 and FY2025-26 as hold-out (raise an error if accessed before Phase 9 is unlocked by a config flag). *Sector level. Expanding window over the 12 full budgets FY2012-13 to FY2023-24; a training row needs fiscal year < t, `label_end <= day 0` of t and `target_complete`; the ridge tuning hook sees training rows only. The hold-out is locked by fiscal year in `config/evaluation.json` (FY2024-25-I is locked with FY2024-25) and raises `HoldoutLockedError`; tests cover the lock, the unlock path and "never trains on year t or later".*
 - [x] `models/baselines.py`: equal-weight all sectors; last year's winners (momentum); "biggest allocation increase wins"; ridge regression. *Sector baselines: equal weight, last year's winners (12m momentum), biggest allocation increase (`alloc_vs_prev_re_pct`), ridge.*
 - [x] `evaluation/metrics.py`: Spearman rank IC, top-3 hit rate, MAE, directional accuracy; Precision@5 and NDCG@10; interval coverage and width. *Each metric is unit-tested against hand-computed values.*
-- [x] `evaluation/backtest.py`: top-k sector and stock portfolios, 0.2% round-trip costs; CAGR, Sharpe, maximum drawdown, turnover. **(FR-11, Must)** *Sector portfolios only: stock portfolios wait for the complete Nifty 500 history. Top-3 of the 14 budget-sensitive sectors, 0.2% round trip, benchmark charged identically; window returns reproduce the published 12m targets (tested). IT Services (control) is reported separately.*
+- [x] `evaluation/backtest.py`: top-k sector and stock portfolios, 0.2% round-trip costs; CAGR, Sharpe, maximum drawdown, turnover. **(FR-11, Must)** *Sector portfolios only: stock portfolios are not built, because the stock universe uses listing-date plus liquidity filters only and survivorship bias is not removed (see `reports/data_gaps.md`). Top-3 of the 14 budget-sensitive sectors, 0.2% round trip, benchmark charged identically; window returns reproduce the published 12m targets (tested). IT Services (control) is reported separately.*
 - [x] MLflow logging for every run (params, per-year metrics, artifacts). *`bsp/evaluation/tracking.py` uses the MLflow server if it answers a health check, else a local file store under `mlruns/` (git-ignored); the run prints which one it used.*
 
 Exit criteria:
@@ -741,7 +739,8 @@ The minimum passing demo is all **Must** items: Phases 0–5, 7, 10 (API + 8 scr
 | --- | --- |
 | Data sites block scripts (Yahoo, NSE, NSDL) | Run collectors on a laptop; manual download into `data/raw/`; cache every raw file |
 | Small sample (~20 budgets) | Pooled hierarchical models, few features, walk-forward, per-year results, ablations |
-| Look-ahead and survivorship bias | Point-in-time constituents (D9), listing-date filter, leakage test, sealed forecasts |
+| Look-ahead bias | Listing-date and liquidity universe rule measured before the budget, leakage test, sealed forecasts |
+| **Survivorship bias (not fully removed)** | The 116 stocks come from today's symbols, so delisted names are missing, and index membership on budget day is not checked. The liquidity rule drops illiquid names the same way every year, which limits but does not remove the bias. Stated in `reports/data_gaps.md`; read all stock-level results with it in mind |
 | Scanned or inconsistent old PDFs | Expenditure Budget statements (D4), OCR fallback, reconciliation check |
 | Ministry renames and restructuring | Alias table, documented mappings |
 | Yahoo symbol changes and delistings | Fetch log, manual fixes, NSE bhavcopy fallback |
