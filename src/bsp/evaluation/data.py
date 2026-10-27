@@ -87,3 +87,42 @@ def load_sector_panel(cfg: EvalConfig, include_locked: bool = False) -> Panel:
     frame["is_control"] = frame["entity"].isin(control_sectors(root))
     frame = frame.sort_values(["presented_on", "entity"]).reset_index(drop=True)
     return Panel(kind="sector", frame=frame, features=[c for c in SECTOR_FEATURES if c in frame.columns])
+
+
+STOCK_FEATURES = [
+    "momentum_1m", "momentum_3m", "momentum_6m", "momentum_12m", "volatility_30d", "volatility_90d",
+    "liquidity_90d", "avg_traded_value_60d_cr", "size_traded_val", "beta_250d", "beta_90d",
+]
+
+
+def load_stock_panel(cfg: EvalConfig, tier1: pd.DataFrame | None = None) -> Panel:
+    """Stock rows (the listing-date plus liquidity universe) with 12m excess-return targets, hold-out removed.
+
+    ``entity`` is the symbol; ``is_control`` marks stocks of the control sector. If ``tier1`` is given (out-of-sample
+    Tier-1 sector outputs with columns ``budget_id``, ``entity`` = sector, ``t1_*``), they are joined by sector and
+    budget, and only budgets that have Tier-1 output are kept: a stock row never sees a sector output that was not
+    produced out-of-sample. Survivorship bias is not removed (see reports/data_gaps.md).
+    """
+    root = cfg.root
+    csv = root / "data" / "csv"
+    wide = pd.read_csv(csv / "features_stock_year_wide.csv")
+    wide["fiscal_year"] = wide["fiscal_year"].astype(str)
+    wide = wide[~wide["fiscal_year"].isin(cfg.locked_fiscal_years)]
+    wide = wide.rename(columns={"symbol": "entity"})
+    targets = pd.read_csv(csv / "targets.csv")
+    targets = targets[(targets["entity_type"] == "stock") & (targets["horizon"] == "12m")]
+    targets = targets[["entity", "budget_id", "excess_return", "target_complete"]]
+    frame = wide.merge(targets, on=["entity", "budget_id"], how="left")
+    calendar = budget_calendar(root, trading_days(root))
+    frame = frame.merge(calendar[["budget_id", "budget_type", "day0", "start", "label_end"]], on="budget_id", how="left")
+    frame = frame[frame["budget_type"] == "full"]
+    frame["target_complete"] = frame["target_complete"].fillna(False).astype(bool)
+    frame["is_control"] = frame["sector_id"].isin(control_sectors(root))
+    features = list(STOCK_FEATURES)
+    if tier1 is not None:
+        t1_cols = [c for c in tier1.columns if c.startswith("t1_")]
+        join = tier1.rename(columns={"entity": "sector_id"})[["budget_id", "sector_id", *t1_cols]]
+        frame = frame.merge(join, on=["budget_id", "sector_id"], how="inner")
+        features += t1_cols
+    frame = frame.sort_values(["presented_on", "entity"]).reset_index(drop=True)
+    return Panel(kind="stock", frame=frame, features=[c for c in features if c in frame.columns])

@@ -62,7 +62,7 @@ features: db-migrate
 	@$(PY) -m bsp.features.build
 
 train:
-	@echo "Placeholder for Phase 4/7 training."
+	@MLFLOW_DISABLE_AGENT_HINT=1 $(PY) -m bsp.models.run_models
 
 backtest:
 	@MLFLOW_DISABLE_AGENT_HINT=1 $(PY) -m bsp.evaluation.run_baselines
