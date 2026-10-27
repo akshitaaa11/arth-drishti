@@ -27,9 +27,17 @@ No output means the company is not in today's list under any of those spellings 
 **Why they were dropped.** For every budget from FY2016-17 on, the history covers the budget day, and these symbols are neither in
 today's list nor in an interval built from the releases, so the filter treats them as non-members. What the data cannot say is
 whether any of them was a member for part of 2015-2025, because only seven of the index changes in that period are listed. A
-stock that left in an unlisted review looks exactly like one that was never a member. The 18 other stocks with
-`dropped_not_in_nifty500` at recent budgets are partly covered by releases and are kept at the budgets where the history shows them
-as members.
+stock that left in an unlisted review looks exactly like one that was never a member.
+
+**The same filter hits 18 more stocks, less visibly.** 22 of the 116 stocks are not Nifty 500 members on the last budget day
+(2026-02-01). Four have no row at all (above). The other 18 (KNRCON, ASHOKA, TEXRAIL, DHANUKA, RALLIS, BAYERCROP, RCF, NFL,
+GSFC, KRBL, JYOTHYLAB, WABAG, MAHSEAMLES, FINPIPE, NAVNETEDUL, APTECHT, NIITLTD, ZEELEARN) keep rows only at the budgets
+before FY2016-17, where the history does not reach and no membership filter applies; at every covered budget they are
+dropped. Two of them show the gap clearly: `KNRCON` and `NAVNETEDUL` were *included* by the 2017-03-31 release, so they were
+members after that date, but no listed release says when they left, so the build records no interval for them
+(`reports/nifty500_history_report.csv`: "included in the release but not a member afterwards") and the filter drops them at
+every later budget. Rows before and after FY2016-17 are therefore selected under different rules, which matters for any
+comparison across that boundary.
 
 **What to do.** Add the missing releases to `config/nifty500_press_releases.csv` and re-run
 `python scripts/collect/nifty500_history.py`; if any of the four then gets an interval, `make features` brings it back. Until
