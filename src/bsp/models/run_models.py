@@ -65,6 +65,7 @@ class StockRun:
     summary: dict[str, float]
     backtest: BacktestResult
     params: dict[str, Any]
+    folds: list[FoldResult] | None = None  # the walk-forward folds with their fitted models (Phase 7 explains them)
     rerun: Callable[[pd.DataFrame], list[FoldResult]] | None = None  # walk-forward again on a modified copy of the panel
 
 
@@ -146,7 +147,7 @@ def evaluate_stock(name: str, folds: list[FoldResult], selects_all: bool, cfg: E
     summary = {c: _nanmean(per_year[c]) for c in per_year.columns if c != "budget_id"}
     summary["ic_positive_share"] = float((per_year["ic"].dropna() > 0).mean()) if per_year["ic"].notna().any() else NAN
     summary.update({f"bt_{k}": v for k, v in backtest.summary.items()})
-    return StockRun(name, predictions, per_year, summary, backtest, params, rerun)
+    return StockRun(name, predictions, per_year, summary, backtest, params, folds, rerun)
 
 
 def stock_control(run: StockRun) -> dict[str, float]:
@@ -172,7 +173,7 @@ def run_stock_models(cfg: EvalConfig, tier1: pd.DataFrame, windows: pd.DataFrame
         ("ridge", base_panel, lambda alpha=10.0: RidgeBaseline(alpha=alpha, interval_level=cfg.interval_level),
          make_ridge_tuner(cfg.ridge_alpha_grid), False),
         ("sector_then_momentum", panel, lambda: SectorThenMomentum(), None, False),
-        ("tier2_ranker", panel, lambda **p: LGBMRankerModel(("budget_id", "sector_id"), cfg.seed, False, **p),
+        ("tier2_ranker", panel, lambda **p: LGBMRankerModel(("budget_id", "sector_id"), cfg.seed, True, cfg.interval_level, **p),
          make_ranker_tuner(("budget_id", "sector_id"), N_TRIALS, cfg.seed), False),
     ]
     runs: dict[str, StockRun] = {}
@@ -445,6 +446,21 @@ def run(cfg: EvalConfig | None = None, use_mlflow: bool = True, report_dir: Path
     from bsp.models.registry import final_fit_and_register
 
     slopes, registry = final_fit_and_register(cfg, panel, stock_panel, use_mlflow)
+    if not with_speech:
+        from bsp.explain.build import build_outputs
+        from bsp.explain.report import write_explainability_report
+
+        explained = build_outputs(
+            cfg.root, cfg.seed, panel.frame, stock_panel.frame, sector_folds,
+            {n: r.predictions for n, r in sector.items()}, stack_weights, stock["tier2_ranker"].folds or [],
+            stock["tier2_ranker"].predictions, panel.frame.drop_duplicates("budget_id")[["budget_id", "presented_on", "day0", "label_end"]])
+        explained.predictions.round(8).to_csv(cfg.root / "data" / "csv" / "predictions.csv", index=False)
+        explained.detail.round(8).to_csv(reports / "predictions_detail.csv", index=False)
+        explained.shap_sector.round(8).to_csv(reports / "shap_values_sector.csv", index=False)
+        explained.shap_stock.round(8).to_csv(reports / "shap_values_stock.csv", index=False)
+        explained.coverage_year.round(8).to_csv(reports / "interval_coverage_by_year.csv", index=False)
+        explained.coverage_regime.round(8).to_csv(reports / "interval_coverage_by_regime.csv", index=False)
+        write_explainability_report(explained, reports / "explainability.md")
     write_models_report(base, sector, sector_folds, stock, bench, cfg, reports / f"models{sfx}.md", slopes, stock_bench,
                         stock_control_investigation(stock, stock_panel, cfg.seed), stack_weights)
 

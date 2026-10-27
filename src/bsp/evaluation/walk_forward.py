@@ -41,6 +41,7 @@ class FoldResult:
     n_train_budgets: int
     params: dict[str, Any]
     predictions: pd.DataFrame
+    model: Any = None  # the fitted model of this fold (kept so predictions can be explained, Phase 7)
 
 
 def test_budgets(panel: Panel, cfg: EvalConfig) -> list[str]:
@@ -88,7 +89,7 @@ def walk_forward(
         out = model.predict(test)
         out = out.assign(budget_id=budget_id, entity=test["entity"].to_numpy(), sector_id=test["sector_id"].to_numpy(),
                          is_control=test["is_control"].to_numpy(), actual=test["excess_return"].to_numpy())
-        results.append(FoldResult(budget_id, len(train), n_budgets, params, out))
+        results.append(FoldResult(budget_id, len(train), n_budgets, params, out, model))
     return results
 
 

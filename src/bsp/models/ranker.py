@@ -104,7 +104,8 @@ class LGBMRankerModel:
 
     def _oof_residuals(self, train: pd.DataFrame) -> np.ndarray:
         out: list[np.ndarray] = []
-        for inner_train, inner_test in inner_folds(train):
+        folds = list(inner_folds(train)) or list(inner_folds(train, 2))  # the first stock fold has only 3 training budgets
+        for inner_train, inner_test in folds:
             model = LGBMRankerModel(self.group_cols, self.seed, True, self.interval_level, **self.params)
             model.features = self.features
             ordered, _ = _groups(inner_train, self.group_cols)

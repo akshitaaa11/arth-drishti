@@ -509,15 +509,17 @@ Exit criteria:
 
 **Goal:** every prediction carries its reasons and an honest interval.
 
+> **Status: Phase 7 is built; its exit criteria are met, with one coverage miss to read.** `make train` now also writes `reports/explainability.md`, `data/csv/predictions.csv` (loaded into the `predictions` table by `make load`) and the SHAP and coverage CSVs. All 1,484 out-of-sample predictions (4 sector models, 12 test years x 15 sectors; the Tier-2 stock ranker, 9 years) have exactly three reasons and a p10/p90 interval. Walk-forward 80% coverage over the 14 budget-sensitive sectors: Bayesian 80.4%, LightGBM 76.2%, blend 79.2%, stack 79.8% (all inside 75-85%); **the Tier-2 stock ranker covers only 70.3%** (outside the target), and single years swing widely (for example 46-57% in FY2023-24). The intervals are very wide (about 67-74 percentage points), which is the honest size of the forecast error, not a sign of skill. Phase 5 forecasts, ranks and results are unchanged (`reports/models.md` is byte-identical); the hold-out and live year were not touched.
+
 Tasks:
-- [ ] SHAP values for every Tier-1 and Tier-2 prediction. **(FR-10, Must)**
-- [ ] `explain/reasons.py`: turn top SHAP drivers into exactly three plain-English bullets with the underlying numbers and source references.
-- [ ] Conformal prediction wrapper (MAPIE) for 80% intervals on every forecast; coverage report by year and regime. **(F9)**
-- [ ] Store `p10`, `p90`, `p_beat`, `top_reasons` in `predictions`.
+- [x] SHAP values for every Tier-1 and Tier-2 prediction. **(FR-10, Must)** *`bsp/explain/contributions.py`: SHAP TreeExplainer for the LightGBM models (both the expected-return regressor and the ranker score), the Bayesian model's exact additive decomposition, and weighted combinations for the blend and stack; `reports/shap_values_sector.csv`, `reports/shap_values_stock.csv`. Additivity is tested (LightGBM to 1e-8; the Bayesian-based models differ from the stored forecast by Monte-Carlo noise, at most 0.019).*
+- [x] `explain/reasons.py`: turn top SHAP drivers into exactly three plain-English bullets with the underlying numbers and source references. *Wording and sources in `config/feature_reasons.json`. The reasons explain the expected excess return; the rank comes from the ranker, whose order usually but not always agrees.*
+- [x] Conformal prediction wrapper (MAPIE) for 80% intervals on every forecast; coverage report by year and regime. **(F9)** *`bsp/explain/conformal.py`: split conformal on earlier, resolved out-of-sample errors of the same model; the first test budgets (fewer than three resolved) use the model's own out-of-fold residual interval, marked in `interval_method`. Coverage by year and by regime (election year, Covid era, high VIX) in `reports/explainability.md`, `reports/interval_coverage_by_year.csv`, `reports/interval_coverage_by_regime.csv`.*
+- [x] Store `p10`, `p90`, `p_beat`, `top_reasons` in `predictions`. *Plus `expected_excess`, `rank` and a `model_version` (model, seed, hash of the input CSVs). Tier 2 now also fits the companion regressor that gives stock forecasts, intervals and `p_beat`; its ranker scores are identical to Phase 5.*
 
 Exit criteria:
-- 100% of predictions have three reasons and an interval.
-- Walk-forward 80% interval coverage is reported (target 75–85%).
+- [x] 100% of predictions have three reasons and an interval. *1,484 of 1,484 (`tests/test_phase7_explain.py`).*
+- [x] Walk-forward 80% interval coverage is reported (target 75-85%). *Reported by model, year and regime; the Tier-2 stock ranker is outside the target (70.3%).*
 
 ---
 

@@ -25,6 +25,7 @@ CHECKS = {
     "features_stock_year": ("features_stock_year.csv", "value", "value", None),
     "targets": ("targets.csv", "excess_return", "excess_return", None),
     "event_study": ("event_study.csv", "car", "car", None),
+    "predictions": ("predictions.csv", "expected_excess", "expected_excess", None),
 }
 
 

@@ -72,5 +72,5 @@ packages = ["bsp"]
 warn_unused_configs = true
 
 [[tool.mypy.overrides]]
-module = ["pymc", "pymc.*", "arviz", "arviz.*", "lightgbm", "lightgbm.*", "optuna", "optuna.*", "yfinance", "apscheduler", "apscheduler.*", "sklearn", "sklearn.*", "scipy", "scipy.*", "mlflow", "mlflow.*"]
+module = ["shap", "shap.*", "mapie", "mapie.*", "pymc", "pymc.*", "arviz", "arviz.*", "lightgbm", "lightgbm.*", "optuna", "optuna.*", "yfinance", "apscheduler", "apscheduler.*", "sklearn", "sklearn.*", "scipy", "scipy.*", "mlflow", "mlflow.*"]
 ignore_missing_imports = true
