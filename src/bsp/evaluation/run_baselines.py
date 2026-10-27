@@ -296,7 +296,11 @@ def run(cfg: EvalConfig | None = None, use_mlflow: bool = True, report_dir: Path
         reports / "baselines_predictions_sector.csv", index=False)
     pd.concat([r.control.assign(model=r.name) for r in runs if r.name != "equal_weight"]).round(8).to_csv(
         reports / "baselines_control_sector.csv", index=False)
-    write_report(runs, bench, cfg, reports / "baselines.md")
+    # The benchmark row of the report must cover the same windows as the models (the test budgets), not every budget since 2005.
+    test_budgets = sorted(runs[0].predictions["budget_id"].unique())
+    bench_test = run_backtest({b: [BENCHMARK] for b in test_budgets}, windows[windows["budget_id"].isin(test_budgets)], market_level,
+                              cfg.round_trip_cost)
+    write_report(runs, bench_test, cfg, reports / "baselines.md")
 
     if use_mlflow:
         kind, uri = tracking.configure(cfg.root)

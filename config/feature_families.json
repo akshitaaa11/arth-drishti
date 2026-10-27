@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "notes": "Feature families for the Phase 8 ablations (src/bsp/evidence/ablation.py). Every feature of the Phase 5 sector panel belongs to exactly one family; speech_nlp is empty in the default panel because no speech data exists yet.",
+  "families": {
+    "budget_money": [
+      "growth_vs_prev_be_pct",
+      "capex_share_be_pct",
+      "scheme_push_total_cr",
+      "fiscal_deficit_be_cr",
+      "fiscal_subsidies_cr"
+    ],
+    "surprise": [
+      "alloc_vs_prev_re_pct"
+    ],
+    "execution_credibility": [
+      "credibility_pct"
+    ],
+    "speech_nlp": [
+      "speech_emphasis",
+      "speech_new_scheme_n",
+      "speech_emphasis_rank",
+      "talk_vs_money_divergence"
+    ],
+    "fpi_flows": [
+      "fpi_net_equity_1m_cr"
+    ],
+    "momentum": [
+      "momentum_1m",
+      "momentum_3m",
+      "momentum_6m",
+      "momentum_12m"
+    ],
+    "volatility": [
+      "volatility_30d",
+      "volatility_90d"
+    ],
+    "macro_controls": [
+      "macro_usd_inr_1y_pct",
+      "macro_brent_crude_1y_pct",
+      "macro_policy_rate",
+      "macro_cpi_inflation",
+      "macro_gdp_growth"
+    ],
+    "regime_flags": [
+      "regime_is_election_year",
+      "regime_is_covid_era",
+      "regime_high_vix"
+    ]
+  },
+  "groups": {
+    "price_only": [
+      "momentum",
+      "volatility"
+    ],
+    "budget_only": [
+      "budget_money",
+      "surprise",
+      "execution_credibility"
+    ],
+    "price_plus_budget": [
+      "momentum",
+      "volatility",
+      "budget_money",
+      "surprise",
+      "execution_credibility"
+    ],
+    "momentum_only": [
+      "momentum"
+    ]
+  }
+}

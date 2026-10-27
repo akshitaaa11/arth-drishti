@@ -527,16 +527,20 @@ Exit criteria:
 
 **Goal:** the evidence the panel will ask for.
 
+> **Status: Phase 8 is built; the answer to its question is "no detectable gain".** `make evidence` refits the ablations (slow) and writes `reports/evidence.md` with the numbers. **Does the budget data add anything beyond price momentum?** In these 12 test years, no: adding the budget features to price features (momentum, volatility) changes mean IC by -0.049 for ridge (95% interval [-0.168, 0.077]) and by -0.168 for the LightGBM ranker ([-0.350, -0.004], t-test p 0.09), and the top-3 portfolio's net excess by -2.6% and -3.2% (intervals include 0). A price-only ridge scores IC 0.237 against 0.185 for the full model. The one model whose IC interval excludes 0 at sector level is ridge (0.185, t-test p 0.055), and it leans on volatility (IC 0.041 without it). The budget-day event study does show effects: 20 of 75 sector-window tests have p < 0.05 and 9 survive Benjamini-Hochberg within windows (defence, fertilisers, railways, telecom, education), IT Services not among them; this says budgets move some sectors on average, not that the models can predict which. The difference-in-differences of large-surprise against matched sectors is -2.8% (+60 days) with an interval that includes 0, and the pre-trend check is not rejected. Everything uses FY2005-06 to FY2023-24 only; the hold-out and live year were not loaded.
+>
+> **Correction to Phase 4/5 reports:** their "Nifty 500" row (CAGR 9.8%, Sharpe 0.57) was computed over every budget window since 2005 while the models cover the 12 test windows; it is now computed over the same windows (CAGR 11.3%, Sharpe 0.76, max drawdown -41.1%). No forecast, rank or model result changed.
+
 Tasks:
-- [ ] **F12 Backtest lab:** equity curve of "follow the model since FY2012-13" vs Nifty 500 and baselines, with costs, drawdown and turnover.
-- [ ] **Ablations:** remove each feature family in turn (budget money, surprise, execution credibility, speech NLP, FPI flows, momentum) and measure the drop in IC.
-- [ ] Bootstrap confidence intervals or t-stats for IC.
-- [ ] Benjamini–Hochberg correction when claiming significant sector event effects across 15 sectors.
-- [ ] **F11 Causal check:** difference-in-differences, large-surprise sectors vs matched sectors, before and after the budget.
-- [ ] Error reports split by regime (F10): election, interim, COVID, high VIX.
+- [x] **F12 Backtest lab:** equity curve of "follow the model since FY2012-13" vs Nifty 500 and baselines, with costs, drawdown and turnover. *`reports/backtest_lab_sector.png`, `reports/backtest_lab_stock.png`, `reports/backtest_lab_summary.csv` (CAGR, Sharpe, drawdown, turnover, value of 100, CAGR at 0%, 0.2% and 0.5% round-trip cost) and the daily equity CSVs; rebuilt from the saved out-of-sample predictions, and tested to reproduce the Phase 4/5 numbers. Sector baskets and the stock list have survivorship bias, so the fair bar is the equal-weight row.*
+- [x] **Ablations:** remove each feature family in turn (budget money, surprise, execution credibility, speech NLP, FPI flows, momentum) and measure the drop in IC. *Ridge and the LightGBM ranker, same folds and tuning; also volatility, macro and regime families, price-only / budget-only / price-plus-budget / momentum-only groups, and a LightGBM seed noise floor (full model IC 0.038 to 0.054 across 4 seeds). **Speech NLP is untestable** (no speech data exists). `reports/ablation_*.csv`.*
+- [x] Bootstrap confidence intervals or t-stats for IC. *Year-level percentile bootstrap (10,000 resamples) and t-tests for every sector and stock model, `reports/ic_bootstrap.csv`.*
+- [x] Benjamini–Hochberg correction when claiming significant sector event effects across 15 sectors. *`reports/event_effects_bh.csv`: per window (15 tests) and over all 75 tests.*
+- [x] **F11 Causal check:** difference-in-differences, large-surprise sectors vs matched sectors, before and after the budget. *Top-4 surprise sectors against below-median-surprise sectors matched on pre-budget momentum and volatility, with a parallel-trends check and a permutation test, over 18 budgets; `reports/did_summary.csv`. Association under matching, not proof of causation.*
+- [x] Error reports split by regime (F10): election, interim, COVID, high VIX. *`reports/regime_errors.csv`. Interim budgets are not modelled, so they have no error row.*
 
 Exit criteria:
-- `reports/evidence.md` answers: *does the budget data add anything beyond price momentum?* — with numbers, either way.
+- [x] `reports/evidence.md` answers: *does the budget data add anything beyond price momentum?* — with numbers, either way. *Answer: no detectable gain; both point estimates are negative.*
 
 ---
 

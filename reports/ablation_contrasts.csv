@@ -1,0 +1,9 @@
+model,contrast,meaning,n_years,ic_difference,ic_ci_lo,ic_ci_hi,ic_t,ic_p_two_sided,top3_excess_difference,excess_ci_lo,excess_ci_hi
+lgbm_ranker,price_plus_budget minus price_only,budget data added to price data,12,-0.16831169,-0.34958806,-0.00420377,-1.84968302,0.09138639,-0.03156035,-0.09335647,0.02372469
+lgbm_ranker,budget_only minus momentum_only,budget data alone vs momentum alone,12,-0.07906626,-0.31039087,0.1278382,-0.67070795,0.51624183,-0.02983756,-0.16834525,0.0938482
+lgbm_ranker,price_plus_budget minus momentum_only,price + budget vs momentum alone,12,0.01132413,-0.22985005,0.26328092,0.08741299,0.93191424,-0.0605666,-0.31480721,0.11657065
+lgbm_ranker,full minus price_plus_budget,"everything else (FPI, macro, regime) added",12,0.02149277,-0.09482158,0.15392163,0.32842827,0.74875503,0.0195532,-0.04230676,0.0985222
+ridge,price_plus_budget minus price_only,budget data added to price data,12,-0.04871795,-0.16814103,0.07692308,-0.73882775,0.47548135,-0.02631759,-0.06818678,0.01841564
+ridge,budget_only minus momentum_only,budget data alone vs momentum alone,12,-0.03663004,-0.21466117,0.15165751,-0.37427872,0.71531156,0.01562418,-0.11619058,0.12957789
+ridge,price_plus_budget minus momentum_only,price + budget vs momentum alone,12,0.16263736,-0.02857143,0.35311355,1.57562488,0.14341574,0.00232811,-0.12804522,0.12884017
+ridge,full minus price_plus_budget,"everything else (FPI, macro, regime) added",12,-0.0025641,-0.03882784,0.02565019,-0.14734388,0.88552656,0.00186683,-0.01901907,0.02158516

@@ -31,7 +31,7 @@ Chance for the top-3 hit rate is 3/14 = 21.4%. IC, hit rate and NDCG are n/a for
 | last_years_winners (top 3) | 29.3% | 1.28 | -55.8% | 69.7% | 36.5% | 24.4% |
 | biggest_allocation_increase (top 3) | 23.6% | 1.12 | -50.8% | 63.6% | 31.3% | 19.3% |
 | ridge (top 3) | 23.8% | 1.14 | -46.7% | 78.8% | 28.7% | 16.7% |
-| **Nifty 500 (same windows)** | 9.8% | 0.57 | -62.3% | n/a | 12.3% | 0.0% |
+| **Nifty 500 (same windows)** | 11.3% | 0.76 | -41.1% | n/a | 12.1% | 0.0% |
 
 Turnover is the average share of the portfolio replaced between consecutive windows.
 
@@ -91,7 +91,7 @@ Turnover is the average share of the portfolio replaced between consecutive wind
 ## Bars every real model must clear (README section 12)
 
 - Mean IC above 0.10: last_years_winners 0.062, biggest_allocation_increase -0.015, ridge 0.185. ridge clears it with 0.185.
-- Top-3 Sharpe to beat: Nifty 500 0.57, equal weight 1.14, last year's winners 1.28.
+- Top-3 Sharpe to beat: Nifty 500 0.76, equal weight 1.14, last year's winners 1.28.
 - 80% interval coverage between 75% and 85%: ridge 78.0%.
 
 - **Null result on the budget signal:** biggest_allocation_increase did not beat the equal-weight Sharpe (1.14). With 12 test years this is weak evidence either way.

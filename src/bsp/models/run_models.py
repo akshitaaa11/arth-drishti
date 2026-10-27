@@ -441,6 +441,8 @@ def run(cfg: EvalConfig | None = None, use_mlflow: bool = True, report_dir: Path
     blend_t1 = tier1_features(sector["tier1_blend"].predictions)
     stock, stock_panel = run_stock_models(cfg, blend_t1, windows, bundle, bench)
     stock_budgets = sorted(stock["tier2_ranker"].predictions["budget_id"].unique())
+    sector_test = sorted(sector["lgbm_ranker"].predictions["budget_id"].unique())
+    bench_test = run_backtest({b: [BENCHMARK] for b in sector_test}, windows[windows["budget_id"].isin(sector_test)], market_level, cfg.round_trip_cost)
     stock_bench = run_backtest({b: [BENCHMARK] for b in stock_budgets}, windows[windows["budget_id"].isin(stock_budgets)], market_level, cfg.round_trip_cost)
 
     from bsp.models.registry import final_fit_and_register
@@ -461,7 +463,7 @@ def run(cfg: EvalConfig | None = None, use_mlflow: bool = True, report_dir: Path
         explained.coverage_year.round(8).to_csv(reports / "interval_coverage_by_year.csv", index=False)
         explained.coverage_regime.round(8).to_csv(reports / "interval_coverage_by_regime.csv", index=False)
         write_explainability_report(explained, reports / "explainability.md")
-    write_models_report(base, sector, sector_folds, stock, bench, cfg, reports / f"models{sfx}.md", slopes, stock_bench,
+    write_models_report(base, sector, sector_folds, stock, bench_test, cfg, reports / f"models{sfx}.md", slopes, stock_bench,
                         stock_control_investigation(stock, stock_panel, cfg.seed), stack_weights)
 
     rows = [{"model": r.name, "level": "sector", **{k: round(v, 8) for k, v in r.summary.items()}} for r in (*base.values(), *sector.values())]
