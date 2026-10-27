@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "notes": "Plain-English labels, number formats and source references for the three-bullet reasons (src/bsp/explain/reasons.py). Formats: pct = value is already in percent; frac_pct = fraction shown as percent; crore = Rs crore; rate = already a percent rate; number; flag = 0/1. A feature missing here is shown under its own name with source 'feature store'.",
+  "features": {
+    "alloc_vs_prev_re_pct": {
+      "label": "allocation against last year's revised estimate",
+      "format": "pct",
+      "source": "sector_budget_panel.csv (PRS / Expenditure Budget)"
+    },
+    "growth_vs_prev_be_pct": {
+      "label": "allocation growth against last year's budget estimate",
+      "format": "pct",
+      "source": "sector_budget_panel.csv (PRS / Expenditure Budget)"
+    },
+    "credibility_pct": {
+      "label": "3-year execution gap (actual against budget)",
+      "format": "pct",
+      "source": "sector_budget_panel.csv (PRS / Expenditure Budget actuals)"
+    },
+    "capex_share_be_pct": {
+      "label": "capital-expenditure share of the allocation",
+      "format": "pct",
+      "source": "sector_budget_panel.csv (Expenditure Budget)"
+    },
+    "scheme_push_total_cr": {
+      "label": "scheme-level budget estimate",
+      "format": "crore",
+      "source": "budget_schemes.csv (PRS / Expenditure Budget)"
+    },
+    "fiscal_deficit_be_cr": {
+      "label": "budgeted fiscal deficit",
+      "format": "crore",
+      "source": "budget_fiscal.csv (PRS)"
+    },
+    "fiscal_subsidies_cr": {
+      "label": "budgeted subsidies",
+      "format": "crore",
+      "source": "budget_fiscal.csv (PRS)"
+    },
+    "momentum_1m": {
+      "label": "price return over the last month",
+      "format": "frac_pct",
+      "source": "prices_daily.csv (Yahoo Finance); sector baskets from sector_baskets_daily.csv"
+    },
+    "momentum_3m": {
+      "label": "price return over the last 3 months",
+      "format": "frac_pct",
+      "source": "prices_daily.csv (Yahoo Finance); sector baskets from sector_baskets_daily.csv"
+    },
+    "momentum_6m": {
+      "label": "price return over the last 6 months",
+      "format": "frac_pct",
+      "source": "prices_daily.csv (Yahoo Finance); sector baskets from sector_baskets_daily.csv"
+    },
+    "momentum_12m": {
+      "label": "price return over the last 12 months",
+      "format": "frac_pct",
+      "source": "prices_daily.csv (Yahoo Finance); sector baskets from sector_baskets_daily.csv"
+    },
+    "volatility_30d": {
+      "label": "30-day daily volatility",
+      "format": "frac_pct",
+      "source": "prices_daily.csv (Yahoo Finance)"
+    },
+    "volatility_90d": {
+      "label": "90-day daily volatility",
+      "format": "frac_pct",
+      "source": "prices_daily.csv (Yahoo Finance)"
+    },
+    "fpi_net_equity_1m_cr": {
+      "label": "foreign-investor net equity flow over the last month",
+      "format": "crore",
+      "source": "fpi_sector_fortnightly.csv (NSDL)"
+    },
+    "macro_usd_inr_1y_pct": {
+      "label": "1-year change in USD/INR",
+      "format": "frac_pct",
+      "source": "macro.csv (FRED)"
+    },
+    "macro_brent_crude_1y_pct": {
+      "label": "1-year change in Brent crude",
+      "format": "frac_pct",
+      "source": "macro.csv (FRED)"
+    },
+    "macro_policy_rate": {
+      "label": "policy discount rate",
+      "format": "rate",
+      "source": "macro.csv (FRED / World Bank)"
+    },
+    "macro_cpi_inflation": {
+      "label": "CPI inflation",
+      "format": "rate",
+      "source": "macro.csv (World Bank)"
+    },
+    "macro_gdp_growth": {
+      "label": "GDP growth",
+      "format": "rate",
+      "source": "macro.csv (World Bank)"
+    },
+    "regime_is_election_year": {
+      "label": "election-year flag",
+      "format": "flag",
+      "source": "budget_events.csv"
+    },
+    "regime_is_covid_era": {
+      "label": "Covid-era flag",
+      "format": "flag",
+      "source": "budget_events.csv"
+    },
+    "regime_high_vix": {
+      "label": "high-volatility (India VIX above 20) flag",
+      "format": "flag",
+      "source": "index_daily.csv (Yahoo Finance)"
+    },
+    "liquidity_90d": {
+      "label": "90-day average daily traded value",
+      "format": "crore",
+      "source": "prices_daily.csv (Yahoo Finance)"
+    },
+    "avg_traded_value_60d_cr": {
+      "label": "60-day average daily traded value",
+      "format": "crore",
+      "source": "prices_daily.csv (Yahoo Finance)"
+    },
+    "size_traded_val": {
+      "label": "size proxy (log traded value)",
+      "format": "number",
+      "source": "prices_daily.csv (Yahoo Finance)"
+    },
+    "beta_250d": {
+      "label": "250-day beta to the Nifty 500",
+      "format": "number",
+      "source": "prices_daily.csv and index_daily.csv (Yahoo Finance)"
+    },
+    "beta_90d": {
+      "label": "90-day beta to the Nifty 500",
+      "format": "number",
+      "source": "prices_daily.csv and index_daily.csv (Yahoo Finance)"
+    },
+    "t1_rank_score": {
+      "label": "the Tier-1 rank score of its sector",
+      "format": "number",
+      "source": "reports/models_predictions_sector.csv (Tier-1 blend, out of sample)"
+    },
+    "t1_expected": {
+      "label": "the Tier-1 expected excess return of its sector",
+      "format": "frac_pct",
+      "source": "reports/models_predictions_sector.csv (Tier-1 blend, out of sample)"
+    },
+    "t1_p_beat": {
+      "label": "the Tier-1 probability that its sector beats the Nifty 500",
+      "format": "frac_pct",
+      "source": "reports/models_predictions_sector.csv (Tier-1 blend, out of sample)"
+    }
+  }
+}

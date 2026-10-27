@@ -64,6 +64,17 @@ SPECS: dict[str, tuple[Callable[[Path], pd.DataFrame], tuple[str, ...], tuple[st
 }
 
 
+def _predictions(csv_dir: Path) -> pd.DataFrame:
+    cols = ["model_version", "entity", "budget_id", "expected_excess", "p10", "p90", "p_beat", "rank", "top_reasons"]
+    return pd.read_csv(csv_dir / "predictions.csv")[cols]
+
+
+# Phase 5-7 model output, loaded separately so the market loader keeps loading exactly the market tables.
+MODEL_SPECS: dict[str, tuple[Callable[[Path], pd.DataFrame], tuple[str, ...], tuple[str, ...], tuple[str, ...], dict[str, Any]]] = {
+    "predictions": (_predictions, ("model_version", "entity", "budget_id"), (), (), {}),
+}
+
+
 def _upsert_stmt(engine: Engine, table: Table, key: tuple[str, ...], columns: list[str]) -> Any:
     if engine.dialect.name == "postgresql":
         stmt: Any = pg_insert(table)
@@ -78,7 +89,7 @@ def _upsert_stmt(engine: Engine, table: Table, key: tuple[str, ...], columns: li
 
 
 def load_table(engine: Engine, name: str, csv_dir: Path = CSV_DIR) -> int:
-    reader, key, date_cols, ts_cols, scope = SPECS[name]
+    reader, key, date_cols, ts_cols, scope = {**SPECS, **MODEL_SPECS}[name]
     started = datetime.now(UTC).replace(tzinfo=None)
     try:
         frame = reader(csv_dir)
@@ -133,9 +144,23 @@ def load_market_csvs(database_url: str | None = None, csv_dir: str | Path = CSV_
         engine.dispose()
 
 
+def load_prediction_csv(database_url: str | None = None, csv_dir: str | Path = CSV_DIR) -> int:
+    """Load data/csv/predictions.csv (Phase 7) into the ``predictions`` table; 0 if the file does not exist."""
+    if not (Path(csv_dir) / "predictions.csv").exists():
+        return 0
+    engine = create_engine(database_url=database_url)
+    try:
+        if not inspect(engine).has_table("predictions"):
+            raise RuntimeError("Database schema missing table 'predictions'; run `make db-migrate` first")
+        return load_table(engine, "predictions", Path(csv_dir))
+    finally:
+        engine.dispose()
+
+
 def main() -> None:
     for name, rows in load_market_csvs().items():
         print(f"loaded {rows} rows into {name}")
+    print(f"loaded {load_prediction_csv()} rows into predictions")
 
 
 if __name__ == "__main__":
