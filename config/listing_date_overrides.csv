@@ -1,0 +1,2 @@
+symbol,listing_date,verification,source_url,note
+TEXRAIL,2011-03-03,"secondary source, not verified on the exchange",https://www.kotaksecurities.com/stocks/texmaco-rail-engineering-ltd,"Texmaco Rail & Engineering was demerged from Texmaco Ltd and listed on 2011-03-03. Yahoo's TEXRAIL.NS series starts 2004-12-01, so every price row before the listing date is not a trading price of this company and is dropped."

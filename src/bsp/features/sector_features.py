@@ -204,7 +204,13 @@ def build_sector_features(
         # 7. Pre-budget Price Momentum (1m, 3m, 6m, 12m)
         sec_ret = bundle.sector_returns[sec_id]
         past_idx = [i for i, d in enumerate(trading_days) if d <= p_date]
-        if past_idx:
+        first_active = bundle.sector_first_active_idx.get(sec_id)
+        features["basket_active_stocks"] = (
+            float(bundle.sector_stock_count[sec_id].iloc[past_idx[-1]])
+            if past_idx and sec_id in bundle.sector_stock_count.columns else None
+        )
+        # A basket with no stock yet on the as-of day has no price history: its price features are MISSING, not a flat 0%.
+        if past_idx and first_active is not None and past_idx[-1] >= first_active:
             curr_idx = past_idx[-1]
             cum_sec = (1.0 + sec_ret.fillna(0.0)).cumprod()
             curr_val = cum_sec.iloc[curr_idx]

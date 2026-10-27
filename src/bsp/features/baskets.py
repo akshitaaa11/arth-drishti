@@ -7,13 +7,16 @@ entering only from its listing/first price date.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from bisect import bisect_left
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import cast
 
 import numpy as np
 import pandas as pd
 
 from bsp.common.config import get_project_root
+from bsp.quality.price_corrections import load_return_exclusions
 
 
 @dataclass
@@ -29,6 +32,29 @@ class MarketDataBundle:
     first_price_dates: dict[str, str]
     sector_stocks_map: dict[str, list[str]]
     stock_sector_map: dict[str, str]
+    # (symbol, date) -> the return that was set to missing (config/return_exclusions.csv); never rescaled or filled
+    excluded_returns: dict[tuple[str, str], float] = field(default_factory=dict)
+    # sector -> index (into trading_days) of the first day its basket has a return; None if it never does
+    sector_first_active_idx: dict[str, int | None] = field(default_factory=dict)
+    # number of stocks with a price, per sector (columns) and day: the basket's size
+    sector_stock_count: pd.DataFrame = field(default_factory=pd.DataFrame)
+
+    def window_return(self, symbol: str, i0: int, i1: int) -> float | None:
+        """Price return of ``symbol`` from day ``i0`` to day ``i1`` with every excluded day's return divided out.
+
+        Identical to ``p1 / p0 - 1`` unless a sourced return exclusion (a demerger ex-date) lies in ``(i0, i1]``; then
+        that day's return is treated as missing, exactly as in the daily returns. No adjustment factor is invented:
+        the only number used is that day's own observed return.
+        """
+        prices = self.stock_prices[symbol]
+        p0, p1 = prices.iloc[i0], prices.iloc[i1]
+        if pd.isna(p0) or pd.isna(p1) or p0 <= 0 or p1 <= 0:
+            return None
+        ratio = float(p1 / p0)
+        for (sym, day), value in self.excluded_returns.items():
+            if sym == symbol and i0 < bisect_left(self.trading_days, day) <= i1:
+                ratio /= 1.0 + value
+        return ratio - 1.0
 
 
 def load_sector_map(project_root: Path | None = None) -> tuple[dict[str, list[str]], dict[str, str]]:
@@ -103,6 +129,16 @@ def build_market_data_bundle(project_root: Path | None = None) -> MarketDataBund
     # Calculate stock daily returns
     stock_returns = pvt_price.pct_change(fill_method=None)
 
+    # Sourced return exclusions (corporate-action breaks): the day's return becomes missing, so it can never enter a
+    # basket, a volatility, a beta or an event study; window returns divide it out (see MarketDataBundle.window_return).
+    excluded_returns: dict[tuple[str, str], float] = {}
+    for exclusion in load_return_exclusions(root):
+        if exclusion.symbol in stock_returns.columns and exclusion.date in stock_returns.index:
+            value = cast(float, stock_returns.at[exclusion.date, exclusion.symbol])
+            if pd.notna(value):
+                excluded_returns[(exclusion.symbol, exclusion.date)] = float(value)
+                stock_returns.at[exclusion.date, exclusion.symbol] = np.nan
+
     # 2. Build self-built equal-weight sector basket returns
     trading_days = list(stock_returns.index)
     sec_ret_dict: dict[str, pd.Series] = {}
@@ -134,20 +170,29 @@ def build_market_data_bundle(project_root: Path | None = None) -> MarketDataBund
 
     # Save sector baskets to data/csv/sector_baskets_daily.csv
     baskets_records = []
+    sector_first_active_idx: dict[str, int | None] = {}
+    sector_stock_count = pd.DataFrame(0, index=stock_returns.index, columns=list(sector_returns.columns))
     for sec_id in sector_returns.columns:
         ret_s = sector_returns[sec_id]
         cum_idx = 100.0 * (1.0 + ret_s.fillna(0.0)).cumprod()
+        has_return = ret_s.notna().to_numpy()
+        first_active = int(np.argmax(has_return)) if has_return.any() else None
+        sector_first_active_idx[sec_id] = first_active
+        priced = [s for s in sector_stocks.get(sec_id, []) if s in pvt_price.columns]
+        if priced:
+            sector_stock_count[sec_id] = pvt_price[priced].notna().sum(axis=1)
         valid_syms = [s for s in sector_stocks.get(sec_id, []) if s in stock_returns.columns]
         n_stocks = (
             stock_returns[valid_syms].notna().sum(axis=1) if valid_syms else pd.Series(0, index=stock_returns.index)
         )
-        for d in trading_days:
+        for position, d in enumerate(trading_days):
+            started = first_active is not None and position >= first_active  # no index level before the basket exists
             baskets_records.append(
                 {
                     "sector_id": sec_id,
                     "date": d,
                     "daily_return": ret_s.loc[d] if pd.notna(ret_s.loc[d]) else None,
-                    "index_level": cum_idx.loc[d] if pd.notna(cum_idx.loc[d]) else None,
+                    "index_level": cum_idx.loc[d] if started and pd.notna(cum_idx.loc[d]) else None,
                     "active_stocks": int(n_stocks.loc[d]),
                 }
             )
@@ -166,4 +211,7 @@ def build_market_data_bundle(project_root: Path | None = None) -> MarketDataBund
         first_price_dates=first_price_dates,
         sector_stocks_map=sector_stocks,
         stock_sector_map=stock_sector,
+        excluded_returns=excluded_returns,
+        sector_first_active_idx=sector_first_active_idx,
+        sector_stock_count=sector_stock_count,
     )

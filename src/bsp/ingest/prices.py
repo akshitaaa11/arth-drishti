@@ -14,6 +14,11 @@ from bsp.ingest._common import (
     write_csv_guarded,
 )
 from bsp.quality.price_cleaning import clean_prices, flag_jumps
+from bsp.quality.price_corrections import (
+    ListingOverride,
+    load_listing_overrides,
+    load_return_exclusions,
+)
 from bsp.quality.schemas import validate_prices
 
 START = "2004-12-01"
@@ -57,11 +62,12 @@ def _load_splits(stocks: pd.DataFrame) -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=["symbol", "date", "ratio"])
 
 
-def _fill_listing_dates(first_dates: pd.DataFrame) -> None:
+def _fill_listing_dates(first_dates: pd.DataFrame, overrides: dict[str, ListingOverride] | None = None) -> None:
     """Record config/stocks.csv ``listing_date`` from the first real trading day.
 
     Only for stocks whose first trading day falls clearly inside the download window; a stock already
-    trading when the window opens has no observable listing date and is left blank.
+    trading when the window opens has no observable listing date and is left blank. A sourced override
+    (config/listing_date_overrides.csv) sets the listing date of its stock explicitly.
     """
     path = CFG_DIR / "stocks.csv"
     stocks = pd.read_csv(path)
@@ -71,6 +77,8 @@ def _fill_listing_dates(first_dates: pd.DataFrame) -> None:
     stocks["listing_date"] = stocks["listing_date"].astype("string")
     mask = stocks["symbol"].isin(observed.index)
     stocks.loc[mask, "listing_date"] = stocks.loc[mask, "symbol"].map(observed)
+    for symbol, override in (overrides or {}).items():
+        stocks.loc[stocks["symbol"] == symbol, "listing_date"] = override.listing_date
     stocks.to_csv(path, index=False)
 
 
@@ -98,7 +106,8 @@ def collect_prices() -> pd.DataFrame:
 
     # Flag >50% single-day moves in the raw download, then apply the documented decisions (price_cleaning.py).
     flags = flag_jumps(raw)
-    result = clean_prices(raw, _load_splits(load_stocks()))
+    overrides, exclusions = load_listing_overrides(), load_return_exclusions()
+    result = clean_prices(raw, _load_splits(load_stocks()), overrides, exclusions)
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     if not flags.empty:
         flags.to_csv(REPORT_DIR / "price_quality_flags.csv", index=False)
@@ -116,7 +125,7 @@ def collect_prices() -> pd.DataFrame:
 
     first_dates = frame.groupby("symbol")["date"].min().reset_index(name="first_price_date")
     first_dates.to_csv(CSV_DIR / "stock_first_price_date.csv", index=False)
-    _fill_listing_dates(first_dates)
+    _fill_listing_dates(first_dates, overrides)
 
     append_fetch_log("prices", "ok" if not failed else "partial", len(frame), ", ".join(failed)[:200])
     return frame
