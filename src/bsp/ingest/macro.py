@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+from pathlib import Path
 
 import pandas as pd
 import requests
@@ -23,8 +24,12 @@ YAHOO_MACRO = {
 }
 FRED_SERIES = {
     "INDCPIALLMINMEI": ("cpi_index_2015", "index 2015=100"),
-    "IRLTLT01INM156N": ("g_sec_10y_yield", "percent"),
+    # 10-year government bond yield, OECD via FRED, monthly from 2011-12 (the old id IRLTLT01INM156N no longer exists)
+    "INDIRLTLT01STM": ("g_sec_10y_yield", "percent"),
     "INTDSRINM193N": ("policy_discount_rate", "percent"),
+}
+FRED_SOURCES = {
+    "INDIRLTLT01STM": "OECD via FRED INDIRLTLT01STM (https://fred.stlouisfed.org/series/INDIRLTLT01STM)",
 }
 WORLD_BANK = {
     "FP.CPI.TOTL.ZG": ("cpi_inflation_annual", "percent"),
@@ -37,13 +42,44 @@ def _fetch_yahoo_history(ticker: str):
     return yf.Ticker(ticker).history(start="2004-12-01", auto_adjust=False, actions=False).reset_index()
 
 
+def _clean_fred(frame: pd.DataFrame) -> pd.DataFrame:
+    """FRED files have the date in the first column (observation_date / DATE) and the value in the second; "." = missing."""
+    frame = frame.iloc[:, :2].copy()
+    frame.columns = ["date", "value"]
+    frame["value"] = pd.to_numeric(frame["value"], errors="coerce")
+    return frame.dropna().reset_index(drop=True)
+
+
 def _fred_csv(series: str) -> pd.DataFrame:
     response = requests.get("https://fred.stlouisfed.org/graph/fredgraph.csv", params={"id": series}, headers=UA, timeout=60)
     response.raise_for_status()
-    frame = pd.read_csv(io.StringIO(response.text))
-    frame.columns = ["date", "value"]
-    frame["value"] = pd.to_numeric(frame["value"], errors="coerce")
-    return frame.dropna()
+    return _clean_fred(pd.read_csv(io.StringIO(response.text)))
+
+
+def fred_manual_path(series: str) -> Path:
+    return RAW_DIR / "fred" / f"{series}.csv"
+
+
+def load_fred_manual(series: str) -> pd.DataFrame:
+    """Read a hand-downloaded FRED file, ``data/raw/fred/<SERIES>.csv`` (columns observation_date, <SERIES>).
+
+    Months before the series starts are simply absent: nothing is filled or estimated.
+    """
+    path = fred_manual_path(series)
+    frame = pd.read_csv(path)
+    if len(frame.columns) < 2 or series not in frame.columns:
+        raise ValueError(f"{path} must have the columns observation_date and {series}; found {list(frame.columns)}")
+    return _clean_fred(frame[[frame.columns[0], series]])
+
+
+def fred_series(series: str) -> tuple[pd.DataFrame, str]:
+    """Live download first; if it fails, the manual file. Returns (data, how) where how is "download" or "manual file"."""
+    try:
+        return _fred_csv(series), "download"
+    except Exception as download_error:
+        if fred_manual_path(series).exists():
+            return load_fred_manual(series), f"manual file {fred_manual_path(series).as_posix()} (download failed: {str(download_error)[:60]})"
+        raise
 
 
 def _world_bank(indicator: str) -> pd.DataFrame:
@@ -66,12 +102,16 @@ def collect_macro() -> pd.DataFrame:
             parts.append(temp[["series", "date", "value", "unit", "source"]])
         except Exception as exc:  # pragma: no cover
             errors.append(f"{name}({exc})")
+    notes: list[str] = []
     for series, (name, unit) in FRED_SERIES.items():
         try:
-            d = _fred_csv(series)
-            parts.append(d.assign(series=name, unit=unit, source=f"FRED {series}")[["series", "date", "value", "unit", "source"]])
-        except Exception as exc:  # pragma: no cover
-            errors.append(f"{name}({exc})")
+            d, how = fred_series(series)
+            label = FRED_SOURCES.get(series, f"FRED {series}")
+            parts.append(d.assign(series=name, unit=unit, source=label)[["series", "date", "value", "unit", "source"]])
+            if how != "download":
+                notes.append(f"{name} from {how}")
+        except Exception as exc:
+            errors.append(f"{name}({str(exc)[:80]}; or save data/raw/fred/{series}.csv)")
     for series, (name, unit) in WORLD_BANK.items():
         try:
             d = _world_bank(series)
@@ -102,7 +142,7 @@ def collect_macro() -> pd.DataFrame:
     else:
         empty = pd.DataFrame(columns=["series", "date", "value", "unit", "source", "fetched_at"])
         write_csv_guarded(empty, CSV_DIR / "macro.csv")
-    append_fetch_log("macro", "ok" if not errors else "partial", sum(len(part) for part in parts), ", ".join(errors)[:200])
+    append_fetch_log("macro", "ok" if not errors else "partial", sum(len(part) for part in parts), "; ".join(notes + errors)[:250])
     return pd.read_csv(CSV_DIR / "macro.csv") if (CSV_DIR / "macro.csv").exists() else pd.DataFrame()
 
 
