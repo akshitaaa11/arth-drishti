@@ -61,13 +61,39 @@ def test_sector_year_features_count_and_columns(bundle):
         assert str(row["as_of_date"]) <= str(row["presented_on"])
 
 
+
+def _symbols_with_a_universe_budget(bundle) -> set[str]:
+    """Stocks listed on some budget day and, where the constituents history covers that day, Nifty 500 members on it."""
+    from bsp.features.universe import Universe
+
+    universe = Universe.from_csv(ROOT / "data" / "csv" / "nifty500_constituents.csv")
+    stocks = pd.read_csv(ROOT / "config" / "stocks.csv")["symbol"]
+    events = pd.read_csv(ROOT / "config" / "budget_events.csv").drop_duplicates("budget_id")
+    kept: set[str] = set()
+    for presented_on in events["presented_on"].astype(str):
+        members = universe.members(presented_on)  # None = history does not cover this budget
+        for symbol in stocks:
+            first = bundle.first_price_dates.get(symbol)
+            if (first is None or first <= presented_on) and (members is None or symbol in members):
+                kept.add(symbol)
+    return kept
+
+
 def test_stock_year_features_count_and_columns(bundle):
     """Exit criterion: ~2,000 stock-year rows built."""
     df_long, df_wide = build_stock_features(bundle, ROOT)
 
     # Full budget stock-years: ~2,072 rows (~2,000); total across 26 budgets: ~2,470
     assert 1800 <= len(df_wide) <= 2600
-    assert df_wide["symbol"].nunique() == 116
+    # The point-in-time Nifty 500 universe filter can remove a stock from every budget, so the symbol count is
+    # derived from stocks.csv + the constituents history instead of being hard-coded.
+    expected = _symbols_with_a_universe_budget(bundle)
+    assert set(df_wide["symbol"]) == expected
+    assert 0 < len(expected) <= len(pd.read_csv(ROOT / "config" / "stocks.csv"))
+    # rows kept per budget match the universe-filter report the build produced
+    rows_per_budget = df_wide.groupby("budget_id").size().to_dict()
+    for row in df_wide.attrs["universe_report"]:
+        assert row["kept"] == rows_per_budget.get(row["budget_id"], 0), row["budget_id"]
 
     assert "momentum_1m" in df_wide.columns
     assert "momentum_12m" in df_wide.columns

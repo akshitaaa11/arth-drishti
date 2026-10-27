@@ -40,26 +40,56 @@ Checked 2026-10-25 from the cloud sandbox, whose network allowlist blocks NSDL, 
 
 | Gap | Effect | Status / what to do by hand |
 | --- | --- | --- |
-| NSDL FPI before 2018-09-15 | `fpi_sector_fortnightly.csv` still starts at `period_end` 2018-09-15 (2,922 rows). The 2017-01 to 2018-08 fortnights failed earlier because `html5lib` was missing; it is now a dependency. NSDL is blocked here, so the re-run could not fetch them. | On a laptop: `pip install -e ".[dev]"` then `python -m bsp.ingest.fpi`. Raw pages are cached in `data/raw/nsdl_fpi/`. |
-| 10-year G-sec yield (FRED `IRLTLT01INM156N`) | No `g_sec_10y_yield` series in `macro.csv`. FRED returns 404 for that series URL earlier and is blocked here now. | On a laptop run `python -m bsp.ingest.macro`. If FRED still 404s, download the series from RBI DBIE and add it as a manual file (needs a loader; not built). |
+| NSDL FPI before 2018-09-15 (and 120 later fortnights) | `fpi_sector_fortnightly.csv` has 75 of the 235 fortnights since 2017-01: all 40 fortnights before 2018-09-15 and 120 between 2018-09 and 2026-06 are missing (by year: 2019: 2, 2020: 10, 2021: 16, 2022: 18, 2023: 22, 2024: 18, 2025: 18, 2026: 15). The collector used to cache NSDL's "Request Rejected" page (it comes back as HTTP 200) as if it were a report, so re-runs never asked again. | Fixed in `ingest/fpi.py`: such a page is detected, never cached, logged in `fetch_log` as `blocked`, previously poisoned cache files are deleted on the next run, and the CSV is merged, never shrunk. On the laptop/Codespace run `python -m bsp.ingest.fpi` again (it stops after 5 consecutive blocks instead of hammering the site; wait and re-run if it reports `blocked`). |
+| 10-year G-sec yield | No `g_sec_10y_yield` series in `macro.csv` yet. The old FRED id `IRLTLT01INM156N` no longer exists; the series is now `INDIRLTLT01STM` (OECD via FRED, https://fred.stlouisfed.org/series/INDIRLTLT01STM), **monthly and only from 2011-12**, so months before 2011-12 stay empty (nothing is filled or estimated), and every budget before FY2011-12 has no G-sec feature. | `ingest/macro.py` now downloads `INDIRLTLT01STM` and, if the download fails, reads `data/raw/fred/INDIRLTLT01STM.csv` (columns `observation_date, INDIRLTLT01STM`; `.` = missing). Run `python -m bsp.ingest.macro` where FRED is reachable, or save that file by hand and run it; `fetch_log` then says "g_sec_10y_yield from manual file". The series is not yet used by any feature. |
 | Repo rate | No `repo_rate` series. `data/raw/rbi/repo_rate.csv` does not exist. `policy_discount_rate` (World Bank/FRED, annual-frequency source) is the only policy-rate proxy. | Download the policy repo-rate history from RBI DBIE and save it as `data/raw/rbi/repo_rate.csv` with columns `date,value`; then run `python -m bsp.ingest.macro`. |
 | Nifty Healthcare index | Yahoo returns 404 "Quote not found" for `^CNXHEALTH` (retried 2026-10-25). No official index cross-check for Healthcare. | Optional: put a niftyindices.com download in `data/raw/indices/` with columns `index_name,date,close` (the manual loader is in `ingest/benchmarks.py`). Otherwise: no official index cross-check for Healthcare. |
 | Point-in-time Nifty 500 constituents | `nifty500_constituents.csv` is header-only (columns `symbol, effective_from, effective_to, source, source_url, fetched_at`). niftyindices.com and NSE are blocked from the sandbox, so neither the current list nor any index-change press release could be downloaded. History cannot be rebuilt back to any year yet. Until the file is populated the universe filter drops nothing (0 stock-year rows dropped; see `reports/universe_filter.csv`) and only the listing-date check applies. | See "Nifty 500 history: how to finish" below. |
 
-### Nifty 500 history: how to finish (by hand, on a laptop)
+### Nifty 500 history: how to finish (on a laptop / Codespace)
 
-`scripts/collect/nifty500_history.py` is written and unit-tested on hand-made fixtures (`tests/test_nifty500_history.py`) but has **never run against real niftyindices/NSE files**, so the press-release layout it assumes is unverified.
+`scripts/collect/nifty500_history.py` now reads the seven real NSE Indices press releases in
+`tests/fixtures/nifty500_press_releases/` (2015-12-14, 2017-03-31, 2019-06-28, 2021-04-29, 2022-08-08, 2025-09-23,
+2025-12-31) and gives the exact symbols and effective dates asserted in `tests/test_nifty500_history.py`; only the
+"Nifty 500" sub-section of each release counts (sections for Nifty Smallcap 250, "Nifty500 Equal Weight" notes and
+similar are ignored). It still has not run against the live current list, which only a networked machine can download.
 
-1. Download the current list from `https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv` (the script does this itself on a laptop; otherwise save it as `data/raw/nifty500_constituents/ind_nifty500list_<YYYY-MM-DD>.csv`).
-2. Collect the niftyindices.com / NSE index-change press releases ("Changes in Nifty indices", semi-annual and ad hoc). Save each as `data/raw/nifty500_constituents/press_releases/<YYYY-MM-DD>.pdf`, where the date is the day the change takes effect, and/or list `effective_date,url` in `config/nifty500_press_releases.csv` so the script downloads them.
-3. Run `python scripts/collect/nifty500_history.py`. Releases it cannot parse, and company names it cannot map to a symbol, are listed in `reports/nifty500_history_report.csv`; map names by hand in `config/nifty500_name_aliases.csv` (`company_name,symbol`).
-4. Run `python -m bsp.ingest.constituents` and `make features`. Coverage starts the day before the oldest release you supply; budgets before that date are **not** filtered (earlier years are never filled). State the first covered year here once known.
+1. `python scripts/collect/nifty500_history.py` downloads the releases listed in `config/nifty500_press_releases.csv`
+   (effective date, URL) into `data/raw/nifty500_constituents/press_releases/` and the current list from
+   `https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv`. It prints excluded/included counts per release and exits
+   non-zero, writing nothing, if a listed release yields no Nifty 500 changes or cannot be read.
+2. Problems that are not parser errors go to `reports/nifty500_history_report.csv`: a symbol included in a release that is not a
+   member afterwards, or excluded but already a member. A company whose symbol changed since a release was printed is mapped by
+   hand in `config/nifty500_symbol_aliases.csv` (`old_symbol,current_symbol`).
+3. `python -m bsp.ingest.constituents`, then `make features`. Coverage starts the day before the oldest release (2015-12-13);
+   budgets before that are not filtered and no earlier year is filled.
 
-Known limits of the method: symbol changes/mergers are not tracked; a company that is both included and excluded in one release is reported, not resolved.
+**Coverage caveat (important).** Only seven releases are listed, while NSE Indices also publishes the semi-annual review and
+ad hoc replacements that are not in the list. Between two listed releases the history is therefore not known to be complete:
+a company that joined or left in an unlisted review is shown as a member for the whole span (if it is in today's list) or as
+never a member (if it is not). Until every Nifty 500 change since 2015-12 is listed, treat `universe_filter.csv` and the
+stock-year rows it drops as provisional, and check `reports/nifty500_history_report.csv` after each run: an "included but not
+a member afterwards" line usually means a release is missing in between. Add the missing release URLs to
+`config/nifty500_press_releases.csv` and re-run.
 
 ### Price data decisions (Phase 2)
 
 Every single-day move above 50% in the raw Yahoo download has a documented decision in `reports/price_flag_decisions.csv` (36 flags: 18 rows dropped as data errors, 14 rows kept because the jump came from a dropped neighbour, 1 split adjustment, 3 kept as real/unverified). Rows removed are listed in `reports/price_rows_dropped.csv`. Three moves remain unexplained and need a check against NSE corporate-actions files: **NIITLTD 2023-06-08** (-76%), **TEXRAIL 2010-11-01** (-60%) and **TEXRAIL 2011-03-03** (+74%). They stay in the data and will distort those stocks' momentum features until resolved. Also, `data/csv/prices_daily.csv` is about 93 MB, close to GitHub's 100 MB file limit; move it to Git LFS or split it before it grows.
+
+### FPI URL pattern for 2017-01 to 2018-08: not established
+
+The question was whether those 40 reports use a different file name. Evidence in the repository does not show it:
+every one of the 2,922 loaded rows (2018-09-15 to 2026-06-30) has a `source_url` identical to what `fpi_url()` builds
+(`.../FIIInvestSector_<Month><day><year>.html`, for example `September152018`), and the PRD's example for July 2024 has the
+same shape. The first Codespace run (`data/csv/fetch_log.csv`, 2026-10-24 14:53) lists 163 failed fortnights, each
+"parse: Import html5lib failed", which `pandas.read_html` raises when a page contains no table, i.e. when the response
+was not a report. Those failures are not confined to the early years (120 of the 195 fortnights after 2018-09 failed
+too), which points to intermittent blocking and the poisoned cache rather than a different name. I therefore did **not**
+change the URL builder. To settle it with real evidence after re-running the collector, run
+`python -m bsp.ingest.fpi --probe 2017-01-15`: it prints the HTTP status and whether the response is a report or an error
+page, and saves it under `data/raw/nsdl_fpi/probe/`. If it is not a report, open NSDL's fortnightly-report archive in a
+browser, copy the link of one 2017 report and run `python -m bsp.ingest.fpi --probe <that full URL>`; send me the output
+and the link and I will adapt the builder. No FPI value has been typed in or estimated.
 
 ### Git LFS for `data/csv/prices_daily.csv` (pending, needs network access)
 
