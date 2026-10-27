@@ -35,6 +35,8 @@ dependencies = [
   "optuna>=3.6",
   "pymc>=5.10",
   "arviz>=0.18",
+  "shap>=0.45",
+  "mapie>=1.0",
 ]
 
 [project.optional-dependencies]
