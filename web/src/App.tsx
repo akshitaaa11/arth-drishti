@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DISCLAIMER, type BudgetsResponse } from "./api";
 import { SourceProvider, useFetch } from "./components/Common";
-import { AiContext, Icon } from "./components/ui";
+import { Icon } from "./components/ui";
 import Backtest from "./screens/Backtest";
 import Copilot from "./screens/Copilot";
 import DeepDive from "./screens/DeepDive";
@@ -58,8 +58,6 @@ export default function App() {
   const [parts, go] = useHash();
   const [theme, cycleTheme] = useTheme();
   const budgets = useFetch<BudgetsResponse>("/budgets");
-  const aiStatus = useFetch<{ mode: string; primary_model: string | null }>("/copilot/status");
-  const ai = { on: aiStatus.data?.mode === "llm", model: aiStatus.data?.primary_model ?? null };
   const sectorList = useFetch<{ sectors: { sector_id: string }[] }>("/sectors");
   const SECTORS = sectorList.data?.sectors.map((s) => s.sector_id) ?? [];
   const screen = parts[0] ?? "overview";
@@ -76,7 +74,6 @@ export default function App() {
   const ask = (q: string) => go(`/copilot/${encodeURIComponent(q)}`);
   return (
     <SourceProvider>
-      <AiContext.Provider value={ai}>
       <div className="stage">
         <div className="frame">
           <header className="top">
@@ -88,7 +85,6 @@ export default function App() {
               {SCREENS.map(([id, label]) => (
                 <a key={id} href={`#/${id}`} aria-current={screen === id ? "page" : undefined}>
                   {label}
-                  {id === "copilot" && ai.on && <i className="aidot" title={`AI on: ${ai.model}`} />}
                 </a>
               ))}
             </nav>
@@ -127,7 +123,6 @@ export default function App() {
           <footer className="foot">{DISCLAIMER}</footer>
         </div>
       </div>
-      </AiContext.Provider>
     </SourceProvider>
   );
 }

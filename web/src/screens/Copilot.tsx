@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { get, post } from "../api";
+import { post } from "../api";
 import { Num } from "../components/Common";
-import { Card, InfoTip, useAi } from "../components/ui";
+import { Card } from "../components/ui";
 
 interface Citation {
   id: string;
@@ -31,13 +31,6 @@ interface Answer {
   cached: boolean;
   disclaimer: string | null;
   note: string | null;
-}
-interface Status {
-  model_available: boolean;
-  primary_model: string | null;
-  backup_model: string | null;
-  mode: string;
-  notes: string[];
 }
 
 const EXAMPLES = [
@@ -106,13 +99,7 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
   const [busy, setBusy] = useState(false);
   const [answer, setAnswer] = useState<Answer | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [status, setStatus] = useState<Status | null>(null);
   const asked = useRef<string | undefined>(undefined);
-  const ai = useAi();
-
-  useEffect(() => {
-    get<Status>("/copilot/status").then(setStatus).catch(() => undefined);
-  }, []);
 
   async function ask(text: string) {
     if (!text.trim()) return;
@@ -142,16 +129,6 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
           <h1>Budget Copilot</h1>
           <p className="lead">Ask about budget numbers, sector and stock forecasts, event studies and what-if scenarios. One question at a time; it does not remember earlier ones. Research tool, not investment advice.</p>
         </div>
-        {status && (
-          <span className="ctrl">
-            <span className={`chip ${status.mode === "llm" ? "up" : ""}`}>{status.mode === "llm" ? `AI on: ${status.primary_model}` : "AI off: rule-based answers"}</span>
-            <InfoTip title={status.mode === "llm" ? "AI answers are on" : "AI answers are off"}>
-              {status.mode === "llm"
-                ? `Your question goes to ${status.primary_model} (backup ${status.backup_model}) together with read-only data tools. The model picks the tools, the server runs them, and the model writes the answer only from what they return. Every number is then checked against the tool results.`
-                : "AI answers are not enabled on this server, so replies are built by a fixed rule-based writer from the same data tools and the same number checks. The site owner enables the AI by setting a Groq key on the server; visitors never enter a key."}
-            </InfoTip>
-          </span>
-        )}
       </div>
       <div className="bento">
         <Card className="s12" title="Ask a question" info="Ask in plain English about budget numbers, sector or stock forecasts, event studies, what-ifs or how the models were built. Answers come only from read-only tools over the project's data; every number is checked against a tool result, buy/sell and personal-advice questions are refused, and text inside documents is treated as data, never instructions. One question at a time: there is no memory between questions." style={{ minHeight: 420 }}>
@@ -163,8 +140,7 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
               <button type="submit" disabled={busy || !q.trim()} className="btn" style={{ background: "var(--dark-pill)", color: "var(--on-dark)", padding: "12px 22px" }}>{busy ? "Thinking..." : "Ask"}</button>
             </div>
           </form>
-          <p className="cap" style={{ marginTop: 10 }}>Answers use read-only data tools, every number is checked, and buy or sell questions are refused.{ai.on ? " Powered by Groq." : ""}</p>
-          {status && !ai.on && <p className="cap" style={{ marginTop: 6 }}>AI-written answers are not enabled on this server right now, so replies come from the built-in writer over the same data and the same number checks.</p>}
+          <p className="cap" style={{ marginTop: 10 }}>Answers use read-only data tools, every number is checked, and buy or sell questions are refused.</p>
           <p style={{ marginTop: 14, lineHeight: 2 }}>
             <span className="cap">Try: </span>
             {EXAMPLES.map((ex) => (
