@@ -122,9 +122,9 @@ export default function Overview({ budgetId, ask }: { budgetId: string; ask: (q:
                     <AskBar tag={top[0].line_item.toLowerCase()} fallback={`How much was the ${top[0].line_item} budget estimate for ${d.fiscal_year}?`} onAsk={ask} />
                   </Card>
                   <Card className="s4" title="Total budget estimate" caption={totalLine ? "Total expenditure line, PRS Budget at a Glance" : "Sum of the lines listed"}>
-                    <div className="num-xl" style={{ marginTop: 18 }}>
+                    <div className="num-xl" style={{ marginTop: 18, whiteSpace: "nowrap" }}>
                       <small>Rs</small>
-                      <Num value={lakh(total)} source={totalLine?.be?.source_ref} />
+                      <Num value={(total / 1e5).toFixed(2)} source={totalLine?.be?.source_ref} />
                       <small style={{ marginLeft: 6 }}>lakh cr</small>
                     </div>
                     <div className="kpi-sub">

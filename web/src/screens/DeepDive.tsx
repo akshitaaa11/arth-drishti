@@ -71,7 +71,7 @@ export default function DeepDive({ budgetId, sectorId, setSector, sectors, ask }
                     {curve.length > 0 ? (
                       <ColumnChart
                         ariaLabel="Cumulative abnormal return by window"
-                        height={330}
+                        height={420}
                         initial={Math.max(curve.findIndex((c) => c.window === "[0,+30]"), 0)}
                         items={curve.map((c) => ({
                           label: c.window,
