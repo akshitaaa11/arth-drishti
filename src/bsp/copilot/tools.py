@@ -172,7 +172,7 @@ class Tools:
         budget = self.store.budget(b)
         row = self._forecast_row(sid, b)
         if row is None:
-            why = "locked hold-out" if budget and budget["status"] == "holdout_locked" else "no out-of-sample forecast exists for it"
+            why = "hold-out budget (locked, or evaluated once in Phase 9: see the Backtest screen), so no forecast is published" if budget and budget["status"] in ("holdout_locked", "holdout_evaluated") else "no out-of-sample forecast exists for it"
             return {"ok": False, "facts": [], "note": f"No forecast for {sid} at {b}: {why}. Forecasts exist for FY2012-13 to FY2023-24."}
         facts = [{"sector": sid, "budget_id": b, "model": row["model"], "expected_excess_return": row["expected_excess"], "range_80pct_low": row["p10"], "range_80pct_high": row["p90"],
                   "probability_beat_nifty500": row["p_beat"], "rank_of_15": row["rank"], "is_control_sector": row["is_control"], "realised_excess_return_later": row["realised_excess"],

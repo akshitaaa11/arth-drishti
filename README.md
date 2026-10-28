@@ -66,13 +66,14 @@ A null result (the models do not beat the baselines) is a valid outcome. It must
 | --- | --- | --- |
 | 1 | **Versioned dataset** | Budget lines (BE/RE/Actuals) linked to sectors and listed companies, with every number traceable to its source PDF page |
 | 2 | **Two-tier model** | Tier 1 ranks the 15 sectors; Tier 2 ranks stocks within each sector. Walk-forward backtested against simple baselines |
-| 3 | **Live dashboard** | 8 screens, including Budget-Day Live Mode, a what-if simulator, plain-language explanations and the **Budget Copilot** chatbot |
+| 3 | **Live dashboard** | 8 screens, including Budget-Day Live Mode, a what-if simulator, plain-language explanations (an "i" tooltip on every box) and the **Groq-powered Budget Copilot** chatbot |
 
 **Signature features (build these first among the features):**
 
 - **F1 Budget-Day Live Mode with sealed predictions.** Forecasts published within minutes of the budget; their SHA-256 hash is committed to a public GitHub repo so they cannot be edited later.
 - **F2 Promise-vs-Reality tracker.** BE vs RE vs Actuals for every ministry and scheme, with a credibility score.
 - **F3 What-If Budget Simulator.** Sliders change allocations and the Tier-1 model re-scores every sector live, with SHAP reasons.
+- **F13 Budget Copilot, powered by Groq.** Ask in plain English; a Groq model (default `openai/gpt-oss-120b`, backup `openai/gpt-oss-20b`) picks read-only data tools, the server runs them, and the model writes the answer only from what they return, with source chips, at most one chart or table, and every number checked. Buy/sell and personal-advice questions are refused. Setup: [Turning on the Groq-powered Copilot](#turning-on-the-groq-powered-copilot).
 
 ---
 
@@ -219,6 +220,21 @@ make api                    # FastAPI on :8000, docs at /docs
 make web                    # dashboard on :5173
 ```
 
+## Run it in Docker
+
+One command starts the API, the dashboard and Redis (the answer cache); nothing else is needed on the host.
+
+```bash
+cp .env.example .env          # then edit .env: put your key on the GROQ_API_KEY= line (the file is git-ignored)
+docker compose up --build -d api
+```
+
+- Dashboard: <http://localhost:8000/app/> · API docs: <http://localhost:8000/docs> · check: `make docker-smoke`.
+- **AI Copilot:** with `GROQ_API_KEY` set, the Copilot sends each question to the Groq model together with the read-only data tools (default `openai/gpt-oss-120b`, backup `openai/gpt-oss-20b`, overridable with `GROQ_MODEL` and `GROQ_BACKUP_MODEL`); every number in the reply is still checked against the tool results. Without a key it answers with its rule-based writer. The key is read from `.env` by Docker Compose at start-up and is never baked into the image or sent to the browser.
+- The image contains only what the app reads: `src/`, `config/`, `data/csv/`, `reports/` and the built dashboard (the raw price files in `data/raw/` are not needed to serve it). Stop with `make docker-down`. `docker compose up` without `api` still starts only Postgres, Redis and MLflow as in Phase 0.
+- Not verified in the cloud build sandbox (it has no Docker daemon): the layout the image uses was exercised there by running the API from a directory with exactly those files (all main endpoints, the dashboard and an AI Copilot answer worked). The first `docker compose build` on your machine is the real test; it installs the full dependency set and takes several minutes.
+
+
 ---
 
 ## 7. Configuration and secrets
@@ -247,6 +263,17 @@ TELEGRAM_CHAT_ID=
 ```
 
 Keys are read only on the server. The browser never sees `GROQ_API_KEY` or broker credentials.
+
+### Turning on the Groq-powered Copilot
+
+The Copilot works without a key (a built-in rule-based writer over the same data tools and number checks) and becomes AI-powered when the server has a Groq key.
+
+1. Create a free key at <https://console.groq.com/keys>.
+2. **Put it in the `.env` file in the project root** (the folder that contains `docker-compose.yml` and `Makefile`; create it with `cp .env.example .env` if it does not exist). Add it on one line, no quotes and no spaces: `GROQ_API_KEY=your-key-here`. Optionally set `GROQ_MODEL` and `GROQ_BACKUP_MODEL` (defaults `openai/gpt-oss-120b` and `openai/gpt-oss-20b`). `.env` is git-ignored: never commit it or paste the key into chat, issues or code.
+3. Restart so the server picks it up: with Docker `docker compose up -d --force-recreate api`; without Docker stop and re-run `make api` (the `.env` file is read when the API starts).
+4. Check it: `GET /copilot/status` returns `"mode": "llm"`, and `make docker-smoke` asks one question end to end. The dashboard itself has no key field and shows nothing about keys; each Copilot reply only notes which writer produced it.
+
+What is sent to Groq: the user's question, the data-tool results the model asked for (budget rows, forecast numbers, short document passages) and the fixed instructions. The key is read from the server's environment, never logged, never sent to the browser and never stored in the image. If Groq is rate-limited or down, the Copilot fails over to the backup model and then to the rule-based writer, and every reply says which one wrote it.
 
 ---
 

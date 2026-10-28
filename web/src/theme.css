@@ -322,3 +322,4 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .infotip strong { display: block; font-weight: 600; font-size: 12.5px; margin-bottom: 4px; color: #fff; }
 .infotip span { color: #d3d6de; }
 .title-i { display: inline-flex; vertical-align: middle; margin-left: 14px; }
+
