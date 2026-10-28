@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { DISCLAIMER, get, post } from "../api";
 import { Num } from "../components/Common";
+import { Card } from "../components/ui";
 
 interface Citation {
   id: string;
@@ -47,7 +48,7 @@ const EXAMPLES = [
   "What if the Railways allocation is cut by 20%?",
   "How does the project avoid look-ahead leakage?",
 ];
-const COLOURS = ["var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)"];
+const COLOURS = ["#2a55e8", "#ee4d86", "#12a150", "#f2872f"];
 const MODE_TEXT: Record<string, string> = {
   llm: "Written by the language model from tool results; every number checked",
   offline: "Built by the rule-based writer from tool results (no model was used); every number checked",
@@ -61,7 +62,7 @@ function ChartView({ chart }: { chart: Chart }) {
     return (
       <div className="tablewrap">
         <table>
-          <caption>{chart.title}</caption>
+          <caption style={{ textAlign: "left", padding: "0 0 8px", color: "var(--ink-2)" }}>{chart.title}</caption>
           <thead>
             <tr>{chart.columns?.map((c) => <th key={c}>{c}</th>)}</tr>
           </thead>
@@ -76,21 +77,21 @@ function ChartView({ chart }: { chart: Chart }) {
   const data = (chart.x ?? []).map((x, i) => Object.fromEntries([["x", x], ...(chart.series ?? []).map((s) => [s.name, s.values[i]])]));
   const Chart = chart.type === "line" ? LineChart : BarChart;
   return (
-    <figure>
-      <figcaption><strong>{chart.title}</strong></figcaption>
+    <figure style={{ margin: 0 }}>
+      <figcaption style={{ fontWeight: 500, marginBottom: 6 }}>{chart.title}</figcaption>
       <div className="chartbox" role="img" aria-label={chart.title}>
         <ResponsiveContainer>
           <Chart data={data}>
-            <CartesianGrid stroke="var(--border)" />
-            <XAxis dataKey="x" stroke="var(--text-2)" />
-            <YAxis stroke="var(--text-2)" />
-            <Tooltip />
+            <CartesianGrid stroke="var(--line)" vertical={false} />
+            <XAxis dataKey="x" stroke="var(--ink-3)" tickLine={false} axisLine={false} />
+            <YAxis stroke="var(--ink-3)" tickLine={false} axisLine={false} />
+            <Tooltip contentStyle={{ borderRadius: 14, border: "none", boxShadow: "0 8px 24px rgba(0,0,0,.15)" }} />
             <Legend />
             {chart.series?.map((s, i) =>
               chart.type === "line" ? (
-                <Line key={s.name} dataKey={s.name} stroke={COLOURS[i % 4]} strokeWidth={2} isAnimationActive={false} connectNulls />
+                <Line key={s.name} dataKey={s.name} stroke={COLOURS[i % 4]} strokeWidth={2.4} isAnimationActive={false} connectNulls />
               ) : (
-                <Bar key={s.name} dataKey={s.name} fill={COLOURS[i % 4]} isAnimationActive={false} />
+                <Bar key={s.name} dataKey={s.name} fill={COLOURS[i % 4]} radius={[6, 6, 0, 0]} isAnimationActive={false} />
               ),
             )}
           </Chart>
@@ -100,12 +101,13 @@ function ChartView({ chart }: { chart: Chart }) {
   );
 }
 
-export default function Copilot() {
-  const [q, setQ] = useState("");
+export default function Copilot({ initialQuestion }: { initialQuestion?: string }) {
+  const [q, setQ] = useState(initialQuestion ?? "");
   const [busy, setBusy] = useState(false);
   const [answer, setAnswer] = useState<Answer | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
+  const asked = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     get<Status>("/copilot/status").then(setStatus).catch(() => undefined);
@@ -124,55 +126,75 @@ export default function Copilot() {
       setBusy(false);
     }
   }
+  useEffect(() => {
+    if (initialQuestion && asked.current !== initialQuestion) {
+      asked.current = initialQuestion;
+      setQ(initialQuestion);
+      void ask(initialQuestion);
+    }
+  }, [initialQuestion]);
 
   return (
     <>
-      <h1>8. Budget Copilot</h1>
-      <p className="note" role="note">
-        Ask about budget allocations, sector or stock forecasts, event studies and what-if scenarios. Answers use only the project's data and models, cite their sources, and every
-        number is checked against them. One question at a time: it does not remember earlier questions. {DISCLAIMER}
-      </p>
-      {status && status.mode === "offline" && <p role="status">No language model is configured on this server, so answers come from the rule-based writer over the same tools.</p>}
-      <form onSubmit={(e) => { e.preventDefault(); void ask(q); }}>
-        <label htmlFor="copilot-q">Your question</label>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 4 }}>
-          <input id="copilot-q" value={q} maxLength={600} onChange={(e) => setQ(e.target.value)} placeholder="e.g. How much was the Defence budget estimate for 2019-20?" style={{ flex: "1 1 280px", minWidth: 0 }} />
-          <button type="submit" disabled={busy || !q.trim()}>{busy ? "Thinking..." : "Ask"}</button>
+      <div className="titlerow">
+        <div>
+          <h1>Budget Copilot</h1>
+          <p className="lead">Ask about budget allocations, sector or stock forecasts, event studies and what-if scenarios. Answers use only the project's data and models, cite their sources, and every number is checked against them. One question at a time; it does not remember earlier ones. {DISCLAIMER}</p>
         </div>
-      </form>
-      <p>
-        Try:{" "}
-        {EXAMPLES.map((ex) => (
-          <button key={ex} type="button" className="linklike" style={{ marginRight: 8 }} onClick={() => { setQ(ex); void ask(ex); }}>{ex}</button>
-        ))}
-      </p>
-      {error && <p role="alert">Could not get an answer: {error}</p>}
-      {answer && (
-        <section aria-live="polite" data-testid="copilot-answer">
-          <p style={{ whiteSpace: "pre-wrap" }}>{answer.answer.replace(/\[C\d+\]/g, "")}</p>
-          {answer.citations.length > 0 && (
-            <p>
-              Sources:{" "}
-              {answer.citations.map((c) =>
-                c.source_ref ? (
-                  <span key={c.id} style={{ marginRight: 10 }}><Num value={`[${c.id}] ${c.label}`} source={c.source_ref} /></span>
-                ) : c.screen ? (
-                  <a key={c.id} href={c.screen} style={{ marginRight: 10 }}>[{c.id}] {c.label}</a>
-                ) : (
-                  <span key={c.id} style={{ marginRight: 10 }}>[{c.id}] {c.label}</span>
-                ),
-              )}
-            </p>
-          )}
-          {answer.chart && <ChartView chart={answer.chart} />}
-          <p className="note" style={{ background: "transparent", color: "var(--text-2)", padding: 0 }}>
-            {MODE_TEXT[answer.mode] ?? answer.mode}
-            {answer.model ? ` (${answer.model})` : ""}
-            {answer.cached ? ", cached" : ""}. Tools used: {answer.tools_used.length ? answer.tools_used.join(", ") : "none"}.
-            {answer.note ? ` ${answer.note}` : ""}
+        {status && <span className="chip">{status.mode === "llm" ? `model: ${status.primary_model}` : "rule-based writer (no model configured)"}</span>}
+      </div>
+      <div className="bento">
+        <Card className="s8" title="Ask a question" style={{ minHeight: 420 }}>
+          <form onSubmit={(e) => { e.preventDefault(); void ask(q); }}>
+            <label htmlFor="copilot-q" className="cap">Your question</label>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 6 }}>
+              <input id="copilot-q" value={q} maxLength={600} onChange={(e) => setQ(e.target.value)} placeholder="e.g. How much was the Defence budget estimate for 2019-20?"
+                style={{ flex: "1 1 280px", minWidth: 0, border: "1px solid var(--line)", background: "var(--card-2)", borderRadius: 14, padding: "12px 16px", outline: "none" }} />
+              <button type="submit" disabled={busy || !q.trim()} className="btn" style={{ background: "var(--dark-pill)", color: "var(--on-dark)", padding: "12px 22px" }}>{busy ? "Thinking..." : "Ask"}</button>
+            </div>
+          </form>
+          <p style={{ marginTop: 14, lineHeight: 2 }}>
+            <span className="cap">Try: </span>
+            {EXAMPLES.map((ex) => (
+              <button key={ex} type="button" className="linklike" style={{ marginRight: 14 }} onClick={() => { setQ(ex); void ask(ex); }}>{ex}</button>
+            ))}
           </p>
-        </section>
-      )}
+          {error && <p role="alert" className="err" style={{ marginTop: 12 }}>Could not get an answer: {error}</p>}
+          {answer && (
+            <section aria-live="polite" data-testid="copilot-answer" style={{ marginTop: 18 }}>
+              <div className="chat-q" style={{ marginLeft: "auto", width: "fit-content" }}>{answer.question}</div>
+              <p style={{ whiteSpace: "pre-wrap", margin: "16px 0", fontSize: 15, lineHeight: 1.7 }}>{answer.answer.replace(/\[C\d+\]/g, "").replace(/\s+\./g, ".")}</p>
+              {answer.citations.length > 0 && (
+                <p>
+                  {answer.citations.map((c) =>
+                    c.source_ref ? (
+                      <span key={c.id} className="srcchip"><em>{c.id.slice(1)}</em><Num value={c.label} source={c.source_ref} /></span>
+                    ) : c.screen ? (
+                      <a key={c.id} className="srcchip" href={c.screen}><em>{c.id.slice(1)}</em>{c.label}</a>
+                    ) : (
+                      <span key={c.id} className="srcchip"><em>{c.id.slice(1)}</em>{c.label}</span>
+                    ),
+                  )}
+                </p>
+              )}
+              {answer.chart && <div style={{ marginTop: 14 }}><ChartView chart={answer.chart} /></div>}
+              <p className="cap" style={{ marginTop: 12 }}>
+                {MODE_TEXT[answer.mode] ?? answer.mode}
+                {answer.model ? ` (${answer.model})` : ""}
+                {answer.cached ? ", cached" : ""}. Tools used: {answer.tools_used.length ? answer.tools_used.join(", ") : "none"}.
+                {answer.note ? ` ${answer.note}` : ""}
+              </p>
+            </section>
+          )}
+        </Card>
+        <Card className="s4" title="How it stays honest">
+          <ol style={{ margin: "10px 0 0", padding: 0, listStyle: "none", display: "grid", gap: 14, fontSize: 13 }}>
+            {["Numbers come from read-only tools, never from memory.", "Every figure in a reply must appear in a tool result, or the answer is regenerated, then replaced by a \"couldn't verify\" message.", "Buy, sell and personal-advice requests are refused before any model sees them.", "Text inside documents is data, never instructions."].map((t, i) => (
+              <li key={i} style={{ display: "flex", gap: 12 }}><span className="chip" style={{ height: 22, flex: "none" }}>{i + 1}</span><span className="muted">{t}</span></li>
+            ))}
+          </ol>
+        </Card>
+      </div>
     </>
   );
 }

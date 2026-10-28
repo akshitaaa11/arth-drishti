@@ -50,9 +50,8 @@ function SourceDrawer({ reference, onClose }: { reference: string; onClose: () =
   const page = row ? String(row.provenance.source_page ?? "").match(/\d+/)?.[0] : undefined;
   return (
     <aside className="drawer" role="dialog" aria-label="Source" data-testid="source-drawer">
-      <div className="controls">
-        <strong>Source</strong>
-        <span className="spacer" />
+      <div className="controls" style={{ justifyContent: "space-between" }}>
+        <h3 style={{ margin: 0 }}>Source</h3>
         <button className="btn" onClick={onClose}>
           Close
         </button>
@@ -104,7 +103,7 @@ function SourceDrawer({ reference, onClose }: { reference: string; onClose: () =
 }
 
 export function Takeaway({ text }: { text: string | null | undefined }) {
-  return text ? <p className="takeaway" data-testid="takeaway">{text}</p> : null;
+  return text ? <p className="takeaway" data-testid="takeaway"><span>{text}</span></p> : null;
 }
 
 export function Note({ text }: { text: string | null | undefined }) {
@@ -136,13 +135,14 @@ export function Status<T>({ state, children }: { state: { data: T | null; error:
   return state.data ? <>{children(state.data)}</> : null;
 }
 
-/** Diverging colour for an excess return: blue above 0, orange below, neutral at 0 (alpha keeps the text readable). */
+/** Quiet diverging tint for a card: blue wash above 0, warm coral below. */
 export function tileColour(v: number, scale = 0.4): string {
-  const a = Math.min(Math.abs(v) / scale, 1) * 0.5;
-  return v >= 0 ? `color-mix(in srgb, var(--pos) ${a * 100}%, var(--surface))` : `color-mix(in srgb, var(--neg) ${a * 100}%, var(--surface))`;
+  const a = Math.min(Math.abs(v) / scale, 1) * 34;
+  const c = v >= 0 ? "var(--blue)" : "var(--neg)";
+  return `linear-gradient(150deg, var(--card) 38%, color-mix(in srgb, ${c} ${a}%, var(--card)))`;
 }
 
-export function Whisker({ p10, p90, mark, min = -0.8, max = 1.2 }: { p10: number; p90: number; mark: number; min?: number; max?: number }) {
+export function Whisker({ p10, p90, mark, min = -0.6, max = 0.9 }: { p10: number; p90: number; mark: number; min?: number; max?: number }) {
   const pos = (v: number) => `${Math.max(0, Math.min(100, ((v - min) / (max - min)) * 100))}%`;
   return (
     <div className="whisker" role="img" aria-label={`80% interval ${(p10 * 100).toFixed(0)}% to ${(p90 * 100).toFixed(0)}%, expected ${(mark * 100).toFixed(0)}%`}>
