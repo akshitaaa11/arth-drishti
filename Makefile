@@ -9,7 +9,7 @@ endif
 # Use the virtualenv interpreter when it exists, otherwise the active Python (e.g. CI).
 PY := $(if $(wildcard $(VENV_PY)),$(VENV_PY),$(PYTHON))
 
-.PHONY: web-dev holdout-rehearsal evidence setup db-migrate parse-pdfs parse-speeches download-budget-pdfs reconcile-budgets collect load data features train backtest holdout test api web console live retrain lint typecheck
+.PHONY: copilot-eval copilot-eval-live web-dev holdout-rehearsal evidence setup db-migrate parse-pdfs parse-speeches download-budget-pdfs reconcile-budgets collect load data features train backtest holdout test api web console live retrain lint typecheck
 
 setup:
 	@echo "[1/4] Creating virtualenv if needed"
@@ -74,6 +74,12 @@ evidence:
 	@MLFLOW_DISABLE_AGENT_HINT=1 $(PY) -m bsp.evidence.ablation --model ridge
 	@MLFLOW_DISABLE_AGENT_HINT=1 $(PY) -m bsp.evidence.ablation --model lgbm_ranker
 	@MLFLOW_DISABLE_AGENT_HINT=1 $(PY) -m bsp.evidence.run_evidence
+
+copilot-eval:
+	@$(PY) -m bsp.copilot.evaluate --mode offline
+
+copilot-eval-live:
+	@$(PY) -m bsp.copilot.evaluate --mode live --pace 3
 
 holdout:
 	@MLFLOW_DISABLE_AGENT_HINT=1 $(PY) -m bsp.evaluation.holdout --mode holdout

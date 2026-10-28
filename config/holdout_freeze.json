@@ -81,7 +81,7 @@
     "src/bsp/evaluation/backtest.py": "bf906d6e7ba6096ceb56956dc130cf7dccb5a0420d2a4c20b6f6e92a52c61cea",
     "src/bsp/evaluation/config.py": "b2c0d7ad01fa393b473c2d505999195a6c8cdc7d751469a48768adf9ab0228c5",
     "src/bsp/evaluation/data.py": "faab84f3a013f7cfaf0dd2ea5c5c3fa043b8784116a9f13748cf76097b3d83ab",
-    "src/bsp/evaluation/freeze.py": "7f9719bf0708d8a38d50be73083a1132fd2d8bdb841ee62d117173e5efb4365a",
+    "src/bsp/evaluation/freeze.py": "3cc829450f3a9f0e8bcdd8e2f8c881b4c54bdb3ae131c477944a840243ef50ec",
     "src/bsp/evaluation/holdout.py": "55f179b31f28f12844b8fe16fded8589157d11cdcc76e8ed9de5b661e2644e02",
     "src/bsp/evaluation/metrics.py": "242696a55af1c71758ee55b5106831068a5fcaafe2ea34101a246ba84961c6b1",
     "src/bsp/evaluation/run_baselines.py": "cf73d81b8d27a815f0bb92c728815a21d937d2c317f363c260dd2bbe82a84a66",

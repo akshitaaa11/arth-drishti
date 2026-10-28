@@ -37,6 +37,10 @@ TTL = 300
 SECTOR_MODELS = ("tier1_blend", "tier1_stack", "lgbm_ranker", "bayes_hier")
 
 
+class AskRequest(BaseModel):
+    question: str = Field(max_length=600, examples=["How much was the Defence ministry's budget estimate for 2019-20?"])
+
+
 class SimulateRequest(BaseModel):
     budget_id: str = Field(examples=["FY2019-20"])
     changes: dict[str, float] = Field(default_factory=dict, description="sector_id -> percentage change of that sector's allocation (-100..100)")
@@ -237,6 +241,26 @@ def create_app(root: Path | None = None, cache: Cache | None = None) -> FastAPI:
     @app.get("/credibility")
     def credibility(response: Response) -> Any:
         return respond("credibility", lambda: _credibility(store), response)
+
+    copilot_lock = threading.Lock()
+    app.state.copilot = None
+
+    def copilot() -> Any:
+        from bsp.copilot.engine import Copilot
+
+        with copilot_lock:
+            if app.state.copilot is None:
+                app.state.copilot = Copilot(store, cache=cache)
+            return app.state.copilot
+
+    @app.get("/copilot/status")
+    def copilot_status() -> Any:
+        return copilot().status()
+
+    @app.post("/copilot/ask")
+    def copilot_ask(req: AskRequest) -> Any:
+        """Single-turn question: no history is read or stored. Guardrails, tools, number and citation checks run in ``bsp.copilot.engine``."""
+        return copilot().ask(req.question)
 
     @app.get("/ledger")
     def ledger() -> Any:
