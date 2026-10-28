@@ -45,6 +45,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "fakeredis>=2.20",
+  "httpx2>=2.0",  # required by starlette.testclient (the API tests)
   "mypy>=1.10.0",
   "pandas-stubs>=2.2.0",
   "pytest>=8.2.0",
