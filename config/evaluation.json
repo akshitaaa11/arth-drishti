@@ -6,7 +6,7 @@
   "live_fiscal_years": [
     "2026-27"
   ],
-  "holdout_unlocked": false,
+  "holdout_unlocked": true,
   "first_test_fiscal_year": "2012-13",
   "min_train_budgets": 3,
   "top_k_sectors": 3,
