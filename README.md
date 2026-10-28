@@ -548,7 +548,7 @@ Exit criteria:
 
 **Goal:** a single, honest look at FY2024-25 and FY2025-26.
 
-> **Status: Phase 9 is prepared and rehearsed; the one-time run has NOT been made.** The plan is pre-registered in `config/holdout_plan.json` (all models and baselines reported, one primary rule P1 and four secondary rules S1-S4 applied mechanically, no model promoted on the result) and frozen with the code, config and data hashes in `config/holdout_freeze.json`. `python -m bsp.evaluation.holdout --mode rehearsal` ran the identical machinery on the last two already-unlocked budgets (FY2022-23, FY2023-24; `reports/holdout_rehearsal.md`, **not** the hold-out result): every fold reproduces the saved Phase 5 predictions (largest score difference 5e-9) and every prediction has three reasons and an interval. `--mode holdout` refuses to run (and prints no metric) unless the config flag is unlocked and unspent, no hold-out result exists, the freeze manifest still matches, the tree is clean, HEAD carries the run tag, the freeze tag is an ancestor and nothing but `config/evaluation.json` changed since the freeze tag. Notes for reading the result: FY2024-25's window is about six months (the next budget came on 2025-02-01), FY2025-26's twelve; two budgets cannot support a significance test; speech features are absent. The FY2024-25 and FY2025-26 hold-out and the live year have not been touched.
+> **Status: Phase 9 is prepared and rehearsed; the one-time run has NOT been made.** The plan is pre-registered in `config/holdout_plan.json` (all models and baselines reported, one primary rule P1 and four secondary rules S1-S4 applied mechanically, no model promoted on the result) and frozen with the code, config and data hashes in `config/holdout_freeze.json` (the freeze covers the code that produces the hold-out result; the presentation and analysis packages `api`, `console`, `simulator` and `evidence` are not frozen). `python -m bsp.evaluation.holdout --mode rehearsal` ran the identical machinery on the last two already-unlocked budgets (FY2022-23, FY2023-24; `reports/holdout_rehearsal.md`, **not** the hold-out result): every fold reproduces the saved Phase 5 predictions (largest score difference 5e-9) and every prediction has three reasons and an interval. `--mode holdout` refuses to run (and prints no metric) unless the config flag is unlocked and unspent, no hold-out result exists, the freeze manifest still matches, the tree is clean, HEAD carries the run tag, the freeze tag is an ancestor and nothing but `config/evaluation.json` changed since the freeze tag. Notes for reading the result: FY2024-25's window is about six months (the next budget came on 2025-02-01), FY2025-26's twelve; two budgets cannot support a significance test; speech features are absent. The FY2024-25 and FY2025-26 hold-out and the live year have not been touched.
 >
 > **To run it (after this PR is merged):** (1) tag the merge commit `holdout-freeze-v1` and push the tag; (2) commit `"holdout_unlocked": true` in `config/evaluation.json`, tag that commit `holdout-run-v1`, push; (3) `make holdout` (one run, writes `reports/holdout.*`); (4) commit the results together with `"holdout_unlocked": false, "holdout_spent": true` and the run tag in `config/evaluation.json`, which locks the hold-out for good.
 
@@ -566,26 +566,28 @@ Exit criteria:
 
 **Goal:** the product surface.
 
+> **Status: Phase 10 is built and runs on real data; three exit-criterion items are only partly met (see below).** `make api` serves the FastAPI app (OpenAPI docs at `/docs`) from the committed CSVs (no database needed); `make web` builds the React dashboard, which the API then serves at `/app/`; `make console` starts the Streamlit analyst console. **Honest scope notes:** the forecasts shown are the walk-forward out-of-sample forecasts of FY2012-13 to FY2023-24 (default FY2023-24); there is no live forecast (sealing is Phase 12) and the **hold-out has not been run**, so FY2024-25 and FY2025-26 show "locked" and FY2026-27 "live, sealed". Not built, and labelled as such on screen: the CGA monthly execution line (D6), order-win flags (D13), the sealed ledger (Phase 12), the Budget Copilot chat (Phase 11), Budget-Day Live Mode, F14 and F5. Tested: 18 API/console/browser tests (`tests/test_api.py`, `tests/test_console.py`, `tests/test_dashboard_e2e.py`) and a CI job that type-checks and builds the dashboard.
+
 Tasks:
-- [ ] **FastAPI** (`src/bsp/api/`): `/budgets`, `/budgets/{id}/lines`, `/sectors`, `/sectors/{id}/forecast`, `/sectors/{id}/event-study`, `/stocks/{symbol}`, `/backtest`, `/simulate`, `/credibility`, `/ledger`, `/sources/{id}`; OpenAPI docs; Redis cache for forecasts (p95 < 500 ms). **(FR-12, Must)**
-- [ ] **What-if engine** (`simulator/`): takes allocation changes, rebuilds affected features, re-scores Tier 1 with SHAP; presets that replay real history. **(F3)**
-- [ ] **React dashboard**, eight screens (PRD §10): **(FR-13, Must)**
-  1. Budget overview — ministry treemap, BE vs RE vs Actual, capex vs revenue
-  2. Sector heat-map — 15 sectors by expected excess return, whiskers, P(beat)
-  3. Sector deep-dive — SHAP waterfall, surprise and credibility cards, CAR curve, FPI strip
-  4. Stock watchlist — ranked table, interval, liquidity, order-win flag, risk filter
-  5. What-if simulator — sliders, live re-ranked heat-map, diff vs actual
-  6. Promise vs reality — credibility league table, CGA monthly execution line
-  7. Backtest and evidence — equity curve, IC by year, ablation bars, sealed ledger
-  8. Budget Copilot — chat page; chat button on every other screen
-- [ ] UX rules: every number clickable to its source page; one-line takeaway per chart; phone-width layout; dark mode; footer "Research tool, not investment advice."
-- [ ] *(Should)* F14 FPI flow radar overlay; F5 interactive event-study explorer.
-- [ ] Streamlit analyst console for internal checks.
+- [x] **FastAPI** (`src/bsp/api/`): `/budgets`, `/budgets/{id}/lines`, `/sectors`, `/sectors/{id}/forecast`, `/sectors/{id}/event-study`, `/stocks/{symbol}`, `/backtest`, `/simulate`, `/credibility`, `/ledger`, `/sources/{id}`; OpenAPI docs; Redis cache for forecasts (p95 < 500 ms). **(FR-12, Must)** *Also `/budgets/{id}/forecast` (heat-map), `/stocks`, `/simulate/presets`, `/health`. Every number carries a `source_ref` resolvable at `/sources/{dataset}:{row}`; `/sources/{ref}/pdf` serves the source PDF when it is in `data/source_pdfs` (the PDFs are not in the repository, so it normally answers 404 and the row's provenance says which document and page). Cache: Redis when `REDIS_URL` answers a ping, else an in-process TTL cache; a Redis outage never breaks a request. Measured cached p95 (heat-map, sector forecast, sector list and stock list through the test client): 14.6 ms with a real Redis server on the same machine, 15.3 ms with the in-process cache; the test asserts under 500 ms.*
+- [x] **What-if engine** (`simulator/`): takes allocation changes, rebuilds affected features, re-scores Tier 1 with SHAP; presets that replay real history. **(F3)** *`bsp/simulator/engine.py`: per-sector allocation changes rebuild `alloc_vs_prev_re_pct` and `growth_vs_prev_be_pct` with the feature-store formulas (tested to reproduce the stored values), then re-score with the Tier-1 LightGBM model and SHAP reasons. Presets: actual, flat vs revised estimate, replay of any earlier budget's growth rates. **Caveats on screen:** the model is refit on all unlocked history with default parameters and has seen the historical budget's own outcome, so absolute numbers are in-sample and the screen emphasises the change against the actual budget; sliders act per sector (the model's unit), not per ministry or scheme.*
+- [x] **React dashboard**, eight screens (PRD §10): **(FR-13, Must)** *Vite + React + TypeScript + Recharts in `web/`.*
+  1. Budget overview: ministry/scheme/fiscal treemap, BE vs RE vs Actual table, capital vs revenue bars (budget lines exist for FY2017-18 onward; earlier years say so)
+  2. Sector heat-map: 15 tiles by expected excess return, interval whiskers, P(beat), model selector
+  3. Sector deep-dive: SHAP bars, three reasons, surprise and credibility cards, event-study CAR chart, NSDL FPI table
+  4. Stock watchlist: ranked table with interval, liquidity, risk filter; **order-win flag shown as n/a (not built)**
+  5. What-if simulator: sliders, presets, re-ranked tiles, diff table
+  6. Promise vs reality: ministry and sector credibility tables; **CGA monthly line not built**
+  7. Backtest and evidence: equity curves, IC by year, ablation bars, evidence answer, hold-out status; **ledger empty (Phase 12)**
+  8. Budget Copilot: **placeholder page; the chat is Phase 11**
+- [x] UX rules: every number clickable to its source page; one-line takeaway per chart; phone-width layout; dark mode; footer "Research tool, not investment advice." *Footer, dark mode (system or toggle), phone layout (390 px, no horizontal overflow on any screen) and a chat button on every screen are tested in a real browser. Takeaways are generated from the data by the API. **Partly met:** numbers in the tables and tiles open their dataset row (provenance, document and page, file hash), but not every displayed number is clickable (for example the simulator's results and some headline figures), and the PDF page itself opens only when the PDF is stored locally.*
+- [ ] *(Should)* F14 FPI flow radar overlay; F5 interactive event-study explorer. *Not built: the deep-dive shows the FPI flows as a table and the CAR curve for one budget.*
+- [x] Streamlit analyst console for internal checks. *`bsp/console/app.py`: collector runs, row counts and date ranges, leakage checks, model results and a predictions browser, hold-out and freeze state.*
 
 Exit criteria:
-- All 8 screens render real data on desktop and phone width.
-- Clicking any number opens its source PDF page or dataset row.
-- API tests pass; p95 latency for cached forecasts < 500 ms.
+- [ ] All 8 screens render real data on desktop and phone width. *Six screens render real data; screen 6 lacks its CGA monthly line and screen 8 is a placeholder; all eight render at both widths without errors.*
+- [ ] Clicking any number opens its source PDF page or dataset row. *Partly: dataset rows open (see UX rules).*
+- [x] API tests pass; p95 latency for cached forecasts < 500 ms.
 
 ---
 

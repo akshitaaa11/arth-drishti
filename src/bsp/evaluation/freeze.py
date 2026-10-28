@@ -1,6 +1,7 @@
 """Freeze manifest for the one-time hold-out run (README Phase 9).
 
-``python -m bsp.evaluation.freeze`` writes ``config/holdout_freeze.json``: SHA-256 of every source file under ``src/bsp``, every
+``python -m bsp.evaluation.freeze`` writes ``config/holdout_freeze.json``: SHA-256 of every source file under ``src/bsp`` except the
+presentation/analysis packages that never feed the hold-out result (``UNFROZEN_PACKAGES``: api, console, simulator, evidence), every
 file in ``config/`` (``evaluation.json`` is hashed on its modelling settings only, so unlocking the hold-out does not change the
 freeze), the data files the run reads, and the saved Phase 5/7 predictions used as the drift reference, plus the library versions
 and the evaluation settings (seed, tuning trials, alpha grid, costs). ``verify`` recomputes it and lists every difference.
@@ -25,6 +26,8 @@ DATA_FILES = ["features_sector_year_wide.csv", "features_stock_year_wide.csv", "
               "macro.csv", "fpi_sector_fortnightly.csv", "stock_first_price_date.csv"]  # sector_baskets_daily.csv is an output of the price data (rewritten by tests), not an input
 REFERENCE_FILES = ["reports/baselines_predictions_sector.csv", "reports/models_predictions_sector.csv", "reports/models_predictions_stock.csv",
                    "reports/predictions_detail.csv"]
+# Presentation and analysis layers that never feed the hold-out result: they may keep changing after the freeze.
+UNFROZEN_PACKAGES = ("api", "console", "simulator", "evidence")
 LIBRARIES = ["numpy", "pandas", "scikit-learn", "scipy", "lightgbm", "pymc", "pytensor", "optuna", "shap", "mapie", "mlflow"]
 
 
@@ -51,7 +54,7 @@ def build_manifest(root: Path | None = None) -> dict[str, object]:
         "note": "Frozen before the one-time hold-out run (README Phase 9). Do not edit by hand; regenerate only before the freeze tag.",
         "evaluation_settings": settings,
         "evaluation_settings_sha256": hashlib.sha256(json.dumps(settings, sort_keys=True).encode()).hexdigest(),
-        "source_files": _files(root, "src/bsp/**/*.py"),
+        "source_files": {k: v for k, v in _files(root, "src/bsp/**/*.py").items() if k.split("/")[2] not in UNFROZEN_PACKAGES},
         "config_files": config,
         "data_files": {f"data/csv/{f}": _sha(root / "data" / "csv" / f) for f in DATA_FILES},
         "reference_prediction_files": {f: _sha(root / f) for f in REFERENCE_FILES},

@@ -27,3 +27,6 @@ data/raw/
 !data/source_pdfs/
 !data/source_pdfs/INVENTORY.csv
 mlflow.db
+
+web/node_modules/
+web/dist/

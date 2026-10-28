@@ -9,7 +9,7 @@ endif
 # Use the virtualenv interpreter when it exists, otherwise the active Python (e.g. CI).
 PY := $(if $(wildcard $(VENV_PY)),$(VENV_PY),$(PYTHON))
 
-.PHONY: holdout-rehearsal evidence setup db-migrate parse-pdfs parse-speeches download-budget-pdfs reconcile-budgets collect load data features train backtest holdout test api web console live retrain lint typecheck
+.PHONY: web-dev holdout-rehearsal evidence setup db-migrate parse-pdfs parse-speeches download-budget-pdfs reconcile-budgets collect load data features train backtest holdout test api web console live retrain lint typecheck
 
 setup:
 	@echo "[1/4] Creating virtualenv if needed"
@@ -82,13 +82,16 @@ holdout-rehearsal:
 	@MLFLOW_DISABLE_AGENT_HINT=1 $(PY) -m bsp.evaluation.holdout --mode rehearsal
 
 api:
-	@echo "Placeholder for FastAPI API."
+	@$(PY) -m uvicorn bsp.api.app:app --host 0.0.0.0 --port 8000
 
 web:
-	@echo "Placeholder for React dashboard."
+	@cd web && npm ci && npm run build
+
+web-dev:
+	@cd web && npm run dev
 
 console:
-	@echo "Placeholder for Streamlit analyst console."
+	@$(PY) -m streamlit run src/bsp/console/app.py
 
 live:
 	@echo "Placeholder for live budget-day pipeline."

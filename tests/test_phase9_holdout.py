@@ -55,6 +55,7 @@ def test_the_manifest_records_settings_files_libraries_and_ignores_the_unlock_fl
     assert "config/evaluation.json" not in manifest["config_files"]  # hashed by its modelling settings only
     assert {"lightgbm", "pymc", "scikit-learn"} <= set(manifest["libraries"])
     assert all(len(h) == 64 for h in manifest["source_files"].values())
+    assert not any(f.split("/")[2] in ("api", "console", "simulator", "evidence") for f in manifest["source_files"])  # UI and analysis layers are not frozen
 
 
 # ---------------------------------------------------------------- run preconditions
