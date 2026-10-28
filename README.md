@@ -605,8 +605,8 @@ Tasks:
 - [x] Evaluation set in `tests/copilot_eval/`: 50 known-answer questions with pages, 15 advice or injection trick prompts.
 
 Exit criteria:
-- 100% of numbers traceable; ≥ 95% correct citations; every trick prompt refused.
-- The chatbot works with the backup model when the primary is disabled.
+- [x] 100% of numbers traceable; ≥ 95% correct citations; every trick prompt refused. *Live run with `openai/gpt-oss-120b` (`reports/copilot_eval_live.md`): 50/50 answers verified (51 numbers checked), 50/50 correct values, 50/50 correct PDF page cited, 15/15 trick prompts refused. Offline writer: same 50/50 and 15/15. Caveat: the set is generated from the same CSVs the tools read (circular for data accuracy), and the question set is mostly single-figure lookups, so it does not stress multi-step questions.*
+- [x] The chatbot works with the backup model when the primary is disabled. *Drill with the primary switched off, 15 questions plus all 15 trick prompts, served entirely by `openai/gpt-oss-20b` (`reports/copilot_eval_live_backup.md`): 15/15 correct, cited and verified, 15/15 refused. Only 15 of the 50 questions were run on the backup to stay inside the free-tier rate limit.*
 
 > **Status: Phase 11 is built.** `POST /copilot/ask`, `GET /copilot/status`, screen 8 of the dashboard, `make copilot-eval` (offline) and `make copilot-eval-live` (needs `GROQ_API_KEY`). Code in `src/bsp/copilot/`; reports in `reports/copilot_eval_*.md`. Guardrails (advice, injection, off-topic) run in code before any model sees the question; document passages are wrapped in `<document>` tags and scrubbed of instruction-like text. The number checker accepts a number only if it appears in a tool result (also as a percentage of a fraction or in lakh crore); a failing draft is regenerated once, then replaced by the checked template text built from the same tool results, then by a "couldn't verify" message.
 >
