@@ -104,3 +104,17 @@ live:
 
 retrain:
 	@echo "Placeholder for retraining workflow."
+
+# Run the product in Docker (API + dashboard + Redis): http://localhost:8000/app/  (put GROQ_API_KEY in .env first)
+.PHONY: docker-up docker-down docker-smoke
+docker-up:
+	docker compose up --build -d api
+	@echo "Dashboard: http://localhost:8000/app/   API docs: http://localhost:8000/docs"
+
+docker-down:
+	docker compose down
+
+docker-smoke:
+	@curl -fsS http://localhost:8000/health && echo
+	@curl -fsS http://localhost:8000/copilot/status && echo
+	@curl -fsS -X POST http://localhost:8000/copilot/ask -H 'content-type: application/json' -d '{"question":"What does the model expect for railways in FY2023-24?"}' | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['mode'], d['model'], 'verified' if d['verified'] else 'NOT verified'); print(d['answer'])"
