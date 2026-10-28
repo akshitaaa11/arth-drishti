@@ -96,7 +96,7 @@ STOCK_FEATURES = [
 ]
 
 
-def load_stock_panel(cfg: EvalConfig, tier1: pd.DataFrame | None = None) -> Panel:
+def load_stock_panel(cfg: EvalConfig, tier1: pd.DataFrame | None = None, include_locked: bool = False) -> Panel:
     """Stock rows (the listing-date plus liquidity universe) with 12m excess-return targets, hold-out removed.
 
     ``entity`` is the symbol; ``is_control`` marks stocks of the control sector. If ``tier1`` is given (out-of-sample
@@ -108,7 +108,10 @@ def load_stock_panel(cfg: EvalConfig, tier1: pd.DataFrame | None = None) -> Pane
     csv = root / "data" / "csv"
     wide = pd.read_csv(csv / "features_stock_year_wide.csv")
     wide["fiscal_year"] = wide["fiscal_year"].astype(str)
-    wide = wide[~wide["fiscal_year"].isin(cfg.locked_fiscal_years)]
+    if include_locked:
+        cfg.assert_not_locked(wide["fiscal_year"].unique(), "stock panel rows")  # raises unless the hold-out is unlocked
+    else:
+        wide = wide[~wide["fiscal_year"].isin(cfg.locked_fiscal_years)]
     wide = wide.rename(columns={"symbol": "entity"})
     targets = pd.read_csv(csv / "targets.csv")
     targets = targets[(targets["entity_type"] == "stock") & (targets["horizon"] == "12m")]

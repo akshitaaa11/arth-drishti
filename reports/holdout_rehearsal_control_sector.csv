@@ -1,0 +1,15 @@
+model,budget_id,predicted_rank,actual_rank,n_sectors,in_predicted_top3
+last_years_winners,FY2022-23,6.0,15.0,15,False
+last_years_winners,FY2023-24,15.0,13.0,15,False
+biggest_allocation_increase,FY2022-23,3.0,15.0,15,True
+biggest_allocation_increase,FY2023-24,3.0,13.0,15,True
+ridge,FY2022-23,4.0,15.0,15,False
+ridge,FY2023-24,2.0,13.0,15,True
+lgbm_ranker,FY2022-23,12.0,15.0,15,False
+lgbm_ranker,FY2023-24,11.0,13.0,15,False
+bayes_hier,FY2022-23,2.0,15.0,15,True
+bayes_hier,FY2023-24,1.0,13.0,15,True
+tier1_blend,FY2022-23,7.0,15.0,15,False
+tier1_blend,FY2023-24,5.0,13.0,15,False
+tier1_stack,FY2022-23,7.0,15.0,15,False
+tier1_stack,FY2023-24,5.0,13.0,15,False

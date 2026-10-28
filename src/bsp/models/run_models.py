@@ -162,10 +162,10 @@ def stock_control(run: StockRun) -> dict[str, float]:
 
 
 def run_stock_models(cfg: EvalConfig, tier1: pd.DataFrame, windows: pd.DataFrame, bundle: MarketDataBundle,
-                     bench: BacktestResult) -> tuple[dict[str, StockRun], Panel]:
+                     bench: BacktestResult, include_locked: bool = False) -> tuple[dict[str, StockRun], Panel]:
     from bsp.evaluation.data import STOCK_FEATURES
 
-    panel = load_stock_panel(cfg, tier1)
+    panel = load_stock_panel(cfg, tier1, include_locked)
     base_panel = Panel(panel.kind, panel.frame, [c for c in STOCK_FEATURES if c in panel.frame.columns])
     specs: list[tuple[str, Panel, Callable[..., Model], Any, bool]] = [
         ("equal_weight", base_panel, lambda: EqualWeight(), None, True),

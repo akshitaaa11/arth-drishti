@@ -73,6 +73,7 @@ def build_outputs(
     root: Path, seed: int, sector_panel: pd.DataFrame, stock_panel: pd.DataFrame,
     sector_folds: dict[str, list[FoldResult]], sector_predictions: dict[str, pd.DataFrame], stack_weights: pd.DataFrame,
     stock_folds: list[FoldResult], stock_predictions: pd.DataFrame, budgets: pd.DataFrame,
+    explain_budgets: set[str] | None = None,
 ) -> ExplainOutputs:
     shap_sector, shap_stock, checks = [], [], []
     reason_frames: dict[tuple[str, str], pd.DataFrame] = {}
@@ -83,7 +84,7 @@ def build_outputs(
 
     lgbm_folds = {f.budget_id: f for f in sector_folds["lgbm_ranker"]}
     bayes_folds = {f.budget_id: f for f in sector_folds["bayes_hier"]}
-    for budget in sorted(lgbm_folds):
+    for budget in sorted(b for b in lgbm_folds if explain_budgets is None or b in explain_budgets):
         test = sector_panel[sector_panel["budget_id"] == budget]
         lg, by = lgbm_folds[budget].model, bayes_folds[budget].model
         a_lgbm, a_bayes = con.lgbm_expected_attribution(lg, test), con.bayes_attribution(by, test)
@@ -102,6 +103,8 @@ def build_outputs(
             keep(model, "sector", budget, test, reasons)
     for fold in stock_folds:
         budget = fold.budget_id
+        if explain_budgets is not None and budget not in explain_budgets:
+            continue
         test = stock_panel[stock_panel["budget_id"] == budget]
         a_exp, a_rank = con.lgbm_expected_attribution(fold.model, test), con.lgbm_rank_attribution(fold.model, test)
         shap_stock += [_long("tier2_ranker", "expected_return", budget, test, a_exp), _long("tier2_ranker", "rank_score", budget, test, a_rank)]

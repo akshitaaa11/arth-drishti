@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "note": "Pre-registered plan for the one-time hold-out run (README Phase 9). Frozen with the code: nothing below may change after the freeze tag.",
+  "freeze_tag": "holdout-freeze-v1",
+  "run_tag": "holdout-run-v1",
+  "eval_budgets": {
+    "holdout": [
+      "FY2024-25",
+      "FY2025-26"
+    ],
+    "rehearsal": [
+      "FY2022-23",
+      "FY2023-24"
+    ]
+  },
+  "sector_models": [
+    "equal_weight",
+    "last_years_winners",
+    "biggest_allocation_increase",
+    "ridge",
+    "lgbm_ranker",
+    "bayes_hier",
+    "tier1_blend",
+    "tier1_stack"
+  ],
+  "stock_models": [
+    "equal_weight",
+    "momentum_12m",
+    "ridge",
+    "sector_then_momentum",
+    "tier2_ranker"
+  ],
+  "procedure": "The Phase 5 walk-forward is run unchanged (same code, seeds, tuning trials, alpha grid, costs) with the hold-out budgets added as two more test folds; every model is trained only on budgets before the test budget whose 12m label was resolved on its day 0, so FY2025-26 is trained on all earlier budgets including FY2024-25. The first 12 folds must reproduce the saved Phase 5 predictions (drift check). All models and baselines are reported; none is selected or promoted because of its hold-out result.",
+  "primary": {
+    "id": "P1",
+    "model": "tier1_blend",
+    "level": "sector",
+    "metric": "spearman_ic",
+    "bar": 0.1,
+    "rule": "IC of the 14 budget-sensitive sectors is at least the bar in BOTH hold-out budgets"
+  },
+  "secondary": [
+    {
+      "id": "S1",
+      "level": "sector",
+      "rule": "tier1_blend top-3 net return exceeds the equal_weight (all 14) net return in BOTH hold-out budgets"
+    },
+    {
+      "id": "S2",
+      "level": "sector",
+      "rule": "tier1_blend 80% interval coverage over the 28 hold-out forecasts (14 sectors x 2 budgets) lies in 75%-85%"
+    },
+    {
+      "id": "S3",
+      "level": "stock",
+      "rule": "tier2_ranker pooled IC is positive in BOTH hold-out budgets and its top-15 net return exceeds the stock equal_weight net return in BOTH"
+    },
+    {
+      "id": "S4",
+      "level": "control",
+      "rule": "IT Services (control) is not ranked in the predicted top 3 by tier1_blend in BOTH hold-out budgets"
+    }
+  ],
+  "statistics": "Two budgets cannot support a significance test; hold-out results are descriptive. FY2024-25's window runs from 2024-07-24 to the next budget on 2025-02-01 (about six months), FY2025-26's from 2025-02-03 to 2026-02-02 (twelve months).",
+  "not_included": [
+    "speech features (no speeches exist; Phase 6 re-run blocked)",
+    "company fundamentals and order wins (not built)",
+    "the live year FY2026-27 (sealed, unresolved)"
+  ]
+}
