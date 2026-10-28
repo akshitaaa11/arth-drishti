@@ -148,7 +148,7 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
             <InfoTip title={status.mode === "llm" ? "AI answers are on" : "AI answers are off"}>
               {status.mode === "llm"
                 ? `Your question goes to ${status.primary_model} (backup ${status.backup_model}) together with read-only data tools. The model picks the tools, the server runs them, and the model writes the answer only from what they return. Every number is then checked against the tool results.`
-                : "No GROQ_API_KEY is set on the server, so answers are built by a fixed rule-based writer from the same data tools and the same number checks. To switch the AI on, put GROQ_API_KEY=... in the .env file in the project root (the key stays on the server) and restart make api."}
+                : "AI answers are not enabled on this server, so replies are built by a fixed rule-based writer from the same data tools and the same number checks. The site owner enables the AI by setting a Groq key on the server; visitors never enter a key."}
             </InfoTip>
           </span>
         )}
@@ -164,17 +164,7 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
             </div>
           </form>
           <p className="cap" style={{ marginTop: 10 }}>Answers use read-only data tools, every number is checked, and buy or sell questions are refused.{ai.on ? " Powered by Groq." : ""}</p>
-          {status && !ai.on && (
-            <div className="setup" role="note">
-              <strong>Turn on AI answers (Groq)</strong>
-              <ol>
-                <li>Create a free key at <a href="https://console.groq.com/keys" target="_blank" rel="noreferrer">console.groq.com/keys</a>.</li>
-                <li>Open the <code>.env</code> file in the project folder (next to <code>docker-compose.yml</code>) and put it on the line <code>GROQ_API_KEY=your-key</code>. Do not share the key or commit the file.</li>
-                <li>Restart the server: <code>docker compose up -d --force-recreate api</code> (or stop and re-run <code>make api</code>). This chip then reads "AI on".</li>
-              </ol>
-              <span>Until then answers come from the built-in rule-based writer, which uses the same data and the same number checks. The key stays on the server; this page never asks for it.</span>
-            </div>
-          )}
+          {status && !ai.on && <p className="cap" style={{ marginTop: 6 }}>AI-written answers are not enabled on this server right now, so replies come from the built-in writer over the same data and the same number checks.</p>}
           <p style={{ marginTop: 14, lineHeight: 2 }}>
             <span className="cap">Try: </span>
             {EXAMPLES.map((ex) => (
