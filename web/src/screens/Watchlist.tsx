@@ -58,7 +58,7 @@ export default function Watchlist({ budgetId, sectors }: { budgetId: string; sec
           <>
             <Takeaway text={d.takeaway} />
             <Note text={d.note} />
-            <Card title="Ranked stocks" caption={`${d.survivorship} Order-win flag: ${d.order_win_flag}. Risk is the 90-day volatility tercile. Click a row for its three reasons.`}>
+            <Card title="Ranked stocks" info="Stocks ranked by the stock-level model's expected excess return over the Nifty 500. The interval is the 80% range, P(beat) the chance of beating the index, liquidity is the average daily traded value, and risk is the stock's 90-day volatility tercile. Stock forecasts are weaker than sector forecasts and the stock list has survivorship bias." caption={`${d.survivorship} Order-win flag: ${d.order_win_flag}. Risk is the 90-day volatility tercile. Click a row for its three reasons.`}>
               <div className="tablewrap">
                 <table data-testid="watchlist">
                   <thead>

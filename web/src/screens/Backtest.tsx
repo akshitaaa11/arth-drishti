@@ -63,7 +63,7 @@ export default function Backtest() {
               <Takeaway text={d.takeaway} />
               <Note text={`Does the budget data add anything beyond price momentum? ${d.evidence_answer}. See the evidence report for the full answer.`} />
               <div className="bento">
-                <Card className="s8" title="Growth of 100" caption="Log scale; each line follows one strategy from the first test budget">
+                <Card className="s8" title="Growth of 100" info="What 100 rupees would have become by following each strategy since the first test budget, after 0.2% trading costs, on a log scale. The dashed line is the Nifty 500. Every line is rebuilt from out-of-sample predictions only, so none used information from the future." caption="Log scale; each line follows one strategy from the first test budget">
                   <div className="legend">
                     {lines.map((c, i) => (
                       <span key={c}><i style={{ background: COLOURS[i] }} />{c}</span>
@@ -83,21 +83,21 @@ export default function Backtest() {
                     </ResponsiveContainer>
                   </div>
                 </Card>
-                <Insight className="s4" tone="dusk" tag={ho.status === "evaluated" ? "Hold-out, run once" : "Hold-out"}
+                <Insight className="s4" tone="dusk" tag={ho.status === "evaluated" ? "Hold-out, run once" : "Hold-out"} info="The hold-out is a final exam: two budgets (FY2024-25 and FY2025-26) kept locked until one single, pre-planned run. This card shows whether that run happened and whether the primary rule was met."
                   big={p1 ? (p1.met ? "Met" : "Null") : "Not run"} title={p1 ? `Primary rule: ${p1.met ? "met" : "not met"} (${p1.display}).` : "The one-time hold-out has not been run."} text={ho.note} />
-                <Card className="s8" title="Rank correlation by test year" caption="Information coefficient of the forecast and the outcome; blue positive, pink negative"
+                <Card className="s8" title="Rank correlation by test year" info="For each test budget, how well the chosen model ranked sectors against what then happened (information coefficient). Blue columns are positive, pink negative; values near zero mean the ranking carried no information." caption="Information coefficient of the forecast and the outcome; blue positive, pink negative"
                   right={<select className="pillsel" value={icModel} onChange={(e) => setIcModel(e.target.value)} aria-label="IC model">{icModels.map((m) => <option key={m} value={m}>{m.replace(/_/g, " ")}</option>)}</select>}>
                   <ColumnChart ariaLabel="Information coefficient by year" height={310} initial={icRows.length - 1}
                     items={icRows.map((r) => ({ label: r.budget_id.replace("FY", ""), value: r.ic as number, display: (r.ic as number).toFixed(2), tip: <><b>{(r.ic as number).toFixed(2)}</b> | {r.budget_id}</> }))}
                     yFmt={(v) => v.toFixed(1)} />
                 </Card>
-                <Card className="s4" title="Ablation" caption="Mean IC without each feature family"
+                <Card className="s4" title="Ablation" info="A test of what the budget data adds. The model is re-run without one family of inputs at a time and the average rank correlation (IC) is compared. If removing the budget inputs does not hurt, the budget adds little beyond price." caption="Mean IC without each feature family"
                   right={<select className="pillsel" value={model} onChange={(e) => setModel(e.target.value)} aria-label="Ablation model"><option>ridge</option><option>lgbm_ranker</option></select>}>
                   <div data-testid="ablation-chart">
                     <HBars signed rows={ablation.map((a) => ({ label: a.variant.replace(/_/g, " "), value: a.mean_ic, display: a.mean_ic.toFixed(3) }))} />
                   </div>
                 </Card>
-                <Card className="s12" title="Strategy summary">
+                <Card className="s12" title="Strategy summary" info="CAGR is the compound annual growth rate, Sharpe is return per unit of risk, max drawdown the worst peak-to-trough fall, turnover how much of the portfolio changes each year, and 'value of 100' the end value of 100 rupees.">
                   <div className="tablewrap">
                     <table>
                       <thead>
@@ -118,7 +118,7 @@ export default function Backtest() {
                     </table>
                   </div>
                 </Card>
-                <Card className="s12" title="Information coefficient by test year" caption="All models">
+                <Card className="s12" title="Information coefficient by test year" info="The rank correlation (IC) between each model's forecast ranking and what actually happened, for every test budget. Positive is good, near zero means no skill, one is perfect." caption="All models">
                   <div className="tablewrap">
                     <table data-testid="ic-table">
                       <thead>
@@ -138,7 +138,7 @@ export default function Backtest() {
                     </table>
                   </div>
                 </Card>
-                <Card className="s6" title="Pre-registered hold-out rules">
+                <Card className="s6" title="Pre-registered hold-out rules" info="Before the hold-out budgets were looked at, a primary rule (P1) and four secondary rules (S1 to S4) were written down. They were applied mechanically to the result, so the outcome could not be spun.">
                   {verdicts ? (
                     <table>
                       <tbody>
@@ -151,7 +151,7 @@ export default function Backtest() {
                     <Note text={ho.note} />
                   )}
                 </Card>
-                <Card className="s6" title="Sealed-prediction ledger">
+                <Card className="s6" title="Sealed-prediction ledger" info="A public record of forecasts sealed with a hash before their outcome is known. It is planned for the live year and is not built yet.">
                   <Note text={d.ledger.note} />
                 </Card>
               </div>

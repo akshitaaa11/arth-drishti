@@ -102,7 +102,7 @@ export default function Overview({ budgetId, ask }: { budgetId: string; ask: (q:
               <Note text={d.note} />
               {d.available && top.length > 0 && (
                 <div className="bento">
-                  <Card className="s8" title={`Budget estimate by line, ${d.fiscal_year}`} caption={`${KINDS.find((k) => k[0] === kind)?.[1]}: the five largest, Rs lakh crore`} style={{ paddingBottom: 132 }}>
+                  <Card className="s8" title={`Budget estimate by line, ${d.fiscal_year}`} info="The five largest lines of the chosen type (ministries, schemes or fiscal totals) in the budget estimate, in Rs lakh crore. Hover a column for its budget estimate, revised estimate and actual spending. Groups such as Other Ministries are left out so only named lines are compared." caption={`${KINDS.find((k) => k[0] === kind)?.[1]}: the five largest, Rs lakh crore`} style={{ paddingBottom: 132 }}>
                     <ColumnChart
                       ariaLabel="Largest budget lines"
                       items={top.map((i) => ({
@@ -121,7 +121,7 @@ export default function Overview({ budgetId, ask }: { budgetId: string; ask: (q:
                     />
                     <AskBar tag={top[0].line_item.toLowerCase()} fallback={`How much was the ${top[0].line_item} budget estimate for ${d.fiscal_year}?`} onAsk={ask} />
                   </Card>
-                  <Card className="s4" title="Total budget estimate" caption={totalLine ? "Total expenditure line, PRS Budget at a Glance" : "Sum of the lines listed"}>
+                  <Card className="s4" title="Total budget estimate" info="The budget estimate (BE) is what the government planned to spend in this fiscal year. The big number is the total expenditure line from the PRS Budget at a Glance table; the percentage compares it with last year's revised estimate (RE). Click any number anywhere to open the row it came from." caption={totalLine ? "Total expenditure line, PRS Budget at a Glance" : "Sum of the lines listed"}>
                     <div className="num-xl" style={{ marginTop: 18, whiteSpace: "nowrap" }}>
                       <small>Rs</small>
                       <Num value={(total / 1e5).toFixed(2)} source={totalLine?.be?.source_ref} />
@@ -135,7 +135,7 @@ export default function Overview({ budgetId, ask }: { budgetId: string; ask: (q:
                       <HBars rows={ranked.slice(0, 3).map((i) => ({ label: i.line_item, value: i.be!.amount_cr as number, display: crore(i.be!.amount_cr) }))} />
                     </div>
                   </Card>
-                  <Card className="s8" title="Where the money goes" caption="Area is the budget estimate; every tile opens in the table below">
+                  <Card className="s8" title="Where the money goes" info="A treemap: each tile's area is that ministry's or scheme's budget estimate, so bigger tiles mean bigger allocations. It shows the largest named lines only; groups such as 'Other Ministries' are left out here but appear in the table below." caption="Area is the budget estimate; every tile opens in the table below">
                     <div className="chartbox" data-testid="treemap" style={{ height: 280 }}>
                       <ResponsiveContainer>
                         <Treemap data={ranked.slice(0, 14).map((i) => ({ name: i.line_item, size: i.be!.amount_cr as number }))} dataKey="size" isAnimationActive={false} content={<TreeCell />}>
@@ -146,12 +146,12 @@ export default function Overview({ budgetId, ask }: { budgetId: string; ask: (q:
                   </Card>
                   <Insight
                     className="s4"
-                    tag="Budget insight"
+                    tag="Budget insight" info="The biggest named line as a share of total expenditure in this budget, with the context of the PRS table it comes from."
                     big={`${(shareTop * 100).toFixed(0)}%`}
                     title={top[0] ? `${top[0].line_item} is the largest named line: ${crore(top[0].be!.amount_cr)}.` : ""}
                     text={`Share of ${totalLine ? "total expenditure" : "the listed lines"} in the ${d.fiscal_year} budget estimate${otherLine ? `; the PRS table also groups ${crore(otherLine.be!.amount_cr)} under "Other Ministries"` : ""}. Actuals are from ${acYear ?? "earlier years"}; revised estimates from ${reYear ?? "the previous year"}.`}
                   />
-                  <Card className="s12" title="Actual, revised and budget estimates" caption="Rs crore; each figure opens its PRS page">
+                  <Card className="s12" title="Actual, revised and budget estimates" info="Three numbers for every budget line. Actual is what was really spent two years earlier, RE (revised estimate) is the government's mid-year correction for last year, and BE (budget estimate) is this year's plan. Comparing them shows how reliable plans have been." caption="Rs crore; each figure opens its PRS page">
                     <div className="tablewrap">
                       <table>
                         <thead>
@@ -191,7 +191,7 @@ export default function Overview({ budgetId, ask }: { budgetId: string; ask: (q:
           const max = Math.max(...rows.map((r) => r.total_cr), 1);
           return (
             <div className="bento" style={{ marginTop: 14 }}>
-              <Card className="s6" title="Capital vs revenue spending" caption="Demands for grants, budget estimate; blue is revenue, pink is capital">
+              <Card className="s6" title="Capital vs revenue spending" info="Each ministry's grant is split into revenue spending (salaries, running costs, subsidies; blue) and capital spending (building assets such as roads, defence equipment and railways; pink). Source: demands for grants, budget estimate." caption="Demands for grants, budget estimate; blue is revenue, pink is capital">
                 <div data-testid="capex-chart" style={{ marginTop: 8 }}>
                   {rows.slice(0, 7).map((r) => (
                     <div className="hrow" key={r.ministry} style={{ margin: "12px 0" }}>
@@ -206,7 +206,7 @@ export default function Overview({ budgetId, ask }: { budgetId: string; ask: (q:
                   ))}
                 </div>
               </Card>
-              <Card className="s6" title="Capital share by ministry" caption="One column per ministry (largest first); each dot is 10% of its grant that is capital spending">
+              <Card className="s6" title="Capital share by ministry" info="How much of each ministry's money goes into building assets. One column per ministry, largest first; each lit dot is 10% of that ministry's grant that is capital spending. Hover a column to read it." caption="One column per ministry (largest first); each dot is 10% of its grant that is capital spending">
                 <div className="num-l" style={{ margin: "10px 0 4px" }}>{(capShare * 100).toFixed(0)}%</div>
                 <div className="cap">of these ministries' combined grants is capital spending</div>
                 <div style={{ marginTop: 14 }}>

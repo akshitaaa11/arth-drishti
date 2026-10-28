@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { DISCLAIMER, get, post } from "../api";
+import { get, post } from "../api";
 import { Num } from "../components/Common";
-import { Card } from "../components/ui";
+import { Card, InfoTip } from "../components/ui";
 
 interface Citation {
   id: string;
@@ -139,12 +139,21 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
       <div className="titlerow">
         <div>
           <h1>Budget Copilot</h1>
-          <p className="lead">Ask about budget allocations, sector or stock forecasts, event studies and what-if scenarios. Answers use only the project's data and models, cite their sources, and every number is checked against them. One question at a time; it does not remember earlier ones. {DISCLAIMER}</p>
+          <p className="lead">Ask about budget numbers, sector and stock forecasts, event studies and what-if scenarios. One question at a time; it does not remember earlier ones. Research tool, not investment advice.</p>
         </div>
-        {status && <span className="chip">{status.mode === "llm" ? `model: ${status.primary_model}` : "rule-based writer (no model configured)"}</span>}
+        {status && (
+          <span className="ctrl">
+            <span className={`chip ${status.mode === "llm" ? "up" : ""}`}>{status.mode === "llm" ? `AI on: ${status.primary_model}` : "AI off: rule-based answers"}</span>
+            <InfoTip title={status.mode === "llm" ? "AI answers are on" : "AI answers are off"}>
+              {status.mode === "llm"
+                ? `Your question goes to ${status.primary_model} (backup ${status.backup_model}) together with read-only data tools. The model picks the tools, the server runs them, and the model writes the answer only from what they return. Every number is then checked against the tool results.`
+                : "No GROQ_API_KEY is set on the server, so answers are built by a fixed rule-based writer from the same data tools and the same number checks. To switch the AI on, put GROQ_API_KEY=... in the .env file in the project root (the key stays on the server) and restart make api."}
+            </InfoTip>
+          </span>
+        )}
       </div>
       <div className="bento">
-        <Card className="s8" title="Ask a question" style={{ minHeight: 420 }}>
+        <Card className="s12" title="Ask a question" info="Ask in plain English about budget numbers, sector or stock forecasts, event studies, what-ifs or how the models were built. Answers come only from read-only tools over the project's data; every number is checked against a tool result, buy/sell and personal-advice questions are refused, and text inside documents is treated as data, never instructions. One question at a time: there is no memory between questions." style={{ minHeight: 420 }}>
           <form onSubmit={(e) => { e.preventDefault(); void ask(q); }}>
             <label htmlFor="copilot-q" className="cap">Your question</label>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 6 }}>
@@ -153,6 +162,7 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
               <button type="submit" disabled={busy || !q.trim()} className="btn" style={{ background: "var(--dark-pill)", color: "var(--on-dark)", padding: "12px 22px" }}>{busy ? "Thinking..." : "Ask"}</button>
             </div>
           </form>
+          <p className="cap" style={{ marginTop: 10 }}>Answers use read-only data tools, every number is checked, and buy or sell questions are refused.</p>
           <p style={{ marginTop: 14, lineHeight: 2 }}>
             <span className="cap">Try: </span>
             {EXAMPLES.map((ex) => (
@@ -186,13 +196,6 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
               </p>
             </section>
           )}
-        </Card>
-        <Card className="s4" title="How it stays honest">
-          <ol style={{ margin: "10px 0 0", padding: 0, listStyle: "none", display: "grid", gap: 14, fontSize: 13 }}>
-            {["Numbers come from read-only tools, never from memory.", "Every figure in a reply must appear in a tool result, or the answer is regenerated, then replaced by a \"couldn't verify\" message.", "Buy, sell and personal-advice requests are refused before any model sees them.", "Text inside documents is data, never instructions."].map((t, i) => (
-              <li key={i} style={{ display: "flex", gap: 12 }}><span className="chip" style={{ height: 22, flex: "none" }}>{i + 1}</span><span className="muted">{t}</span></li>
-            ))}
-          </ol>
         </Card>
       </div>
     </>

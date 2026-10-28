@@ -1,7 +1,31 @@
 import { useId, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+
+/** A small "i" circle: hover or focus shows what a box (or the whole screen) means, in plain words. */
+export function InfoTip({ title, children, light = false }: { title: string; children: ReactNode; light?: boolean }) {
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const id = useId();
+  const show = (el: HTMLElement) => {
+    const r = el.getBoundingClientRect();
+    setPos({ x: Math.min(Math.max(r.right, 340), window.innerWidth - 12), y: r.bottom + 10 });
+  };
+  return (
+    <>
+      <button type="button" className={`infobtn ${light ? "light" : ""}`} aria-label={`About ${title}`} aria-describedby={pos ? id : undefined}
+        onMouseEnter={(e) => show(e.currentTarget)} onMouseLeave={() => setPos(null)} onFocus={(e) => show(e.currentTarget)} onBlur={() => setPos(null)} onClick={(e) => { e.stopPropagation(); show(e.currentTarget); }}>
+        i
+      </button>
+      {pos && createPortal(
+        <div id={id} role="tooltip" className="infotip" style={{ left: pos.x, top: pos.y }}>
+          <strong>{title}</strong>
+          <span>{children}</span>
+        </div>, document.body)}
+    </>
+  );
+}
 
 /** A card with an optional title row. */
-export function Card({ title, caption, right, className = "", children, style }: { title?: ReactNode; caption?: ReactNode; right?: ReactNode; className?: string; children: ReactNode; style?: React.CSSProperties }) {
+export function Card({ title, caption, right, info, className = "", children, style }: { title?: ReactNode; caption?: ReactNode; right?: ReactNode; info?: ReactNode; className?: string; children: ReactNode; style?: React.CSSProperties }) {
   return (
     <section className={`card ${className}`} style={style}>
       {(title || right) && (
@@ -10,7 +34,10 @@ export function Card({ title, caption, right, className = "", children, style }:
             {title && <h3>{title}</h3>}
             {caption && <div className="cap">{caption}</div>}
           </div>
-          {right}
+          <div className="headr">
+            {right}
+            {info && title && <InfoTip title={typeof title === "string" ? title : "About this box"}>{info}</InfoTip>}
+          </div>
         </div>
       )}
       {children}
@@ -208,11 +235,12 @@ export function StepLine({ series, labels, height = 190, fmt, colour = "#ee4d86"
 }
 
 /** Gradient insight card with grain. */
-export function Insight({ tone = "sunset", tag, big, title, text, className = "", style }: { tone?: "sunset" | "ocean" | "dusk"; tag: string; big: ReactNode; title: ReactNode; text?: ReactNode; className?: string; style?: React.CSSProperties }) {
+export function Insight({ tone = "sunset", tag, big, title, text, info, className = "", style }: { tone?: "sunset" | "ocean" | "dusk"; tag: string; big: ReactNode; title: ReactNode; text?: ReactNode; info?: ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
     <section className={`insight ${tone} ${className}`} style={style}>
       <span className="grain dark" aria-hidden="true" />
       <span className="grain light" aria-hidden="true" />
+      {info && <span className="insight-i"><InfoTip title={tag} light>{info}</InfoTip></span>}
       <span className="tagline"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" /></svg>{tag}</span>
       <div className="big">{big}</div>
       <b>{title}</b>

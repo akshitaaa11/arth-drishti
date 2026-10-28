@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { pct, signedPct, type HeatmapResponse } from "../api";
-import { sectorLabel } from "../components/ui";
+import { InfoTip, sectorLabel } from "../components/ui";
 import { Note, Num, Status, Takeaway, tileColour, useFetch, Whisker } from "../components/Common";
 
 export const MODELS = ["tier1_blend", "tier1_stack", "lgbm_ranker", "bayes_hier"];
@@ -12,7 +12,7 @@ export default function Heatmap({ budgetId, openSector }: { budgetId: string; op
     <>
       <div className="titlerow">
         <div>
-          <h1>Sector heat-map</h1>
+          <h1>Sector heat-map<span className="title-i"><InfoTip title="Sector heat-map">Fifteen sector cards ranked by the model's expected excess return over the Nifty 500 for the next 12 months. The capsule is the 80% interval, the white dot the expected value, and the tint shows how large the expectation is. P(beat) is the model's chance of beating the index; realised shows what actually happened (known only later). Click a card for its reasons.</InfoTip></span></h1>
           <p className="lead">Expected excess return over the Nifty 500 for the next 12 months. The capsule is the 80% interval, the white dot the expected value, the tint the size of the expectation.</p>
         </div>
         <div className="seg ctrl" role="tablist" aria-label="Model">

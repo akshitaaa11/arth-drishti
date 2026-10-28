@@ -90,7 +90,7 @@ export default function WhatIf({ budgetId }: { budgetId: string }) {
       {error && <p className="note" role="alert">{error}</p>}
       <Takeaway text={result?.takeaway} />
       <div className="bento">
-        <Card className="s5" title="Allocation change per sector" caption="Percent change of each sector's budget estimate">
+        <Card className="s5" title="Allocation change per sector" info="Drag a slider to raise or cut a sector's budget estimate by a percentage. The model rebuilds the surprise and growth inputs from that change and re-scores every sector. It is a what-if illustration, not a forecast." caption="Percent change of each sector's budget estimate">
           {presets.data?.sectors.map((s) => {
             const v = Math.max(-50, Math.min(100, changes[s.sector_id] ?? result?.applied_changes_pct[s.sector_id] ?? 0));
             return (
@@ -104,7 +104,7 @@ export default function WhatIf({ budgetId }: { budgetId: string }) {
             );
           })}
         </Card>
-        <Card className="s7" title="Re-ranked sectors" caption="Change in expected excess return against the actual budget; absolute levels are in the table and are in-sample">
+        <Card className="s7" title="Re-ranked sectors" info="Each tile shows how the model's expected excess return for a sector moves against the actual budget, in percentage points, and how its rank changes. Tiles are sorted by the new rank." caption="Change in expected excess return against the actual budget; absolute levels are in the table and are in-sample">
           <div data-testid="sim-grid" className="tilegrid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))" }}>
             {[...(result?.sectors ?? [])]
               .sort((a, b) => a.rank_scenario - b.rank_scenario)
@@ -120,7 +120,7 @@ export default function WhatIf({ budgetId }: { budgetId: string }) {
               ))}
           </div>
         </Card>
-        <Card className="s12" title="Difference against the actual budget">
+        <Card className="s12" title="Difference against the actual budget" info="The full numbers behind the tiles: the new allocation, the surprise before and after, the model's expected return before and after (in-sample, so read the change, not the level) and the rank move.">
           <div className="tablewrap">
             <table data-testid="sim-diff">
               <thead>

@@ -174,7 +174,7 @@ class Copilot:
               problems: list[str] | None = None, note: str | None = None) -> dict[str, Any]:
         used_tools = [r["tool"] for r in results]
         market = bool(MARKET_TOOLS & set(used_tools)) and any(r["ok"] for r in results)
-        if market and DISCLAIMER not in text:
+        if market and DISCLAIMER.lower() not in text.lower().replace("\u2011", "-"):
             text = f"{text}\n{DISCLAIMER}"
         shown = used_ids or ({k for k in reg.items} if mode == "fallback" else set())
         return {"question": question, "answer": text, "citations": reg.public(shown or None) if shown else [], "chart": offline.chart_for(results) if verified and mode != "fallback" else None,

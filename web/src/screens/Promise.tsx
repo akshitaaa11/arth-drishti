@@ -28,13 +28,13 @@ export default function PromiseScreen() {
               <Takeaway text={d.takeaway} />
               <p className="muted" style={{ margin: "0 0 14px" }}>{d.definition}</p>
               <div className="bento">
-                <Card className="s6" title="Ministries" caption="Average gap between actual and budgeted spending, most under-spent first">
+                <Card className="s6" title="Ministries" info="Average gap between what a ministry actually spent and what the budget estimated, across the years we have. Negative means under-spent. Source: two PRS budget editions per year." caption="Average gap between actual and budgeted spending, most under-spent first">
                   <HBars signed rows={mins.map((m) => ({ label: m.ministry, value: m.mean_gap_pct, display: <Num value={`${m.mean_gap_pct.toFixed(1)}%`} source={m.source_ref} /> }))} />
                 </Card>
-                <Card className="s6" title="Sectors" caption="3-year execution credibility, latest budget year with a value">
+                <Card className="s6" title="Sectors" info="The same idea per market sector, as a 3-year average built from the sector's ministries and schemes. Negative means the sector tended to receive less than the budget promised." caption="3-year execution credibility, latest budget year with a value">
                   <HBars signed rows={secs.map((s) => ({ label: s.sector_name, value: s.credibility_pct, display: <Num value={`${s.credibility_pct.toFixed(1)}%`} source={s.source_ref} /> }))} />
                 </Card>
-                <Card className="s12" title="All ministries" caption="Average gap and number of years">
+                <Card className="s12" title="All ministries" info="The complete league table behind the bars: average gap and the number of years it is based on." caption="Average gap and number of years">
                   <div className="tablewrap">
                     <table data-testid="league">
                       <thead>
@@ -52,7 +52,7 @@ export default function PromiseScreen() {
                     </table>
                   </div>
                 </Card>
-                <Card className="s12" title="Monthly execution line (CGA)">
+                <Card className="s12" title="Monthly execution line (CGA)" info="The Controller General of Accounts publishes monthly spending against the budget. That feed is not built yet, so this box only says so.">
                   <Note text={d.cga_monthly.note} />
                 </Card>
               </div>
