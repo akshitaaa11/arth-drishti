@@ -548,17 +548,15 @@ Exit criteria:
 
 **Goal:** a single, honest look at FY2024-25 and FY2025-26.
 
-> **Status: Phase 9 is prepared and rehearsed; the one-time run has NOT been made.** The plan is pre-registered in `config/holdout_plan.json` (all models and baselines reported, one primary rule P1 and four secondary rules S1-S4 applied mechanically, no model promoted on the result) and frozen with the code, config and data hashes in `config/holdout_freeze.json` (the freeze covers the code that produces the hold-out result; the presentation and analysis packages `api`, `console`, `simulator` and `evidence` are not frozen). `python -m bsp.evaluation.holdout --mode rehearsal` ran the identical machinery on the last two already-unlocked budgets (FY2022-23, FY2023-24; `reports/holdout_rehearsal.md`, **not** the hold-out result): every fold reproduces the saved Phase 5 predictions (largest score difference 5e-9) and every prediction has three reasons and an interval. `--mode holdout` refuses to run (and prints no metric) unless the config flag is unlocked and unspent, no hold-out result exists, the freeze manifest still matches, the tree is clean, HEAD carries the run tag, the freeze tag is an ancestor and nothing but `config/evaluation.json` changed since the freeze tag. Notes for reading the result: FY2024-25's window is about six months (the next budget came on 2025-02-01), FY2025-26's twelve; two budgets cannot support a significance test; speech features are absent. The FY2024-25 and FY2025-26 hold-out and the live year have not been touched.
->
-> **To run it (after this PR is merged):** (1) tag the merge commit `holdout-freeze-v1` and push the tag; (2) commit `"holdout_unlocked": true` in `config/evaluation.json`, tag that commit `holdout-run-v1`, push; (3) `make holdout` (one run, writes `reports/holdout.*`); (4) commit the results together with `"holdout_unlocked": false, "holdout_spent": true` and the run tag in `config/evaluation.json`, which locks the hold-out for good.
+> **Status: Phase 9 is done. The one-time hold-out run was made (commit `d8a2690`, tag `holdout-run-v1`, freeze tag `holdout-freeze-v1` on `3b0e301`) and the hold-out is now spent and locked (`holdout_spent: true`).** Result in `reports/holdout.md`: **a null result.** The primary rule P1 (tier1_blend IC of the 14 budget-sensitive sectors at least 0.10 in both budgets) is **not met** (IC -0.247 in FY2024-25, +0.225 in FY2025-26); S1 (top-3 beats equal weight in both) **not met**; S2 (80% interval coverage 75-85%) **not met** (tier1_blend 64.3%, lgbm_ranker 57.1%, bayes_hier 92.9%); S3 (tier2_ranker pooled IC positive and top-15 beats equal weight in both) **not met** (IC -0.084 in FY2024-25); S4 (IT Services control not in the predicted top 3 in both) **met**. tier1_blend's top-3 returned -19.2% and -5.5% against the Nifty 500's -6.3% and +6.6%; the Tier-1 models did not beat the baselines on the hold-out, so the models are **not** shown to have skill on it. FY2024-25's window is about six months, FY2025-26's twelve; two budgets cannot support a significance test, so these numbers are descriptive. The drift check passed (earlier folds reproduce Phase 5 within 5e-9). No model was re-tuned or promoted. The run used the procedure in `config/holdout_plan.json`; the tags exist in the local checkout and the commit is on branch `phase9-holdout-run`, but the git proxy in the build environment rejected pushing tags, so the tags still need to be pushed (`git push origin holdout-freeze-v1 holdout-run-v1`).
 
 Tasks:
 - [x] Freeze feature definitions, model configs and seeds; tag the commit. *Manifest `config/holdout_freeze.json` and plan `config/holdout_plan.json` are committed; the tag `holdout-freeze-v1` is created on the merge commit (step 1 above).*
-- [ ] Unlock the hold-out flag and run once. No re-tuning afterwards. *Pending the go-ahead.*
-- [ ] Record results in `reports/holdout.md`, including any null result and its explanation. *Written by the run.*
+- [x] Unlock the hold-out flag and run once. No re-tuning afterwards. *Run once; flag re-locked and spent.*
+- [x] Record results in `reports/holdout.md`, including any null result and its explanation. *Written by the run; the result is null (see status).*
 
 Exit criteria:
-- [ ] Hold-out results exist from exactly one tagged run.
+- [x] Hold-out results exist from exactly one tagged run.
 
 ---
 

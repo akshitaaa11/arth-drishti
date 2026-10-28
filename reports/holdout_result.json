@@ -1,0 +1,64 @@
+{
+  "commit": "d8a269010b355c63774c278819e82b5764cf5f43",
+  "drift": {
+    "bayes_hier": 4.989696586465975e-09,
+    "biggest_allocation_increase": 0.0,
+    "equal_weight": 0.0,
+    "last_years_winners": 4.999999997368221e-09,
+    "lgbm_ranker": 4.952183940698518e-09,
+    "ridge": 4.978958030588121e-09,
+    "tier1_blend": 3.333333387089965e-09,
+    "tier1_stack": 3.333333387089965e-09
+  },
+  "freeze_tag": "holdout-freeze-v1",
+  "mode": "holdout",
+  "tag": "holdout-run-v1",
+  "verdicts": {
+    "P1": {
+      "display": "IC -0.247, 0.225",
+      "met": false,
+      "rule": "IC of the 14 budget-sensitive sectors is at least the bar in BOTH hold-out budgets",
+      "values": [
+        -0.2466966336842674,
+        0.22467014853388634
+      ]
+    },
+    "S1": {
+      "display": "net return minus equal weight: -7.7%, -5.0%",
+      "met": false,
+      "rule": "tier1_blend top-3 net return exceeds the equal_weight (all 14) net return in BOTH hold-out budgets",
+      "values": [
+        -0.07655923703874656,
+        -0.050028074739313255
+      ]
+    },
+    "S2": {
+      "display": "coverage 64.3%",
+      "met": false,
+      "rule": "tier1_blend 80% interval coverage over the 28 hold-out forecasts (14 sectors x 2 budgets) lies in 75%-85%",
+      "values": [
+        0.6428571428571429
+      ]
+    },
+    "S3": {
+      "display": "IC -0.084, 0.189; net return minus equal weight: 4.5%, 2.0%",
+      "met": false,
+      "rule": "tier2_ranker pooled IC is positive in BOTH hold-out budgets and its top-15 net return exceeds the stock equal_weight net return in BOTH",
+      "values": [
+        -0.08383298078595128,
+        0.18945917519156655,
+        0.044530039350819006,
+        0.01971477868113758
+      ]
+    },
+    "S4": {
+      "display": "IT in predicted top 3: no, no",
+      "met": true,
+      "rule": "IT Services (control) is not ranked in the predicted top 3 by tier1_blend in BOTH hold-out budgets",
+      "values": [
+        false,
+        false
+      ]
+    }
+  }
+}

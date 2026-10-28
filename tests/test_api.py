@@ -29,7 +29,7 @@ def test_budgets_list_statuses_and_no_forecast_for_locked_budgets(client: TestCl
     budgets = {b["budget_id"]: b for b in data["budgets"]}
     assert len(budgets) == 26 and data["latest_forecast_budget"] == "FY2023-24" and "not investment advice" in data["disclaimer"]
     assert budgets["FY2023-24"]["status"] == "walk_forward_test" and budgets["FY2023-24"]["has_forecast"]
-    assert budgets["FY2024-25"]["status"] == budgets["FY2025-26"]["status"] == "holdout_locked"
+    assert budgets["FY2024-25"]["status"] == budgets["FY2025-26"]["status"] == "holdout_evaluated"  # the one-time run was made (Phase 9)
     assert budgets["FY2026-27"]["status"] == "live_sealed" and budgets["FY2019-20-I"]["status"] == "interim_not_modelled"
     assert not any(budgets[b]["has_forecast"] for b in LOCKED)
     for b in LOCKED:
@@ -54,7 +54,7 @@ def test_not_built_features_are_reported_as_not_built(client: TestClient) -> Non
     assert client.get("/credibility").json()["cga_monthly"]["available"] is False
     stocks = client.get("/stocks?budget_id=FY2023-24").json()
     assert "not available" in stocks["order_win_flag"] and all(s["order_win_flag"] is None for s in stocks["stocks"])
-    assert client.get("/backtest").json()["holdout"]["status"] == "not_run"
+    assert client.get("/backtest").json()["holdout"]["status"] == "evaluated"  # reports/holdout.md exists
 
 
 # ---------------------------------------------------------------- forecasts
@@ -83,7 +83,7 @@ def test_event_study_curve_and_fpi_strip(client: TestClient) -> None:
     r = client.get("/sectors/defence/event-study?budget_id=FY2021-22").json()
     assert [c["window"] for c in r["curve"]] == ["[-5,-1]", "0", "[0,+5]", "[0,+30]", "[0,+90]"] and r["takeaway"]
     assert all(c["car"] is not None and c["source_ref"].startswith("event_study:") for c in r["curve"])
-    assert client.get("/sectors/defence/event-study?budget_id=FY2025-26").status_code == 404  # locked
+    assert client.get("/sectors/defence/event-study?budget_id=FY2026-27").status_code == 404  # the live year stays sealed
 
 
 def test_stock_watchlist_filters_and_detail(client: TestClient) -> None:

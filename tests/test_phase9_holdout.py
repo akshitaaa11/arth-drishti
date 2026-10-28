@@ -98,13 +98,13 @@ def test_preconditions_refuse_while_locked_and_list_every_problem() -> None:
 def test_preconditions_allow_the_run_only_when_everything_holds(monkeypatch, tmp_path: Path) -> None:
     plan = load_plan(ROOT)
     monkeypatch.setattr(freeze, "verify", lambda root: [])
-    assert check_preconditions(_cfg(holdout_unlocked=True), plan, tmp_path, _git_factory()) == []  # tmp_path: no earlier results exist
+    assert check_preconditions(_cfg(holdout_unlocked=True, holdout_spent=False), plan, tmp_path, _git_factory()) == []  # tmp_path: no earlier results exist
     monkeypatch.setattr(freeze, "verify", lambda root: ["source_files: src/bsp/x.py changed"])
-    assert any("freeze manifest" in p for p in check_preconditions(_cfg(holdout_unlocked=True), plan, tmp_path, _git_factory()))
+    assert any("freeze manifest" in p for p in check_preconditions(_cfg(holdout_unlocked=True, holdout_spent=False), plan, tmp_path, _git_factory()))
     monkeypatch.setattr(freeze, "verify", lambda root: [])
     (tmp_path / "reports").mkdir()
     (tmp_path / "reports" / "holdout.md").write_text("x")
-    assert any("already exist" in p for p in check_preconditions(_cfg(holdout_unlocked=True), plan, tmp_path, _git_factory()))
+    assert any("already exist" in p for p in check_preconditions(_cfg(holdout_unlocked=True, holdout_spent=False), plan, tmp_path, _git_factory()))
 
 
 def test_a_missing_tag_is_reported_not_crashed() -> None:
