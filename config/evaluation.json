@@ -22,6 +22,6 @@
     10000.0
   ],
   "interval_level": 0.8,
-  "holdout_spent": false,
-  "holdout_run_tag": null
+  "holdout_spent": true,
+  "holdout_run_tag": "holdout-run-v1"
 }
