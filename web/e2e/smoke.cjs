@@ -60,6 +60,17 @@ const check = (ok, msg) => { if (!ok) fail.push(msg); };
     await page.locator("#sl-defence").evaluate((el) => { const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set; set.call(el, "60"); el.dispatchEvent(new Event("input", { bubbles: true })); });
     await page.waitForTimeout(3000);
     check((await page.textContent("[data-testid=takeaway]")).includes("defence"), `${label}: what-if takeaway names the changed sector`);
+    // copilot: ask, get a cited answer with a chart, open a citation chip, and a buy/sell request is refused
+    await page.goto(`${base}/app/#/copilot`); await page.waitForSelector("#copilot-q");
+    await page.fill("#copilot-q", "Compare the Railways allocation from 2018-19 to 2021-22"); await page.getByRole("button", { name: "Ask", exact: true }).click();
+    await page.waitForSelector("[data-testid=copilot-answer] .recharts-wrapper", { timeout: 30000 });
+    check((await page.textContent("[data-testid=copilot-answer]")).includes("Railways"), `${label}: copilot answer`);
+    await page.locator("[data-testid=copilot-answer] button.num").first().click(); await page.waitForSelector("[data-testid=source-drawer] table");
+    check((await page.textContent("[data-testid=source-drawer]")).includes("source_page"), `${label}: copilot citation opens its source row`);
+    await page.getByRole("button", { name: "Close" }).first().click().catch(() => undefined);
+    await page.fill("#copilot-q", "Should I buy BEL?"); await page.getByRole("button", { name: "Ask", exact: true }).click();
+    await page.waitForFunction(() => document.querySelector("[data-testid=copilot-answer]")?.textContent?.includes("can't give personal investment advice"), null, { timeout: 15000 });
+    check(true, `${label}: copilot refuses advice`);
     // dark mode
     const before = await page.evaluate("getComputedStyle(document.body).backgroundColor");
     await page.getByRole("button", { name: "Theme" }).click(); await page.getByRole("button", { name: "Theme" }).click();

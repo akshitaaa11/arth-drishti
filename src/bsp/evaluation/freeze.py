@@ -1,7 +1,7 @@
 """Freeze manifest for the one-time hold-out run (README Phase 9).
 
 ``python -m bsp.evaluation.freeze`` writes ``config/holdout_freeze.json``: SHA-256 of every source file under ``src/bsp`` except the
-presentation/analysis packages that never feed the hold-out result (``UNFROZEN_PACKAGES``: api, console, simulator, evidence), every
+presentation/analysis packages that never feed the hold-out result (``UNFROZEN_PACKAGES``: api, console, simulator, evidence, copilot), every
 file in ``config/`` (``evaluation.json`` is hashed on its modelling settings only, so unlocking the hold-out does not change the
 freeze), the data files the run reads, and the saved Phase 5/7 predictions used as the drift reference, plus the library versions
 and the evaluation settings (seed, tuning trials, alpha grid, costs). ``verify`` recomputes it and lists every difference.
@@ -27,7 +27,7 @@ DATA_FILES = ["features_sector_year_wide.csv", "features_stock_year_wide.csv", "
 REFERENCE_FILES = ["reports/baselines_predictions_sector.csv", "reports/models_predictions_sector.csv", "reports/models_predictions_stock.csv",
                    "reports/predictions_detail.csv"]
 # Presentation and analysis layers that never feed the hold-out result: they may keep changing after the freeze.
-UNFROZEN_PACKAGES = ("api", "console", "simulator", "evidence")
+UNFROZEN_PACKAGES = ("api", "console", "simulator", "evidence", "copilot")
 LIBRARIES = ["numpy", "pandas", "scikit-learn", "scipy", "lightgbm", "pymc", "pytensor", "optuna", "shap", "mapie", "mlflow"]
 
 

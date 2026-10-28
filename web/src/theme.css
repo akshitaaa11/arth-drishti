@@ -122,3 +122,5 @@ button.num:hover { text-decoration: underline; }
   .chartbox { height: 260px; }
   h1 { font-size: 1.15rem; }
 }
+
+.linklike { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; text-align: left; }

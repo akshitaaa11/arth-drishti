@@ -39,7 +39,7 @@ def test_dashboard_smoke_in_a_real_browser(tmp_path: Path) -> None:
         s.bind(("127.0.0.1", 0))
         port = s.getsockname()[1]
     server = subprocess.Popen([sys.executable, "-m", "uvicorn", "bsp.api.app:app", "--port", str(port), "--log-level", "warning"], cwd=ROOT,
-                              env={**os.environ, "REDIS_URL": ""}, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                              env={**os.environ, "REDIS_URL": "", "GROQ_API_KEY": ""}, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
         for _ in range(60):
             try:
