@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { DISCLAIMER, type BudgetsResponse } from "./api";
 import { SourceProvider, useFetch } from "./components/Common";
+import { Icon } from "./components/ui";
 import Backtest from "./screens/Backtest";
 import Copilot from "./screens/Copilot";
 import DeepDive from "./screens/DeepDive";
@@ -11,14 +12,14 @@ import Watchlist from "./screens/Watchlist";
 import WhatIf from "./screens/WhatIf";
 
 const SCREENS = [
-  ["overview", "1 Budget overview"],
-  ["heatmap", "2 Sector heat-map"],
-  ["sector", "3 Sector deep-dive"],
-  ["stocks", "4 Stock watchlist"],
-  ["whatif", "5 What-if"],
-  ["promise", "6 Promise vs reality"],
-  ["backtest", "7 Backtest and evidence"],
-  ["copilot", "8 Copilot"],
+  ["overview", "Overview"],
+  ["heatmap", "Heat-map"],
+  ["sector", "Sectors"],
+  ["stocks", "Stocks"],
+  ["whatif", "What-if"],
+  ["promise", "Promise"],
+  ["backtest", "Backtest"],
+  ["copilot", "Copilot"],
 ] as const;
 
 function useHash(): [string[], (h: string) => void] {
@@ -70,51 +71,57 @@ export default function App() {
   }, [parts]);
 
   const chosen = budgets.data?.budgets.find((b) => b.budget_id === budgetId);
+  const ask = (q: string) => go(`/copilot/${encodeURIComponent(q)}`);
   return (
     <SourceProvider>
-      <div className="shell">
-        <header className="top">
-          <span className="brand">Arth Drishti</span>
-          <label>
-            Budget{" "}
-            <select aria-label="Budget" value={budgetId ?? ""} onChange={(e) => setBudgetId(e.target.value)}>
-              {budgets.data?.budgets
-                .filter((b) => b.budget_type === "full")
-                .map((b) => (
-                  <option key={b.budget_id} value={b.budget_id}>
-                    {b.budget_id}
-                    {b.has_forecast ? "" : b.status === "holdout_locked" ? " (hold-out, locked)" : b.status === "live_sealed" ? " (live, sealed)" : ""}
-                  </option>
-                ))}
-            </select>
-          </label>
-          <span className="spacer" />
-          <button className="btn" onClick={cycleTheme} aria-label="Theme">Theme: {theme}</button>
-          <nav className="tabs" aria-label="Screens">
-            {SCREENS.map(([id, label]) => (
-              <a key={id} href={`#/${id}`} aria-current={screen === id ? "page" : undefined}>
-                {label}
-              </a>
-            ))}
-          </nav>
-        </header>
-        <main>
-          {budgets.error && <p className="note" role="alert">Cannot reach the API: {budgets.error}</p>}
-          {budgetId && chosen && (
-            <>
-              {screen === "overview" && <Overview budgetId={budgetId} />}
-              {screen === "heatmap" && <Heatmap budgetId={budgetId} openSector={(s) => go(`/sector/${s}`)} />}
-              {screen === "sector" && <DeepDive budgetId={budgetId} sectorId={sectorId} setSector={(s) => go(`/sector/${s}`)} sectors={SECTORS} />}
-              {screen === "stocks" && <Watchlist budgetId={budgetId} sectors={SECTORS} />}
-              {screen === "whatif" && <WhatIf budgetId={budgetId} />}
-              {screen === "promise" && <PromiseScreen />}
-              {screen === "backtest" && <Backtest />}
-              {screen === "copilot" && <Copilot />}
-            </>
-          )}
-        </main>
-        <a className="fab" href="#/copilot" aria-label="Open the Budget Copilot">Ask Copilot</a>
-        <footer className="foot">{DISCLAIMER}</footer>
+      <div className="stage">
+        <div className="frame">
+          <header className="top">
+            <a className="brand" href="#/overview" aria-label="Arth Drishti home">
+              <span className="mark"><i /></span>
+              arth drishti
+            </a>
+            <nav className="tabs" aria-label="Screens">
+              {SCREENS.map(([id, label]) => (
+                <a key={id} href={`#/${id}`} aria-current={screen === id ? "page" : undefined}>
+                  {label}
+                </a>
+              ))}
+            </nav>
+            <div className="actions">
+              <select className="pillsel" aria-label="Budget" value={budgetId ?? ""} onChange={(e) => setBudgetId(e.target.value)}>
+                {budgets.data?.budgets
+                  .filter((b) => b.budget_type === "full")
+                  .map((b) => (
+                    <option key={b.budget_id} value={b.budget_id}>
+                      {b.budget_id}
+                      {b.has_forecast ? "" : b.status === "holdout_locked" ? " (hold-out, locked)" : b.status === "live_sealed" ? " (live, sealed)" : ""}
+                    </option>
+                  ))}
+              </select>
+              <button className="circle" onClick={cycleTheme} aria-label="Theme" title={`Theme: ${theme} (click to change)`}>
+                <Icon name={theme === "dark" ? "moon" : "sun"} />
+              </button>
+            </div>
+          </header>
+          <main>
+            {budgets.error && <p className="note" role="alert">Cannot reach the API: {budgets.error}</p>}
+            {budgetId && chosen && (
+              <>
+                {screen === "overview" && <Overview budgetId={budgetId} ask={ask} />}
+                {screen === "heatmap" && <Heatmap budgetId={budgetId} openSector={(s) => go(`/sector/${s}`)} />}
+                {screen === "sector" && <DeepDive budgetId={budgetId} sectorId={sectorId} setSector={(s) => go(`/sector/${s}`)} sectors={SECTORS} ask={ask} />}
+                {screen === "stocks" && <Watchlist budgetId={budgetId} sectors={SECTORS} />}
+                {screen === "whatif" && <WhatIf budgetId={budgetId} />}
+                {screen === "promise" && <PromiseScreen />}
+                {screen === "backtest" && <Backtest />}
+                {screen === "copilot" && <Copilot initialQuestion={parts[1] ? decodeURIComponent(parts[1]) : undefined} />}
+              </>
+            )}
+          </main>
+          <a className="fab" href="#/copilot" aria-label="Open the Budget Copilot"><Icon name="spark" />Ask Copilot</a>
+          <footer className="foot">{DISCLAIMER}</footer>
+        </div>
       </div>
     </SourceProvider>
   );

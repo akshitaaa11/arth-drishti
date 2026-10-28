@@ -582,6 +582,8 @@ Tasks:
 - [ ] *(Should)* F14 FPI flow radar overlay; F5 interactive event-study explorer. *Not built: the deep-dive shows the FPI flows as a table and the CAR curve for one budget.*
 - [x] Streamlit analyst console for internal checks. *`bsp/console/app.py`: collector runs, row counts and date ranges, leakage checks, model results and a predictions browser, hold-out and freeze state.*
 
+**Visual design.** A light, quiet "platform" look (grey stage, one rounded frame, pill navigation, near-white cards): hatched royal-blue columns with stepped light-blue ramps, hatched progress bars, dot matrices, step lines and grainy gradient insight cards (`web/src/theme.css`, `web/src/components/ui.tsx`). Light and dark themes; the chart components are plain React/CSS/SVG, so every number on them still opens its source row.
+
 Exit criteria:
 - [ ] All 8 screens render real data on desktop and phone width. *Six screens render real data; screen 6 lacks its CGA monthly line and screen 8 is a placeholder; all eight render at both widths without errors.*
 - [ ] Clicking any number opens its source PDF page or dataset row. *Partly: dataset rows open (see UX rules).*

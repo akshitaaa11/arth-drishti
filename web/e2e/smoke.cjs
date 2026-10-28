@@ -9,8 +9,8 @@ const check = (ok, msg) => { if (!ok) fail.push(msg); };
 
 (async () => {
   const browser = await chromium.launch();
-  const screens = [["overview", "Budget overview"], ["heatmap", "Sector heat-map"], ["sector/defence", "Sector deep-dive"], ["stocks", "Stock watchlist"],
-    ["whatif", "What-if simulator"], ["promise", "Promise vs reality"], ["backtest", "Backtest and evidence"], ["copilot", "Budget Copilot"]];
+  const screens = [["overview", "Overview"], ["heatmap", "Sector heat-map"], ["sector/defence", "Sector deep-dive"], ["stocks", "Stock watchlist"],
+    ["whatif", "What-if simulator"], ["promise", "Promise vs reality"], ["backtest", "Backtest & evidence"], ["copilot", "Budget Copilot"]];
   for (const [label, [w, h]] of [["desktop", [1280, 900]], ["phone", [390, 844]]]) {
     const ctx = await browser.newContext({ viewport: { width: w, height: h } });
     const page = await ctx.newPage();
@@ -84,7 +84,7 @@ const check = (ok, msg) => { if (!ok) fail.push(msg); };
   // OS-level dark preference
   const dark = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: "dark" });
   const p = await dark.newPage(); await p.goto(`${base}/app/#/heatmap`); await p.waitForLoadState("networkidle");
-  check((await p.evaluate("getComputedStyle(document.body).backgroundColor")) === "rgb(26, 26, 25)", "prefers-color-scheme dark background");
+  check((await p.evaluate("getComputedStyle(document.body).backgroundColor")) === "rgb(14, 14, 16)", "prefers-color-scheme dark background");
   await browser.close();
   if (fail.length) { console.log("FAIL\n" + fail.join("\n")); process.exit(1); }
   console.log("OK");
