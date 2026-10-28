@@ -133,7 +133,7 @@ def test_default_panel_contains_no_holdout_or_live_budget_and_loading_them_raise
 
 
 def test_unlocking_flag_allows_holdout_rows() -> None:
-    cfg = load_config(holdout_unlocked=True)
+    cfg = load_config(holdout_unlocked=True, holdout_spent=False)  # the real config is now spent; this exercises only the loader gate
     assert "FY2024-25" in set(load_sector_panel(cfg, include_locked=True).frame["budget_id"])
 
 
