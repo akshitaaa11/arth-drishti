@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { get, post } from "../api";
 import { Num } from "../components/Common";
-import { Card, InfoTip } from "../components/ui";
+import { Card, InfoTip, useAi } from "../components/ui";
 
 interface Citation {
   id: string;
@@ -108,6 +108,7 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
   const asked = useRef<string | undefined>(undefined);
+  const ai = useAi();
 
   useEffect(() => {
     get<Status>("/copilot/status").then(setStatus).catch(() => undefined);
@@ -162,7 +163,18 @@ export default function Copilot({ initialQuestion }: { initialQuestion?: string 
               <button type="submit" disabled={busy || !q.trim()} className="btn" style={{ background: "var(--dark-pill)", color: "var(--on-dark)", padding: "12px 22px" }}>{busy ? "Thinking..." : "Ask"}</button>
             </div>
           </form>
-          <p className="cap" style={{ marginTop: 10 }}>Answers use read-only data tools, every number is checked, and buy or sell questions are refused.</p>
+          <p className="cap" style={{ marginTop: 10 }}>Answers use read-only data tools, every number is checked, and buy or sell questions are refused.{ai.on ? " Powered by Groq." : ""}</p>
+          {status && !ai.on && (
+            <div className="setup" role="note">
+              <strong>Turn on AI answers (Groq)</strong>
+              <ol>
+                <li>Create a free key at <a href="https://console.groq.com/keys" target="_blank" rel="noreferrer">console.groq.com/keys</a>.</li>
+                <li>Open the <code>.env</code> file in the project folder (next to <code>docker-compose.yml</code>) and put it on the line <code>GROQ_API_KEY=your-key</code>. Do not share the key or commit the file.</li>
+                <li>Restart the server: <code>docker compose up -d --force-recreate api</code> (or stop and re-run <code>make api</code>). This chip then reads "AI on".</li>
+              </ol>
+              <span>Until then answers come from the built-in rule-based writer, which uses the same data and the same number checks. The key stays on the server; this page never asks for it.</span>
+            </div>
+          )}
           <p style={{ marginTop: 14, lineHeight: 2 }}>
             <span className="cap">Try: </span>
             {EXAMPLES.map((ex) => (

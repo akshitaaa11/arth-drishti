@@ -1,4 +1,4 @@
-import { useId, useState, type ReactNode } from "react";
+import { createContext, useContext, useId, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 /** A small "i" circle: hover or focus shows what a box (or the whole screen) means, in plain words. */
@@ -253,9 +253,10 @@ export function Insight({ tone = "sunset", tag, big, title, text, info, classNam
 /** The floating "what would you like to explore next?" prompt that hands a question to the Copilot. */
 export function AskBar({ tag, fallback, onAsk }: { tag: string; fallback: string; onAsk: (q: string) => void }) {
   const [text, setText] = useState("");
+  const ai = useAi();
   return (
     <div className="askbar">
-      <div className="q"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" /></svg>What would you like to explore next?</div>
+      <div className="q"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" /></svg>What would you like to explore next?<span className={`aichip ${ai.on ? "on" : ""}`}>{ai.on ? "Groq AI" : "rule-based"}</span></div>
       <form onSubmit={(e) => { e.preventDefault(); onAsk(text.trim() || fallback); }}>
         <span style={{ fontSize: 13, whiteSpace: "nowrap" }}>Ask the Copilot about</span>
         <span className="tag">/{tag}</span>
@@ -276,3 +277,7 @@ const ACR: Record<string, string> = { fmcg: "FMCG", it_control: "IT services (co
 export function sectorLabel(id: string): string {
   return ACR[id] ?? id.replace(/_/g, " ").replace(/^./, (c) => c.toUpperCase());
 }
+
+/** Whether the server's Copilot is using the Groq model (set from /copilot/status in App). */
+export const AiContext = createContext<{ on: boolean; model: string | null }>({ on: false, model: null });
+export const useAi = () => useContext(AiContext);
