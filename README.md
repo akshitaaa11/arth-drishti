@@ -579,7 +579,7 @@ Tasks:
   5. What-if simulator: sliders, presets, re-ranked tiles, diff table
   6. Promise vs reality: ministry and sector credibility tables; **CGA monthly line not built**
   7. Backtest and evidence: equity curves, IC by year, ablation bars, evidence answer, hold-out status; **ledger empty (Phase 12)**
-  8. Budget Copilot: **placeholder page; the chat is Phase 11**
+  8. Budget Copilot: **built in Phase 11** (ask box, citation chips that open the source row, one chart or table, mode badge)
 - [x] UX rules: every number clickable to its source page; one-line takeaway per chart; phone-width layout; dark mode; footer "Research tool, not investment advice." *Footer, dark mode (system or toggle), phone layout (390 px, no horizontal overflow on any screen) and a chat button on every screen are tested in a real browser. Takeaways are generated from the data by the API. **Partly met:** numbers in the tables and tiles open their dataset row (provenance, document and page, file hash), but not every displayed number is clickable (for example the simulator's results and some headline figures), and the PDF page itself opens only when the PDF is stored locally.*
 - [ ] *(Should)* F14 FPI flow radar overlay; F5 interactive event-study explorer. *Not built: the deep-dive shows the FPI flows as a table and the CAR curve for one budget.*
 - [x] Streamlit analyst console for internal checks. *`bsp/console/app.py`: collector runs, row counts and date ranges, leakage checks, model results and a predictions browser, hold-out and freeze state.*
@@ -596,17 +596,21 @@ Exit criteria:
 **Goal:** a tool-calling chatbot that answers only from the project's data. Spec in PRD §8. **(FR-15, Must; F13)**
 
 Tasks:
-- [ ] Retrieval index over budget PDFs, speeches and PRS analyses (sentence-transformers), returning passage + document + page.
-- [ ] Read-only tools: `search_documents`, `query_budget`, `get_sector_forecast`, `get_stock_ranking`, `explain_prediction`, `run_what_if`, `get_event_study`, `get_live_quotes`.
-- [ ] Groq client with tool calling; primary and backup model from env; answer cache in Redis. Single-turn only, no conversation memory.
-- [ ] Answer flow: question + tool definitions → model picks tools → backend runs them → model writes answer from tool results only → reply with text, citation chips and at most one chart/table (model picks chart type; frontend draws it).
-- [ ] **Guardrails:** no buy/sell or personal advice (short disclaimer on market answers); "I don't know" when tools lack the answer; document text treated as data, never instructions; off-topic redirect.
-- [ ] **Number checker:** every number in a reply must appear in a tool result or cited chunk, otherwise regenerate (then fall back to a safe "couldn't verify" answer).
-- [ ] Evaluation set in `tests/copilot_eval/`: 50 known-answer questions with pages, 15 advice or injection trick prompts.
+- [x] Retrieval index returning passage + document + page. **Deviation:** TF-IDF (word + bigram) instead of sentence-transformers, because huggingface.co is unreachable from the build environment. It indexes the parsed budget tables (with PRS PDF page), the project reports and README/PRD; speeches and source PDFs are indexed only when present in the repository (none are committed), and the tool says so when nothing matches.
+- [x] Read-only tools (`src/bsp/copilot/tools.py`; `get_live_quotes` honestly reports that the live feed is not built until Phase 12): `search_documents`, `query_budget`, `get_sector_forecast`, `get_stock_ranking`, `explain_prediction`, `run_what_if`, `get_event_study`, `get_live_quotes`.
+- [x] Groq client with tool calling; primary and backup model from env; answer cache (Redis via `REDIS_URL`, else in-process; verified answers only, 1 h). Single-turn only, no conversation memory. Failover to the backup model on 429, 5xx, model errors and `tool_use_failed`; with no key, or if both models fail, a deterministic rule-based planner/writer answers over the same tools and the same checks, and the reply says so.
+- [x] Answer flow: question + tool definitions → model picks tools → backend runs them → model writes answer from tool results only → reply with text, citation chips and at most one chart/table (**deviation:** the chart is built in code from the tool results, not picked by the model, so its numbers are traceable by construction).
+- [x] **Guardrails:** no buy/sell or personal advice (short disclaimer on market answers); "I don't know" when tools lack the answer; document text treated as data, never instructions; off-topic redirect.
+- [x] **Number checker:** every number in a reply must appear in a tool result or cited chunk, otherwise regenerate (then fall back to a safe "couldn't verify" answer).
+- [x] Evaluation set in `tests/copilot_eval/`: 50 known-answer questions with pages, 15 advice or injection trick prompts.
 
 Exit criteria:
 - 100% of numbers traceable; ≥ 95% correct citations; every trick prompt refused.
 - The chatbot works with the backup model when the primary is disabled.
+
+> **Status: Phase 11 is built.** `POST /copilot/ask`, `GET /copilot/status`, screen 8 of the dashboard, `make copilot-eval` (offline) and `make copilot-eval-live` (needs `GROQ_API_KEY`). Code in `src/bsp/copilot/`; reports in `reports/copilot_eval_*.md`. Guardrails (advice, injection, off-topic) run in code before any model sees the question; document passages are wrapped in `<document>` tags and scrubbed of instruction-like text. The number checker accepts a number only if it appears in a tool result (also as a percentage of a fraction or in lakh crore); a failing draft is regenerated once, then replaced by the checked template text built from the same tool results, then by a "couldn't verify" message.
+>
+> **Evaluation (honest limits):** the 50 known-answer questions are generated from the parsed PRS tables (`python -m bsp.copilot.evalset`, seeded), so the expected values come from the same CSVs the tools read. The set tests retrieval, citation and number discipline, not whether the CSVs match the PDFs (that was checked in Phase 1). Results are in the exit-criteria notes below.
 
 ---
 
